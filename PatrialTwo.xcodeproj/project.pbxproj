@@ -22,6 +22,7 @@
 		5052ADE41C65DEE000A64A51 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5052ADE21C65DEE000A64A51 /* LaunchScreen.storyboard */; };
 		5052ADEF1C65DEE000A64A51 /* PatrialTwoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052ADEE1C65DEE000A64A51 /* PatrialTwoTests.m */; };
 		5052ADFA1C65DEE000A64A51 /* PatrialTwoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052ADF91C65DEE000A64A51 /* PatrialTwoUITests.m */; };
+		5052AE1E1C668D2000A64A51 /* PassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE1D1C668D2000A64A51 /* PassViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,8 @@
 		5052ADF51C65DEE000A64A51 /* PatrialTwoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PatrialTwoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5052ADF91C65DEE000A64A51 /* PatrialTwoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PatrialTwoUITests.m; sourceTree = "<group>"; };
 		5052ADFB1C65DEE000A64A51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5052AE1C1C668D2000A64A51 /* PassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PassViewController.h; sourceTree = "<group>"; };
+		5052AE1D1C668D2000A64A51 /* PassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PassViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,13 +116,6 @@
 		35F55FBF1C65EB0800C89909 /* automaticCreated */ = {
 			isa = PBXGroup;
 			children = (
-			);
-			name = automaticCreated;
-			sourceTree = "<group>";
-		};
-		5052ADC51C65DEE000A64A51 = {
-			isa = PBXGroup;
-			children = (
 				35F55FD81C66467700C89909 /* Document+CoreDataProperties.h */,
 				35F55FD91C66467700C89909 /* Document+CoreDataProperties.m */,
 				35F55FDA1C66467700C89909 /* Document.h */,
@@ -128,6 +124,13 @@
 				35F55FDD1C66467700C89909 /* Repository+CoreDataProperties.m */,
 				35F55FDE1C66467700C89909 /* Repository.h */,
 				35F55FDF1C66467700C89909 /* Repository.m */,
+			);
+			name = automaticCreated;
+			sourceTree = "<group>";
+		};
+		5052ADC51C65DEE000A64A51 = {
+			isa = PBXGroup;
+			children = (
 				35F55FBE1C65EADC00C89909 /* CoreData */,
 				5052ADD01C65DEE000A64A51 /* PatrialTwo */,
 				5052ADED1C65DEE000A64A51 /* PatrialTwoTests */,
@@ -149,11 +152,9 @@
 		5052ADD01C65DEE000A64A51 /* PatrialTwo */ = {
 			isa = PBXGroup;
 			children = (
-				5052ADD41C65DEE000A64A51 /* AppDelegate.h */,
-				5052ADD51C65DEE000A64A51 /* AppDelegate.m */,
-				5052ADD71C65DEE000A64A51 /* ViewController.h */,
-				5052ADD81C65DEE000A64A51 /* ViewController.m */,
+				5052AE1F1C668D3700A64A51 /* MainController */,
 				5052ADDA1C65DEE000A64A51 /* Main.storyboard */,
+				5052AE201C668D4A00A64A51 /* PassController */,
 				5052ADE01C65DEE000A64A51 /* Assets.xcassets */,
 				5052ADE21C65DEE000A64A51 /* LaunchScreen.storyboard */,
 				5052ADE51C65DEE000A64A51 /* Info.plist */,
@@ -187,6 +188,26 @@
 				5052ADFB1C65DEE000A64A51 /* Info.plist */,
 			);
 			path = PatrialTwoUITests;
+			sourceTree = "<group>";
+		};
+		5052AE1F1C668D3700A64A51 /* MainController */ = {
+			isa = PBXGroup;
+			children = (
+				5052ADD41C65DEE000A64A51 /* AppDelegate.h */,
+				5052ADD51C65DEE000A64A51 /* AppDelegate.m */,
+				5052ADD71C65DEE000A64A51 /* ViewController.h */,
+				5052ADD81C65DEE000A64A51 /* ViewController.m */,
+			);
+			name = MainController;
+			sourceTree = "<group>";
+		};
+		5052AE201C668D4A00A64A51 /* PassController */ = {
+			isa = PBXGroup;
+			children = (
+				5052AE1C1C668D2000A64A51 /* PassViewController.h */,
+				5052AE1D1C668D2000A64A51 /* PassViewController.m */,
+			);
+			name = PassController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -321,6 +342,7 @@
 			files = (
 				35F55FE01C66467700C89909 /* Document+CoreDataProperties.m in Sources */,
 				35F55FE31C66467700C89909 /* Repository.m in Sources */,
+				5052AE1E1C668D2000A64A51 /* PassViewController.m in Sources */,
 				35F55FBD1C65EAD500C89909 /* Document+patrial.m in Sources */,
 				5052ADD91C65DEE000A64A51 /* ViewController.m in Sources */,
 				5052ADD61C65DEE000A64A51 /* AppDelegate.m in Sources */,
