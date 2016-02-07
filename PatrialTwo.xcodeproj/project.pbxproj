@@ -23,6 +23,8 @@
 		5052ADEF1C65DEE000A64A51 /* PatrialTwoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052ADEE1C65DEE000A64A51 /* PatrialTwoTests.m */; };
 		5052ADFA1C65DEE000A64A51 /* PatrialTwoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052ADF91C65DEE000A64A51 /* PatrialTwoUITests.m */; };
 		5052AE1E1C668D2000A64A51 /* PassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE1D1C668D2000A64A51 /* PassViewController.m */; };
+		5052AE261C66C04800A64A51 /* CoordinatorCoreDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE251C66C04800A64A51 /* CoordinatorCoreDate.m */; };
+		5052AE2A1C67358700A64A51 /* PlusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE291C67358700A64A51 /* PlusButton.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +76,11 @@
 		5052ADFB1C65DEE000A64A51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5052AE1C1C668D2000A64A51 /* PassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PassViewController.h; sourceTree = "<group>"; };
 		5052AE1D1C668D2000A64A51 /* PassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PassViewController.m; sourceTree = "<group>"; };
+		5052AE231C66BCF900A64A51 /* PatrialTwo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PatrialTwo.entitlements; sourceTree = "<group>"; };
+		5052AE241C66C04800A64A51 /* CoordinatorCoreDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoordinatorCoreDate.h; sourceTree = "<group>"; };
+		5052AE251C66C04800A64A51 /* CoordinatorCoreDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoordinatorCoreDate.m; sourceTree = "<group>"; };
+		5052AE281C67358700A64A51 /* PlusButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlusButton.h; sourceTree = "<group>"; };
+		5052AE291C67358700A64A51 /* PlusButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlusButton.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +116,8 @@
 				35F55FBB1C65EAD500C89909 /* Document+patrial.h */,
 				35F55FBC1C65EAD500C89909 /* Document+patrial.m */,
 				35F55FBF1C65EB0800C89909 /* automaticCreated */,
+				5052AE241C66C04800A64A51 /* CoordinatorCoreDate.h */,
+				5052AE251C66C04800A64A51 /* CoordinatorCoreDate.m */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -152,9 +161,11 @@
 		5052ADD01C65DEE000A64A51 /* PatrialTwo */ = {
 			isa = PBXGroup;
 			children = (
+				5052AE231C66BCF900A64A51 /* PatrialTwo.entitlements */,
 				5052AE1F1C668D3700A64A51 /* MainController */,
 				5052ADDA1C65DEE000A64A51 /* Main.storyboard */,
 				5052AE201C668D4A00A64A51 /* PassController */,
+				5052AE271C67355600A64A51 /* Views */,
 				5052ADE01C65DEE000A64A51 /* Assets.xcassets */,
 				5052ADE21C65DEE000A64A51 /* LaunchScreen.storyboard */,
 				5052ADE51C65DEE000A64A51 /* Info.plist */,
@@ -208,6 +219,15 @@
 				5052AE1D1C668D2000A64A51 /* PassViewController.m */,
 			);
 			name = PassController;
+			sourceTree = "<group>";
+		};
+		5052AE271C67355600A64A51 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5052AE281C67358700A64A51 /* PlusButton.h */,
+				5052AE291C67358700A64A51 /* PlusButton.m */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -277,6 +297,12 @@
 				TargetAttributes = {
 					5052ADCD1C65DEE000A64A51 = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = L256QEN4KV;
+						SystemCapabilities = {
+							com.apple.iCloud = {
+								enabled = 1;
+							};
+						};
 					};
 					5052ADE91C65DEE000A64A51 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -346,11 +372,13 @@
 				35F55FBD1C65EAD500C89909 /* Document+patrial.m in Sources */,
 				5052ADD91C65DEE000A64A51 /* ViewController.m in Sources */,
 				5052ADD61C65DEE000A64A51 /* AppDelegate.m in Sources */,
+				5052AE2A1C67358700A64A51 /* PlusButton.m in Sources */,
 				35F55FE11C66467700C89909 /* Document.m in Sources */,
 				35F55FE21C66467700C89909 /* Repository+CoreDataProperties.m in Sources */,
 				5052ADDF1C65DEE000A64A51 /* PatrialTwo.xcdatamodeld in Sources */,
 				5052ADD31C65DEE000A64A51 /* main.m in Sources */,
 				35F55FBA1C65EAA400C89909 /* Repository+patrial.m in Sources */,
+				5052AE261C66C04800A64A51 /* CoordinatorCoreDate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,10 +519,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PatrialTwo/PatrialTwo.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = PatrialTwo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.SergeSychov.PatrialTwo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -502,10 +534,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PatrialTwo/PatrialTwo.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = PatrialTwo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = edu.SergeSychov.PatrialTwo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

@@ -14,7 +14,7 @@
 @implementation Repository (CoreDataProperties)
 
 @dynamic nameRepository;
-@dynamic naumberOrdein;
+@dynamic naumberOrdein; //numberOrdering
 @dynamic documents;
 
 @end

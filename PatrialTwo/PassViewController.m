@@ -16,6 +16,7 @@
 @implementation PassViewController
 
 - (IBAction)touchPassButton:(UIButton *)sender {
+    [self insertedCorrectPass];
 }
 
 -(void) insertedCorrectPass{
