@@ -16,6 +16,29 @@
 @end
 
 @implementation CoordinatorCoreDate
+#pragma mark PUBLI FUNCs
+-(void)addNewRepository:(NSString *)nameRepository {
+    if([Repository createNewRepositoryWithName:nameRepository inContext:self.managedContext]){
+        NSLog(@"New Repository was created succesefully");
+    } else {
+        NSLog(@"Can't create new repository");
+    }
+}
+
+#pragma mark OVERRIDED INITIALISATION
+-(void) awakeFromNib
+{
+    [super awakeFromNib];
+    [self setup];
+}
+-(id)init {
+    self = [super init];
+    if(self){
+        [self setup];
+    }
+    
+    return self;
+}
 
 -(void) setup {
     //open or create NSManagedDocumets, FetchedControllers, as results: setup public arrays and ask to renew catchers
@@ -158,20 +181,7 @@
 }
 
 
-#pragma mark OVERRIDED INITIALISATION
--(void) awakeFromNib
-{
-    [super awakeFromNib];
-    [self setup];
-}
--(id)init {
-    self = [super init];
-    if(self){
-        [self setup];
-    }
-    
-    return self;
-}
+
 @end
 
 /* for future - need to migrate iCloud

@@ -41,7 +41,7 @@
 //-(Document*) removeDocumentAtIndex:(NSInteger)index;
 //-(void) insertDocument:(Document*)doc atIndex:(NSInteger)index;
 
-//-(void) addNewRepository:(NSString*)nameRepository;
+-(void) addNewRepository:(NSString*)nameRepository;
 //-(Repository*) removeRepositoryAtIndex:(NSInteger)index;
 //-(void) inserRepository:(Repository*)rep atIndex:(NSInteger)index;
 

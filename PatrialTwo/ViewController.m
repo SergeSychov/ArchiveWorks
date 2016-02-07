@@ -15,32 +15,142 @@
 //impotr button views
 #import "PlusButton.h"
 
-@interface ViewController () <CoorinatorProtocol, UITableViewDataSource, UITableViewDelegate>
+@interface ViewController () <CoorinatorProtocol,NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic) CoordinatorCoreDate *coordinatorCoreDate;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewRepositories;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *barButtonItem;
+
+//for checking fetchcontroller
+@property (nonatomic) NSMutableArray* testMutArray;
 
 
 @end
 
 @implementation ViewController
 
-#pragma mark COORDINATOR DELEGATE
--(void) RepositoriesAreChanged {
-    NSInteger quant = self.coordinatorCoreDate.repFetchController.fetchedObjects.count;
-    NSLog(@"Repositories changed with quantity %ld",(long)quant);
+-(NSMutableArray*)testMutArray {
+    if(!_testMutArray){
+       _testMutArray = [[NSMutableArray alloc] initWithObjects:@"Паспорт",
+                                                                @"Снилс",
+                                                                @"Инн",
+                                                                @"Свидетельство",
+                                                                @"Документ",
+                                                                @"Права",
+                                                                @"Страховка",
+                                                                @"Диплом",
+                                                                @"Курсы",
+                                                                @"Дети",nil];
+    }
+    return _testMutArray;
     
-    quant = self.coordinatorCoreDate.docFetchController.fetchedObjects.count;
-    NSLog(@"Documents changed with quantity %ld",(long)quant);
 }
-#pragma mark CREATE NEW REPOSITORY 
+#pragma mark CREATE NEW REPOSITORY
 - (IBAction)addBarrButtonTapped:(id)sender {
-    [self addNewPerpositoryButtonTapped:sender];
+    if(self.testMutArray.count >0){
+        [self.coordinatorCoreDate addNewRepository:[self.testMutArray firstObject]];
+        [self.testMutArray removeObjectAtIndex:0];
+    } else {
+        NSLog(@"Mut array is empty");
+    }
+    
+    //[self addNewPerpositoryButtonTapped:sender];
 }
 
 -(void)addNewPerpositoryButtonTapped:(id)sender{
     NSLog(@"add new repositay button tapped");
 }
+
+#pragma mark COORDINATOR DELEGATE
+-(void) RepositoriesAreChanged {
+    NSInteger quant = self.coordinatorCoreDate.repFetchController.fetchedObjects.count;
+    NSLog(@"Repositories changed with quantity %ld",(long)quant);
+    if(quant > 0){
+        for(Repository *rep in self.coordinatorCoreDate.repFetchController.fetchedObjects){
+            NSLog(@"Obj: %@, order %@",rep.nameRepository, rep.naumberOrdein);
+        }
+    }
+    [self.tableViewRepositories reloadData];
+    
+    
+    quant = self.coordinatorCoreDate.docFetchController.fetchedObjects.count;
+    NSLog(@"Documents changed with quantity %ld",(long)quant);
+}
+#pragma mark FETCHED CONTROLLER DELEGATE
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableViewRepositories beginUpdates];
+    //make dictionary heights according number of row
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex
+     forChangeType:(NSFetchedResultsChangeType)type
+{
+    
+    switch(type)
+    {
+        case NSFetchedResultsChangeInsert:
+            [self.tableViewRepositories insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationBottom];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.tableViewRepositories deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationBottom];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            
+            break;
+            
+    }
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    
+    // NSLog(@"IndexPatch - %ld", (long)indexPath.row);
+    // NSLog(@"NewIndexPatch - %ld", (long)newIndexPath.row);
+    switch(type)
+    {
+        case NSFetchedResultsChangeInsert:{
+            [self.tableViewRepositories insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+            
+        case NSFetchedResultsChangeDelete: {
+            [self.tableViewRepositories deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+            
+        case NSFetchedResultsChangeUpdate:{
+            [self.tableViewRepositories reloadRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            
+        }
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [self.tableViewRepositories deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableViewRepositories insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            break;
+    }
+    
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableViewRepositories endUpdates];
+}
+
+
 #pragma mark TABLE VIEW DATA SOURSE
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
