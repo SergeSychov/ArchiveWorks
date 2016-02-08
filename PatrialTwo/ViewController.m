@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "PassViewController.h"
+#import "RepositoryViewController.h"
 #import "Repository+patrial.h"
 #import "Document+patrial.h"
 #import "CoordinatorCoreDate.h"
@@ -46,18 +47,37 @@
 }
 #pragma mark CREATE NEW REPOSITORY
 - (IBAction)addBarrButtonTapped:(id)sender {
+    //------------- test ---------------------
     if(self.testMutArray.count >0){
         [self.coordinatorCoreDate addNewRepository:[self.testMutArray firstObject]];
         [self.testMutArray removeObjectAtIndex:0];
     } else {
         NSLog(@"Mut array is empty");
     }
+    //------------------------------------------
     
     //[self addNewPerpositoryButtonTapped:sender];
 }
 
 -(void)addNewPerpositoryButtonTapped:(id)sender{
     NSLog(@"add new repositay button tapped");
+    [self createNewRepository];
+    
+}
+
+-(void) createNewRepository{
+    [self openRepositoryWith:nil];
+}
+
+-(void) openRepositoryWith:(NSString* )name{
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    RepositoryViewController *repViewController = [storyBoard instantiateViewControllerWithIdentifier:@"RepositoryViewController"];
+    repViewController.nameRepository = name;
+    repViewController.coordinatorCoreDate = self.coordinatorCoreDate;
+    [self presentViewController:repViewController animated:YES completion:^{
+        nil;
+    }];
+    
 }
 
 #pragma mark COORDINATOR DELEGATE
@@ -161,6 +181,14 @@
             PlusButton *addNewRepositoryButton = [[PlusButton alloc] init];
             [addNewRepositoryButton addTarget:self action:@selector(addNewPerpositoryButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
             
+            //remove old subviews - was several mistakes
+            NSArray *arraySubvews = cell.contentView.subviews;
+            if(arraySubvews && (arraySubvews.count >0)){
+                for (NSInteger i = 0; i <= arraySubvews.count; i++){
+                    UIView* subView = arraySubvews[i];
+                    [subView removeFromSuperview];
+                }
+            }
             addNewRepositoryButton.frame = CGRectMake(20, 0, defaultHeight, defaultHeight);
             addNewRepositoryButton.titleLabel.textColor = [UIColor greenColor];
             [cell.contentView addSubview:addNewRepositoryButton];
@@ -176,6 +204,15 @@
             [cell.contentView addSubview:addNewRepositoryLabel];
 
         } else {
+            //remove old subviews - was several mistakes
+            NSArray *arraySubvews = cell.contentView.subviews;
+            if(arraySubvews && (arraySubvews.count >0)){
+                for (NSInteger i = 0; i < arraySubvews.count; i++){
+                    UIView* subView = arraySubvews[i];
+                    [subView removeFromSuperview];
+                }
+            }
+            
             NSIndexPath *fetchPatch = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
             Repository *repository = [self.coordinatorCoreDate.repFetchController objectAtIndexPath:fetchPatch];
             

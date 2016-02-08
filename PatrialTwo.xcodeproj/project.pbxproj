@@ -25,6 +25,7 @@
 		5052AE1E1C668D2000A64A51 /* PassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE1D1C668D2000A64A51 /* PassViewController.m */; };
 		5052AE261C66C04800A64A51 /* CoordinatorCoreDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE251C66C04800A64A51 /* CoordinatorCoreDate.m */; };
 		5052AE2A1C67358700A64A51 /* PlusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE291C67358700A64A51 /* PlusButton.m */; };
+		5052AE2D1C6768AF00A64A51 /* RepositoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE2C1C6768AF00A64A51 /* RepositoryViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,8 @@
 		5052AE251C66C04800A64A51 /* CoordinatorCoreDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoordinatorCoreDate.m; sourceTree = "<group>"; };
 		5052AE281C67358700A64A51 /* PlusButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlusButton.h; sourceTree = "<group>"; };
 		5052AE291C67358700A64A51 /* PlusButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlusButton.m; sourceTree = "<group>"; };
+		5052AE2B1C6768AF00A64A51 /* RepositoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RepositoryViewController.h; path = ../RepositoryViewController.h; sourceTree = "<group>"; };
+		5052AE2C1C6768AF00A64A51 /* RepositoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RepositoryViewController.m; path = ../RepositoryViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,9 +164,10 @@
 		5052ADD01C65DEE000A64A51 /* PatrialTwo */ = {
 			isa = PBXGroup;
 			children = (
+				5052ADDA1C65DEE000A64A51 /* Main.storyboard */,
 				5052AE231C66BCF900A64A51 /* PatrialTwo.entitlements */,
 				5052AE1F1C668D3700A64A51 /* MainController */,
-				5052ADDA1C65DEE000A64A51 /* Main.storyboard */,
+				5052AE2E1C676FF800A64A51 /* RepositoryController */,
 				5052AE201C668D4A00A64A51 /* PassController */,
 				5052AE271C67355600A64A51 /* Views */,
 				5052ADE01C65DEE000A64A51 /* Assets.xcassets */,
@@ -228,6 +232,15 @@
 				5052AE291C67358700A64A51 /* PlusButton.m */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		5052AE2E1C676FF800A64A51 /* RepositoryController */ = {
+			isa = PBXGroup;
+			children = (
+				5052AE2B1C6768AF00A64A51 /* RepositoryViewController.h */,
+				5052AE2C1C6768AF00A64A51 /* RepositoryViewController.m */,
+			);
+			name = RepositoryController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -378,6 +391,7 @@
 				5052ADDF1C65DEE000A64A51 /* PatrialTwo.xcdatamodeld in Sources */,
 				5052ADD31C65DEE000A64A51 /* main.m in Sources */,
 				35F55FBA1C65EAA400C89909 /* Repository+patrial.m in Sources */,
+				5052AE2D1C6768AF00A64A51 /* RepositoryViewController.m in Sources */,
 				5052AE261C66C04800A64A51 /* CoordinatorCoreDate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

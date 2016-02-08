@@ -22,9 +22,12 @@
 
 @protocol CoorinatorProtocol <NSObject>
 
+
 @optional
 -(void) RepositoriesAreChanged;
 -(void) DocumentsAreChanged;
+-(NSString*)documentsRepositoryName; //need onle for delegatedByDocuments!!! But make requaried to avoid error
+
 
 @end
 
@@ -42,12 +45,14 @@
 //-(void) insertDocument:(Document*)doc atIndex:(NSInteger)index;
 
 -(void) addNewRepository:(NSString*)nameRepository;
+-(void) changeNameRepositoryFrom:(NSString*)fromStr To:(NSString*)toStr;
+-(NSString*)getPossibleNameFromRepositoryWithInitial:(NSString*)initStr;
 //-(Repository*) removeRepositoryAtIndex:(NSInteger)index;
 //-(void) inserRepository:(Repository*)rep atIndex:(NSInteger)index;
 
 
 
-@property (nonatomic,weak) id delegatedByRepository;
-@property (nonatomic,weak) id delegatedByDocuments;
+@property (nonatomic,weak) id <CoorinatorProtocol, NSFetchedResultsControllerDelegate> delegatedByRepository;
+@property (nonatomic,weak) id <CoorinatorProtocol, NSFetchedResultsControllerDelegate> delegatedByDocuments;
 
 @end
