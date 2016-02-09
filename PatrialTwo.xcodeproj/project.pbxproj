@@ -9,10 +9,6 @@
 /* Begin PBXBuildFile section */
 		35F55FBA1C65EAA400C89909 /* Repository+patrial.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F55FB91C65EAA400C89909 /* Repository+patrial.m */; };
 		35F55FBD1C65EAD500C89909 /* Document+patrial.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F55FBC1C65EAD500C89909 /* Document+patrial.m */; };
-		35F55FE01C66467700C89909 /* Document+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F55FD91C66467700C89909 /* Document+CoreDataProperties.m */; };
-		35F55FE11C66467700C89909 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F55FDB1C66467700C89909 /* Document.m */; };
-		35F55FE21C66467700C89909 /* Repository+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F55FDD1C66467700C89909 /* Repository+CoreDataProperties.m */; };
-		35F55FE31C66467700C89909 /* Repository.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F55FDF1C66467700C89909 /* Repository.m */; };
 		5052ADD31C65DEE000A64A51 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052ADD21C65DEE000A64A51 /* main.m */; };
 		5052ADD61C65DEE000A64A51 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052ADD51C65DEE000A64A51 /* AppDelegate.m */; };
 		5052ADD91C65DEE000A64A51 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052ADD81C65DEE000A64A51 /* ViewController.m */; };
@@ -26,6 +22,12 @@
 		5052AE261C66C04800A64A51 /* CoordinatorCoreDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE251C66C04800A64A51 /* CoordinatorCoreDate.m */; };
 		5052AE2A1C67358700A64A51 /* PlusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE291C67358700A64A51 /* PlusButton.m */; };
 		5052AE2D1C6768AF00A64A51 /* RepositoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE2C1C6768AF00A64A51 /* RepositoryViewController.m */; };
+		5052AE761C68400500A64A51 /* HorizontalScrollerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE751C68400500A64A51 /* HorizontalScrollerView.m */; };
+		5052AE791C687E8400A64A51 /* DocumnetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE781C687E8400A64A51 /* DocumnetViewController.m */; };
+		5052AE9B1C6A22DA00A64A51 /* Document+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE941C6A22DA00A64A51 /* Document+CoreDataProperties.m */; };
+		5052AE9C1C6A22DA00A64A51 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE961C6A22DA00A64A51 /* Document.m */; };
+		5052AE9D1C6A22DA00A64A51 /* Repository+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE981C6A22DA00A64A51 /* Repository+CoreDataProperties.m */; };
+		5052AE9E1C6A22DA00A64A51 /* Repository.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE9A1C6A22DA00A64A51 /* Repository.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,14 +52,6 @@
 		35F55FB91C65EAA400C89909 /* Repository+patrial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Repository+patrial.m"; sourceTree = "<group>"; };
 		35F55FBB1C65EAD500C89909 /* Document+patrial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Document+patrial.h"; sourceTree = "<group>"; };
 		35F55FBC1C65EAD500C89909 /* Document+patrial.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Document+patrial.m"; sourceTree = "<group>"; };
-		35F55FD81C66467700C89909 /* Document+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Document+CoreDataProperties.h"; sourceTree = "<group>"; };
-		35F55FD91C66467700C89909 /* Document+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Document+CoreDataProperties.m"; sourceTree = "<group>"; };
-		35F55FDA1C66467700C89909 /* Document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Document.h; sourceTree = "<group>"; };
-		35F55FDB1C66467700C89909 /* Document.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Document.m; sourceTree = "<group>"; };
-		35F55FDC1C66467700C89909 /* Repository+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Repository+CoreDataProperties.h"; sourceTree = "<group>"; };
-		35F55FDD1C66467700C89909 /* Repository+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Repository+CoreDataProperties.m"; sourceTree = "<group>"; };
-		35F55FDE1C66467700C89909 /* Repository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Repository.h; sourceTree = "<group>"; };
-		35F55FDF1C66467700C89909 /* Repository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Repository.m; sourceTree = "<group>"; };
 		5052ADCE1C65DEE000A64A51 /* PatrialTwo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PatrialTwo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5052ADD21C65DEE000A64A51 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5052ADD41C65DEE000A64A51 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -84,6 +78,18 @@
 		5052AE291C67358700A64A51 /* PlusButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlusButton.m; sourceTree = "<group>"; };
 		5052AE2B1C6768AF00A64A51 /* RepositoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RepositoryViewController.h; path = ../RepositoryViewController.h; sourceTree = "<group>"; };
 		5052AE2C1C6768AF00A64A51 /* RepositoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RepositoryViewController.m; path = ../RepositoryViewController.m; sourceTree = "<group>"; };
+		5052AE741C68400500A64A51 /* HorizontalScrollerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HorizontalScrollerView.h; sourceTree = "<group>"; };
+		5052AE751C68400500A64A51 /* HorizontalScrollerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HorizontalScrollerView.m; sourceTree = "<group>"; };
+		5052AE771C687E8300A64A51 /* DocumnetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumnetViewController.h; sourceTree = "<group>"; };
+		5052AE781C687E8400A64A51 /* DocumnetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumnetViewController.m; sourceTree = "<group>"; };
+		5052AE931C6A22DA00A64A51 /* Document+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Document+CoreDataProperties.h"; sourceTree = "<group>"; };
+		5052AE941C6A22DA00A64A51 /* Document+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Document+CoreDataProperties.m"; sourceTree = "<group>"; };
+		5052AE951C6A22DA00A64A51 /* Document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Document.h; sourceTree = "<group>"; };
+		5052AE961C6A22DA00A64A51 /* Document.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Document.m; sourceTree = "<group>"; };
+		5052AE971C6A22DA00A64A51 /* Repository+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Repository+CoreDataProperties.h"; sourceTree = "<group>"; };
+		5052AE981C6A22DA00A64A51 /* Repository+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Repository+CoreDataProperties.m"; sourceTree = "<group>"; };
+		5052AE991C6A22DA00A64A51 /* Repository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Repository.h; sourceTree = "<group>"; };
+		5052AE9A1C6A22DA00A64A51 /* Repository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Repository.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,14 +134,6 @@
 		35F55FBF1C65EB0800C89909 /* automaticCreated */ = {
 			isa = PBXGroup;
 			children = (
-				35F55FD81C66467700C89909 /* Document+CoreDataProperties.h */,
-				35F55FD91C66467700C89909 /* Document+CoreDataProperties.m */,
-				35F55FDA1C66467700C89909 /* Document.h */,
-				35F55FDB1C66467700C89909 /* Document.m */,
-				35F55FDC1C66467700C89909 /* Repository+CoreDataProperties.h */,
-				35F55FDD1C66467700C89909 /* Repository+CoreDataProperties.m */,
-				35F55FDE1C66467700C89909 /* Repository.h */,
-				35F55FDF1C66467700C89909 /* Repository.m */,
 			);
 			name = automaticCreated;
 			sourceTree = "<group>";
@@ -143,6 +141,14 @@
 		5052ADC51C65DEE000A64A51 = {
 			isa = PBXGroup;
 			children = (
+				5052AE931C6A22DA00A64A51 /* Document+CoreDataProperties.h */,
+				5052AE941C6A22DA00A64A51 /* Document+CoreDataProperties.m */,
+				5052AE951C6A22DA00A64A51 /* Document.h */,
+				5052AE961C6A22DA00A64A51 /* Document.m */,
+				5052AE971C6A22DA00A64A51 /* Repository+CoreDataProperties.h */,
+				5052AE981C6A22DA00A64A51 /* Repository+CoreDataProperties.m */,
+				5052AE991C6A22DA00A64A51 /* Repository.h */,
+				5052AE9A1C6A22DA00A64A51 /* Repository.m */,
 				35F55FBE1C65EADC00C89909 /* CoreData */,
 				5052ADD01C65DEE000A64A51 /* PatrialTwo */,
 				5052ADED1C65DEE000A64A51 /* PatrialTwoTests */,
@@ -166,9 +172,10 @@
 			children = (
 				5052ADDA1C65DEE000A64A51 /* Main.storyboard */,
 				5052AE231C66BCF900A64A51 /* PatrialTwo.entitlements */,
+				5052AE201C668D4A00A64A51 /* PassController */,
 				5052AE1F1C668D3700A64A51 /* MainController */,
 				5052AE2E1C676FF800A64A51 /* RepositoryController */,
-				5052AE201C668D4A00A64A51 /* PassController */,
+				5052AE7A1C687E9500A64A51 /* DocumentViewController */,
 				5052AE271C67355600A64A51 /* Views */,
 				5052ADE01C65DEE000A64A51 /* Assets.xcassets */,
 				5052ADE21C65DEE000A64A51 /* LaunchScreen.storyboard */,
@@ -239,8 +246,19 @@
 			children = (
 				5052AE2B1C6768AF00A64A51 /* RepositoryViewController.h */,
 				5052AE2C1C6768AF00A64A51 /* RepositoryViewController.m */,
+				5052AE741C68400500A64A51 /* HorizontalScrollerView.h */,
+				5052AE751C68400500A64A51 /* HorizontalScrollerView.m */,
 			);
 			name = RepositoryController;
+			sourceTree = "<group>";
+		};
+		5052AE7A1C687E9500A64A51 /* DocumentViewController */ = {
+			isa = PBXGroup;
+			children = (
+				5052AE771C687E8300A64A51 /* DocumnetViewController.h */,
+				5052AE781C687E8400A64A51 /* DocumnetViewController.m */,
+			);
+			name = DocumentViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -379,17 +397,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35F55FE01C66467700C89909 /* Document+CoreDataProperties.m in Sources */,
-				35F55FE31C66467700C89909 /* Repository.m in Sources */,
+				5052AE791C687E8400A64A51 /* DocumnetViewController.m in Sources */,
 				5052AE1E1C668D2000A64A51 /* PassViewController.m in Sources */,
+				5052AE9D1C6A22DA00A64A51 /* Repository+CoreDataProperties.m in Sources */,
+				5052AE9B1C6A22DA00A64A51 /* Document+CoreDataProperties.m in Sources */,
 				35F55FBD1C65EAD500C89909 /* Document+patrial.m in Sources */,
 				5052ADD91C65DEE000A64A51 /* ViewController.m in Sources */,
 				5052ADD61C65DEE000A64A51 /* AppDelegate.m in Sources */,
+				5052AE9E1C6A22DA00A64A51 /* Repository.m in Sources */,
 				5052AE2A1C67358700A64A51 /* PlusButton.m in Sources */,
-				35F55FE11C66467700C89909 /* Document.m in Sources */,
-				35F55FE21C66467700C89909 /* Repository+CoreDataProperties.m in Sources */,
 				5052ADDF1C65DEE000A64A51 /* PatrialTwo.xcdatamodeld in Sources */,
+				5052AE761C68400500A64A51 /* HorizontalScrollerView.m in Sources */,
 				5052ADD31C65DEE000A64A51 /* main.m in Sources */,
+				5052AE9C1C6A22DA00A64A51 /* Document.m in Sources */,
 				35F55FBA1C65EAA400C89909 /* Repository+patrial.m in Sources */,
 				5052AE2D1C6768AF00A64A51 /* RepositoryViewController.m in Sources */,
 				5052AE261C66C04800A64A51 /* CoordinatorCoreDate.m in Sources */,

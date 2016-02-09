@@ -2,7 +2,7 @@
 //  Repository+CoreDataProperties.m
 //  PatrialTwo
 //
-//  Created by Serge Sychov on 06.02.16.
+//  Created by Serge Sychov on 09.02.16.
 //  Copyright © 2016 Sergey Sychov. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu
@@ -13,8 +13,8 @@
 
 @implementation Repository (CoreDataProperties)
 
-@dynamic nameRepository;
-@dynamic naumberOrdein; //numberOrdering
+@dynamic name;
+@dynamic naumberOrdein;
 @dynamic documents;
 
 @end

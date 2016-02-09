@@ -11,23 +11,27 @@
 
 @implementation Document (patrial)
 
-+(Document*)createNewRepositoryWithName:(NSString*)name documetnData:(NSData*)docDate Repository:(NSString*) repositoryName inContext:(NSManagedObjectContext *)context
++(Document*)createNewDocumentWithData:(NSData*)docData name:(NSString*)name Repository:(NSString*)repositoryName inContext:(NSManagedObjectContext *)context;
 {
     Document *newDoc = nil;
     
     //count all documents
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Document"];
+    
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
+    
+    
     
     
     if(!matches || error){
         NSLog(@"Can't get matches");
     } else {
         newDoc = [NSEntityDescription insertNewObjectForEntityForName:@"Document" inManagedObjectContext:context];
-        newDoc.nameDocument = name;
-        newDoc.dataDocumnet = docDate;
+        newDoc.name = name;
+        newDoc.dataDocumnet = docData;
         newDoc.numberOrdering = [NSNumber numberWithInteger:matches.count];
+        
         newDoc.repository = [Repository createNewRepositoryWithName:repositoryName inContext:context];
     }
     

@@ -29,7 +29,7 @@
         newRepository = matches.firstObject;
     } else {
         newRepository = [NSEntityDescription insertNewObjectForEntityForName:@"Repository" inManagedObjectContext:context];
-        newRepository.nameRepository = name;
+        newRepository.name = name;
         //set numberOrdering accordin whhole quantity of repository< as last number
             request = [NSFetchRequest fetchRequestWithEntityName:@"Repository"];
             matches = [context executeFetchRequest:request error:&error];

@@ -117,14 +117,16 @@
     [patch moveToPoint:pointThree];
     [patch addLineToPoint:pointFour];
     pathOfRect = patch.CGPath;
-    
+    /*
     CGFloat shadowBlur = 0.5;
     UIColor *shadowColor = [UIColor colorWithWhite:0 alpha:0.5];
     CGSize shadowOffset = CGSizeMake(1, 1);
     
     CGContextSetShadowWithColor(contex, shadowOffset, shadowBlur, shadowColor.CGColor);
+    */
     CGContextAddPath(contex, pathOfRect);
     CGContextDrawPath(contex, kCGPathFillStroke);
+    
 
 }
 

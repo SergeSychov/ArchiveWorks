@@ -20,6 +20,7 @@
 @property (nonatomic) CoordinatorCoreDate *coordinatorCoreDate;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewRepositories;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *barButtonItem;
+@property (nonatomic,weak) RepositoryViewController *repViewController;
 
 //for checking fetchcontroller
 @property (nonatomic) NSMutableArray* testMutArray;
@@ -45,6 +46,23 @@
     return _testMutArray;
     
 }
+#pragma mark ACTIONS
+- (void)tapCellGesturRecogniser:(id)sender {
+    CGPoint tapLocation = [sender locationInView:self.tableViewRepositories];
+    NSIndexPath *indexPath = [self.tableViewRepositories indexPathForRowAtPoint:tapLocation];
+    if(indexPath){
+        if(indexPath.row < self.coordinatorCoreDate.repFetchController.fetchedObjects.count){
+            Repository *repository = [self.coordinatorCoreDate.repFetchController objectAtIndexPath:indexPath];
+            [self openRepositoryContrllerWithName:repository.nameRepository];
+        } else {
+            [self createNewRepository];
+        }
+    }
+}
+- (IBAction)buttonEditDoneTapped:(UIButton *)sender {
+    
+    [self.tableViewRepositories setEditing:YES animated:YES];
+}
 #pragma mark CREATE NEW REPOSITORY
 - (IBAction)addBarrButtonTapped:(id)sender {
     //------------- test ---------------------
@@ -66,14 +84,15 @@
 }
 
 -(void) createNewRepository{
-    [self openRepositoryWith:nil];
+    [self openRepositoryContrllerWithName:nil];
 }
 
--(void) openRepositoryWith:(NSString* )name{
+-(void) openRepositoryContrllerWithName:(NSString* )name{
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     RepositoryViewController *repViewController = [storyBoard instantiateViewControllerWithIdentifier:@"RepositoryViewController"];
     repViewController.nameRepository = name;
     repViewController.coordinatorCoreDate = self.coordinatorCoreDate;
+    self.repViewController = repViewController;
     [self presentViewController:repViewController animated:YES completion:^{
         nil;
     }];
@@ -83,17 +102,29 @@
 #pragma mark COORDINATOR DELEGATE
 -(void) RepositoriesAreChanged {
     NSInteger quant = self.coordinatorCoreDate.repFetchController.fetchedObjects.count;
-    NSLog(@"Repositories changed with quantity %ld",(long)quant);
-    if(quant > 0){
-        for(Repository *rep in self.coordinatorCoreDate.repFetchController.fetchedObjects){
-            NSLog(@"Obj: %@, order %@",rep.nameRepository, rep.naumberOrdein);
+    @autoreleasepool {
+        /*
+       // NSLog(@"Repositories changed with quantity %ld",(long)quant);
+        if(quant > 0){
+            NSArray *repositories = self.coordinatorCoreDate.repFetchController.fetchedObjects;
+            for(Repository *rep in repositories){
+               NSLog(@"Obj: %@, order %@",rep.nameRepository, rep.naumberOrdein);
+                NSSet *documents = rep.documents;
+                for ( Document *doc in documents){
+                    NSNumber *haveData = [NSNumber numberWithBool: doc.dataDocumnet? YES: NO];
+                    
+                    NSLog(@"   Doc: %@, repository %@, orderNumb: %@,has data %@",doc.nameDocument, doc.repository.nameRepository, doc.numberOrdering, haveData);
+
+                }
+
+            }
         }
+        [NSFetchedResultsController deleteCacheWithName:@"cacheRepFetchcontroller"];
+        */
+
     }
+    
     [self.tableViewRepositories reloadData];
-    
-    
-    quant = self.coordinatorCoreDate.docFetchController.fetchedObjects.count;
-    NSLog(@"Documents changed with quantity %ld",(long)quant);
 }
 #pragma mark FETCHED CONTROLLER DELEGATE
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
@@ -152,7 +183,7 @@
             break;
             
         case NSFetchedResultsChangeUpdate:{
-            [self.tableViewRepositories reloadRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableViewRepositories reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
             
         }
             break;
@@ -175,7 +206,8 @@
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [self.tableViewRepositories dequeueReusableCellWithIdentifier:@"RepositoyCell"];
-
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCellGesturRecogniser:)];
+    [cell addGestureRecognizer:tapGesture];
         if(indexPath.row == [tableView numberOfRowsInSection: 0] - 1){
             CGFloat defaultHeight = self.view.frame.size.height/13;
             PlusButton *addNewRepositoryButton = [[PlusButton alloc] init];
@@ -204,6 +236,7 @@
             [cell.contentView addSubview:addNewRepositoryLabel];
 
         } else {
+            
             //remove old subviews - was several mistakes
             NSArray *arraySubvews = cell.contentView.subviews;
             if(arraySubvews && (arraySubvews.count >0)){
@@ -258,7 +291,17 @@
     }
     return height;
 }
-
+#pragma mark TABLE VIEW DELEGATE
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return YES if you want the specified item to be editable.
+    if(indexPath.row < self.coordinatorCoreDate.repFetchController.fetchedObjects.count - 1){
+        return YES;
+    } else {
+        return NO;
+    }
+}
+//- tableView:editActionsForRowAtIndexPath:
 
 #pragma mark VIEW DID LOAD
 - (void)viewDidLoad {
@@ -273,21 +316,35 @@
                                                selector:@selector(appDidGoToForeground)
                                                    name:UIApplicationDidBecomeActiveNotification
                                                  object:[UIApplication sharedApplication]];
+    [[NSNotificationCenter defaultCenter]   addObserver:self
+                                               selector:@selector(appDidGoToBackground)
+                                                   name:UIApplicationDidEnterBackgroundNotification
+                                                 object:[UIApplication sharedApplication]];
     
     // Do any additional setup after loading the view, typically from a nib.
 }
 
 -(void) appDidGoToForeground {
+    /*
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     PassViewController *passViewController = [storyBoard instantiateViewControllerWithIdentifier:@"PassViewController"];
     [self presentViewController:passViewController animated:NO completion:^{
         nil;
     }];
+    */
+}
+-(void) appDidGoToBackground
+{
+    if(self.repViewController){
+        [self.repViewController dismissViewControllerAnimated:NO completion:nil];
+    }
 }
 
 
 -(void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
+     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:[UIApplication sharedApplication]];
+
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -61,6 +61,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <gestureRecognizers/>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -68,13 +69,6 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="0lM-vb-CTx"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="АРХИВ" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Pvp-uT-2K8">
-                                <rect key="frame" x="109" y="20" width="103" height="41"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="wgH-JY-bZg">
                                 <rect key="frame" x="0.0" y="523" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
@@ -86,6 +80,24 @@
                                     </barButtonItem>
                                 </items>
                             </toolbar>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="АРХИВ" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Pvp-uT-2K8">
+                                <rect key="frame" x="109" y="43" width="103" height="34"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Rb6-Qm-B6u">
+                                <rect key="frame" x="227" y="20" width="84" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Правка"/>
+                                <connections>
+                                    <action selector="buttonEditDoneTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UnD-oJ-iZa"/>
+                                    <action selector="buttonEditDoneTapped:" destination="aeO-iS-suh" eventType="touchUpInside" id="cuC-tQ-kY1"/>
+                                    <action selector="edi:" destination="BYZ-38-t0r" eventType="touchUpInside" id="60i-vt-FOc"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -96,7 +108,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="243" y="376"/>
+            <point key="canvasLocation" x="266" y="384"/>
         </scene>
         <!--Repository View Controller-->
         <scene sceneID="FvA-qJ-i2g">
@@ -132,15 +144,11 @@
                                     <barButtonItem systemItem="flexibleSpace" id="hHZ-iO-b42"/>
                                 </items>
                             </toolbar>
-                            <stackView opaque="NO" contentMode="scaleToFill" id="vlL-Vf-hfD">
-                                <rect key="frame" x="0.0" y="134" width="320" height="390"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="8V9-NG-6MS">
                                 <rect key="frame" x="7" y="20" width="74" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="К Архиву"/>
+                                <state key="normal" title="К архиву"/>
                                 <connections>
                                     <action selector="backtoArchiveButtonTapped:" destination="aeO-iS-suh" eventType="touchUpInside" id="Wk8-UT-Ye3"/>
                                 </connections>
@@ -149,7 +157,7 @@
                                 <rect key="frame" x="228" y="20" width="84" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                <state key="normal" title="Готово"/>
+                                <state key="normal" title="Правка"/>
                                 <connections>
                                     <action selector="buttonEditDoneTapped:" destination="aeO-iS-suh" eventType="touchUpInside" id="4Cd-qo-seV"/>
                                 </connections>
@@ -161,19 +169,115 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" id="RvW-I4-6me" customClass="HorizontalScrollerView">
+                                <rect key="frame" x="0.0" y="120" width="320" height="404"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="buttonEditDone" destination="2xm-vD-Qcv" id="FSa-dx-luW"/>
+                        <outlet property="horizontalScrollerView" destination="RvW-I4-6me" id="zj9-ZG-Q7R"/>
                         <outlet property="labelAskUserEnterNameRepository" destination="A1K-q3-Eaj" id="95u-7k-q8e"/>
-                        <outlet property="stackViewOfDocuments" destination="vlL-Vf-hfD" id="4Yb-gx-viu"/>
                         <outlet property="textFildRepositoryName" destination="4m0-6G-VIm" id="FhB-bL-238"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="skA-rd-5NV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="720" y="388"/>
+            <point key="canvasLocation" x="653" y="384"/>
+        </scene>
+        <!--Documnet View Controller-->
+        <scene sceneID="mdN-X4-ogq">
+            <objects>
+                <viewController storyboardIdentifier="DocumnetViewController" id="E80-04-a0j" customClass="DocumnetViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BTQ-8k-bqd">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="e7Z-aE-Kou">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="введите имя для Вашего нового раздела" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nmm-qB-HgZ">
+                                <rect key="frame" x="20" y="75" width="280" height="51"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="САМОЕ ВАЖНОЕ 1" textAlignment="center" minimumFontSize="17" id="jV5-oa-HoV">
+                                <rect key="frame" x="20" y="44" width="280" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="words" autocorrectionType="no" spellCheckingType="no" returnKeyType="done"/>
+                                <connections>
+                                    <outlet property="delegate" destination="aeO-iS-suh" id="JXZ-Lc-tZf"/>
+                                </connections>
+                            </textField>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="fe1-Sy-yXp">
+                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem title="Item" id="cBn-ZT-ymJ"/>
+                                </items>
+                            </toolbar>
+                            <view contentMode="scaleToFill" id="ylY-w8-fWI">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="выберите источник нового документа" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="n7j-dM-dmX">
+                                        <rect key="frame" x="15" y="75" width="291" height="51"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="DSr-q0-fKo">
+                                        <rect key="frame" x="98" y="262" width="125" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Сделать фото"/>
+                                        <connections>
+                                            <action selector="makePhotoButtonTouched:" destination="E80-04-a0j" eventType="touchUpInside" id="2K4-AM-32T"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="wUZ-Rq-9ci">
+                                        <rect key="frame" x="85" y="358" width="152" height="44"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Выбрать из галлереи"/>
+                                        <connections>
+                                            <action selector="chooseGalleryButtonTapped:" destination="E80-04-a0j" eventType="touchUpInside" id="sFn-mA-Ypd"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Bfe-hq-Zle">
+                                <rect key="frame" x="7" y="20" width="146" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="К папке документа"/>
+                                <connections>
+                                    <action selector="backToRepositoryButtonTapped:" destination="E80-04-a0j" eventType="touchUpInside" id="rZO-yp-R04"/>
+                                    <action selector="backtoArchiveButtonTapped:" destination="aeO-iS-suh" eventType="touchUpInside" id="jk3-My-J1y"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="buttonMakePhoto" destination="DSr-q0-fKo" id="wd1-7z-kfe"/>
+                        <outlet property="imageView" destination="e7Z-aE-Kou" id="61Z-ve-wER"/>
+                        <outlet property="labelAskUserEnterName" destination="nmm-qB-HgZ" id="9Oc-UK-0tf"/>
+                        <outlet property="pickerContainerView" destination="ylY-w8-fWI" id="BWe-ld-OjS"/>
+                        <outlet property="textFildDocumetnName" destination="jV5-oa-HoV" id="mW8-TV-Kx8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yx4-C1-syR" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1020" y="384"/>
         </scene>
     </scenes>
 </document>
