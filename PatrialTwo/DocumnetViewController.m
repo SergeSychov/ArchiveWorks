@@ -8,7 +8,7 @@
 
 #import "DocumnetViewController.h"
 
-@interface DocumnetViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, CoorinatorProtocol,NSFetchedResultsControllerDelegate>
+@interface DocumnetViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, CoorinatorProtocol, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonMakePhoto;
 @property (nonatomic) IBOutlet UIImageView *imageView;
@@ -19,10 +19,36 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelAskUserEnterName;
 
 @property (nonatomic) NSString *documentName;
+@property (weak, nonatomic) IBOutlet UIButton *buttonEditDone;
 
 @end
 
 @implementation DocumnetViewController
+#pragma mark INITIAL SETUP
+-(void) setDocument:(Document *)document{
+    _document = document;
+    
+    if(!document){
+        //[self setupPickerView]; not works fronm here - is no vuews YEt
+        _documentName = nil;
+    } else {
+        //[self setupEditViews]; not works fronm here - is no vuews YEt
+        _documentName = document.name;
+        [self userDidEndEditOrNotBegunEdit];
+    }
+
+}
+-(void) setupPickerView {
+    self.pickerContainerView.alpha = 1.;
+    self.pickerContainerView.hidden = NO;
+    
+}
+-(void) setupEditViews{
+    self.pickerContainerView.alpha = 0.;
+    self.pickerContainerView.hidden = YES;
+
+}
+
 #pragma mark ACTION
 
 - (IBAction)makePhotoButtonTouched:(UIButton *)sender {
@@ -59,28 +85,9 @@
 }
 
 #pragma mark SET EDIT OR PICKERS VIEWS
--(void) setupPickerView {
-    self.pickerContainerView.alpha = 1.;
-    self.pickerContainerView.hidden = NO;
-}
--(void) setupEditViews{
-    self.pickerContainerView.alpha = 0.;
-    self.pickerContainerView.hidden = YES;
-}
+
 #pragma mark SETTERS
--(void) setDocument:(Document *)document{
-    _document = document;
-    
-    if(document == nil){
-        [self setupPickerView];
-        _documentName = nil;
-    } else {
-        [self setupEditViews];
-        _documentName = document.nameDocument;
-        
-    }
-    self.imageView.image = [UIImage imageWithData:document.dataDocumnet];
-}
+
 
 -(void) setCoordinatorCoreDate:(CoordinatorCoreDate *)coordinatorCoreDate{
     _coordinatorCoreDate = coordinatorCoreDate;
@@ -95,8 +102,9 @@
 -(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     UIImage *image = info[UIImagePickerControllerOriginalImage];
     [self.imageView setImage:image];
-    [self.coordinatorCoreDate addNewDocumentWith:image name:self.nameRepository andRepositoryName:self.nameRepository];
+
     [self.pickerController dismissViewControllerAnimated:YES completion:nil];
+    [self userWillEdid];
     [self setupEditViews];
 }
 -(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker{
@@ -109,34 +117,38 @@
 -(void)checkNameDocument{
     
     if(self.documentName == nil){ //there is new repository screen
-        self.textFildDocumetnName.text =[self.coordinatorCoreDate getPossibleNameFromRepositoryWithInitial: @"Самое Важное"];
-        [self userWillEdid];
+        self.textFildDocumetnName.text =[self.coordinatorCoreDate getPossibleRepositoryNameWithInitial: self.nameRepository];
+       // [self userWillEdid];
         
         self.labelAskUserEnterName.text = @"Введите имя документа";
     } else { //there is exsist repository screen
         self.textFildDocumetnName.text = self.documentName;
-        [self userDidEndEditOrNotStart];
+        [self userDidEndEditOrNotBegunEdit];
         
     }
 }
+//2. действия при установке пользователем нового имени
+//  Если совпадает с уже существующим - ничего не делаем? завершаем режим правки
+// Если имя не уникальное предлагет выбрать из предложенного или ввести заново
 -(void)newNameEnteredByUser{
     self.textFildDocumetnName.textColor = [UIColor darkTextColor];
     //check symbol spase at the end. if is - remove it
     NSString *userOfferedName = [self checkAndRemoveSpasesAtTheEndOfString:self.textFildDocumetnName.text];
-    NSString *oldRepositoryName = self.nameRepository;
-    if(![userOfferedName isEqualToString:oldRepositoryName]){
+    NSString *oldDocumetName = self.documentName;
+    if(![userOfferedName isEqualToString:oldDocumetName]){
         
-        NSString* offeredByCoordinatorStr = [self.coordinatorCoreDate getPossibleNameFromRepositoryWithInitial:userOfferedName];
+        NSString* offeredByCoordinatorStr = [self.coordinatorCoreDate getPossibleDocumentNameWithInitial:userOfferedName];
         //check if there is the same name in repository
         //if coordinator offer the same string - so it not repository with this name
         //if no - ok create new repository or rename existing
         if([offeredByCoordinatorStr isEqualToString:userOfferedName]){
-            self.nameRepository = userOfferedName;
-            if(oldRepositoryName){ //if not nel - was existing repostory
-                [self.coordinatorCoreDate changeNameRepositoryFrom:oldRepositoryName To:self.nameRepository];
-                NSLog(@"Name repository was chnged");
+            self.documentName = userOfferedName;
+            if(oldDocumetName){ //if not nel - was existing repostory
+                //[self.coordinatorCoreDate changeNameRepositoryFrom:oldRepositoryName To:self.nameRepository];
+               // NSLog(@"Name repository was chnged");
             } else { //create ne repository
-                [self.coordinatorCoreDate addNewRepository:self.nameRepository];
+                self.document =[self.coordinatorCoreDate addNewDocumentWith:self.imageView.image name:self.documentName andRepositoryName:self.nameRepository];
+                //[self.coordinatorCoreDate addNewRepository:self.nameRepository];
             }
         } else { //if Yes - show allert controller to change it name
             self.textFildDocumetnName.text = offeredByCoordinatorStr;
@@ -147,35 +159,27 @@
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                                   handler:^(UIAlertAction * action) {[self newNameEnteredByUser];}];
+            /*
             UIAlertAction* enterOtherNameAction = [UIAlertAction actionWithTitle:@"Ввести другое имя раздела" style:UIAlertActionStyleDefault
                                                                          handler:^(UIAlertAction * action) {[self enterAnotherName];}];
+            */
+            UIAlertAction* enterOtherNameAction = [UIAlertAction actionWithTitle:@"Ввести другое имя раздела" style:UIAlertActionStyleDefault
+                                                                         handler:^(UIAlertAction * action) {[self enterAnotherName];}];
+            
             
             [alert addAction:defaultAction];
             [alert addAction:enterOtherNameAction];
             [self presentViewController:alert animated:YES completion:nil];
         }
     } else {
-        [self userDidEndEditOrNotStart];
+        [self userDidEndEditOrNotBegunEdit];
     }
 }
 -(void) enterAnotherName {
     self.documentName = nil;
-    [self checkNameDocument:nil];
+    [self checkNameDocument];
 }
--(void)checkNameDocument{
-
-    if(self.documentName == nil){ //there is new repository screen
-        self.textFildDocumetnName.text =[self.coordinatorCoreDate getPossibleNameFromRepositoryWithInitial: @"Самое Важное"];
-        [self userWillEdid];
-        
-        self.labelAskUserEnterName.text = @"Введите имя документа";
-    } else { //there is exsist repository screen
-        self.textFildDocumetnName.text = nameRepository;
-        [self userDidEndEditOrNotStart];
-        
-    }
-}
--(void) userDidEndEditOrNotStart{
+-(void) userDidEndEditOrNotBegunEdit{
     
     
     if(self.textFildDocumetnName){ //if views are loaded
@@ -184,14 +188,7 @@
         [self.textFildDocumetnName resignFirstResponder];
         
         [self.buttonEditDone setTitle:@"Правка" forState:UIControlStateNormal];
-        
-        NSString *countStr = [@(self.coordinatorCoreDate.docFetchController.fetchedObjects.count) stringValue];
-        
-        //right grammar
-        countStr = [self letterAddition:countStr];
-        NSString *labelStr = @"В разделе ";
-        labelStr = [labelStr stringByAppendingString:countStr];
-        self.labelAskUserEnterNameRepository.text = labelStr;
+        self.labelAskUserEnterName.hidden = YES;
     }
 }
 
@@ -201,7 +198,7 @@
     [self.textFildDocumetnName becomeFirstResponder];
     [self.buttonEditDone setTitle:@"Готово" forState:UIControlStateNormal];
     
-    self.labelAskUserEnterNameRepository.text = @"Введите имя раздела";
+    self.labelAskUserEnterName.text = @"Введите документа";
 }
 #pragma mark TEXT FILD DELEGATE
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -236,6 +233,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self checkNameDocument];
+    if(!self.document){
+        [self setupPickerView];
+    } else {
+        [self setupEditViews];
+        self.imageView.image = [UIImage imageWithData:self.document.dataDocumnet];
+    }
+    self.textFildDocumetnName.delegate = self;
+    
 
     [[NSNotificationCenter defaultCenter]   addObserver:self
                                                selector:@selector(appDidGoToBackground)
@@ -262,10 +268,8 @@
 
 - (void)keyboardDidHide: (NSNotification *) notif{
     // Do something here
-    [self userDidEndEditOrNotStart];
+    [self userDidEndEditOrNotBegunEdit];
 }
-
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

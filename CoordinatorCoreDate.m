@@ -54,7 +54,7 @@
 
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Document"];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"numberOrdering" ascending:YES]];
-    request.predicate = [NSPredicate predicateWithFormat:@"repository.nameRepository = %@", [self.delegatedByDocuments documentsRepositoryName]];
+    request.predicate = [NSPredicate predicateWithFormat:@"repository.name = %@", [self.delegatedByDocuments documentsRepositoryName]];
     
     self.docFetchController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                   managedObjectContext:self.managedContext
@@ -74,8 +74,8 @@
 }
 -(NSString*)getPossibleNameWithInitial:(NSString*)initStr onEntity:(NSString*)entityName {
     NSString *retStr = initStr;
-    while ([self isEntity:entityName HasName:initStr]) {
-        NSString* numberedString = [retStr substringToIndex:initStr.length];
+    while ([self isEntity:entityName HasName:retStr]) {
+        NSString* numberedString = [retStr substringFromIndex:(initStr.length)];
         NSInteger intFromStr = [numberedString integerValue];
         intFromStr++;
         retStr = [initStr stringByAppendingString:[@" " stringByAppendingString:[@(intFromStr) stringValue]]];
@@ -99,18 +99,17 @@
         return NO;
     }
 }
--(void) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository{
+-(Document*) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository{
     NSData *imageData = UIImagePNGRepresentation(image);
-    Document *doc = [Document createNewDocumentWithData:imageData name:name Repository:nameRepository inContext:self.managedContext];
+    Document *doc = nil;
+    doc = [Document createNewDocumentWithData:imageData name:name Repository:nameRepository inContext:self.managedContext];
 
     if(doc){
         NSLog(@"New Document was created succesefully with repository name: %@", doc.repository.name);
     } else {
         NSLog(@"Can't create new Document");
     }
-    for(Document *doc in self.docFetchController.fetchedObjects){
-        NSLog(@"Docs in coordinator %@", doc);
-    }
+    return doc;
 }
 
 #pragma mark OVERRIDED INITIALISATION

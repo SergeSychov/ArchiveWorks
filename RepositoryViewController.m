@@ -101,12 +101,12 @@
     if(index < self.coordinatorCoreDate.docFetchController.fetchedObjects.count){
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectInset(self.horizontalScrollerView.bounds, 50, 50)];
         Document *docObj = [self.coordinatorCoreDate.docFetchController.fetchedObjects objectAtIndex:index];
-        //imageView.image = [UIImage imageWithData:docObj.dataDocumnet];
+        imageView.image = [UIImage imageWithData:docObj.dataDocumnet];
         UILabel *labelCreateNewDoc = [[UILabel alloc] initWithFrame:CGRectMake(imageView.bounds.size.width/10,
                                                                                imageView.bounds.size.height*0.9,
                                                                                imageView.bounds.size.width*8/10,
                                                                                imageView.bounds.size.height/3)];
-        labelCreateNewDoc.text = docObj.nameDocument;
+        labelCreateNewDoc.text = docObj.name;
         labelCreateNewDoc.textColor = [UIColor lightGrayColor];
         labelCreateNewDoc.adjustsFontSizeToFitWidth = YES;
         labelCreateNewDoc.numberOfLines = 0;
@@ -130,7 +130,7 @@
         //add pluss button
         
         PlusButton *plusButton = [[PlusButton alloc] initWithFrame:CGRectMake(0, 0, 80., 80.)];
-        [plusButton addTarget:self action:@selector(createnewDocument:) forControlEvents:UIControlEventTouchUpInside];
+       // [plusButton addTarget:self action:@selector(createnewDocument:) forControlEvents:UIControlEventTouchUpInside];
         [viewNewDoc addSubview:plusButton];
         plusButton.center = CGPointMake(viewNewDoc.bounds.size.width/2, viewNewDoc.bounds.size.height/2);
         
@@ -158,9 +158,80 @@
 
 -(void) DocumentsAreChanged
 {
-    
+    NSLog(@"DocumentsAreChanged");
 }
 #pragma mark FETCHED RESULT CONTROLLER DELEGATE
+#pragma mark FETCHED CONTROLLER DELEGATE
+/*
+- (void)controller:(NSFetchedResultsController *)controller
+  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+           atIndex:(NSUInteger)sectionIndex
+     forChangeType:(NSFetchedResultsChangeType)type
+{
+    
+    switch(type)
+    {
+        case NSFetchedResultsChangeInsert:
+            [self.tableViewRepositories insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationBottom];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.tableViewRepositories deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationBottom];
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            
+            break;
+            
+    }
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath
+{
+    
+    // NSLog(@"IndexPatch - %ld", (long)indexPath.row);
+    // NSLog(@"NewIndexPatch - %ld", (long)newIndexPath.row);
+    switch(type)
+    {
+        case NSFetchedResultsChangeInsert:{
+            [self.tableViewRepositories insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+            
+        case NSFetchedResultsChangeDelete: {
+            [self.tableViewRepositories deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        }
+            break;
+            
+        case NSFetchedResultsChangeUpdate:{
+            [self.tableViewRepositories reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            
+        }
+            break;
+            
+        case NSFetchedResultsChangeMove:
+            [self.tableViewRepositories deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableViewRepositories insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            break;
+    }
+    
+}
+*/
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+{
+     [self.horizontalScrollerView reload];
+}
+
+
 
 
 #pragma mark TEXT EDID FUNCTIONS
@@ -171,7 +242,7 @@
     NSString *oldRepositoryName = self.nameRepository;
     if(![userOfferedName isEqualToString:oldRepositoryName]){
         
-        NSString* offeredByCoordinatorStr = [self.coordinatorCoreDate getPossibleNameFromRepositoryWithInitial:userOfferedName];
+        NSString* offeredByCoordinatorStr = [self.coordinatorCoreDate getPossibleRepositoryNameWithInitial:userOfferedName];
         //check if there is the same name in repository
         //if coordinator offer the same string - so it not repository with this name
         //if no - ok create new repository or rename existing
@@ -210,7 +281,7 @@
 -(void)checkNameRepository {
     
     if(self.nameRepository == nil){ //there is new repository screen
-        self.textFildRepositoryName.text =[self.coordinatorCoreDate getPossibleNameFromRepositoryWithInitial: @"Самое Важное"];
+        self.textFildRepositoryName.text =[self.coordinatorCoreDate getPossibleRepositoryNameWithInitial: @"Самое Важное"];
         [self userWillEdid];
         
         self.labelAskUserEnterNameRepository.text = @"Введите имя раздела";

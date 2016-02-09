@@ -53,7 +53,7 @@
     if(indexPath){
         if(indexPath.row < self.coordinatorCoreDate.repFetchController.fetchedObjects.count){
             Repository *repository = [self.coordinatorCoreDate.repFetchController objectAtIndexPath:indexPath];
-            [self openRepositoryContrllerWithName:repository.nameRepository];
+            [self openRepositoryContrllerWithName:repository.name];
         } else {
             [self createNewRepository];
         }
@@ -103,12 +103,13 @@
 -(void) RepositoriesAreChanged {
     NSInteger quant = self.coordinatorCoreDate.repFetchController.fetchedObjects.count;
     @autoreleasepool {
-        /*
+        
        // NSLog(@"Repositories changed with quantity %ld",(long)quant);
         if(quant > 0){
             NSArray *repositories = self.coordinatorCoreDate.repFetchController.fetchedObjects;
             for(Repository *rep in repositories){
-               NSLog(@"Obj: %@, order %@",rep.nameRepository, rep.naumberOrdein);
+               NSLog(@"Obj: %@, order %@",rep.name, rep.naumberOrdein);
+                /*
                 NSSet *documents = rep.documents;
                 for ( Document *doc in documents){
                     NSNumber *haveData = [NSNumber numberWithBool: doc.dataDocumnet? YES: NO];
@@ -116,11 +117,12 @@
                     NSLog(@"   Doc: %@, repository %@, orderNumb: %@,has data %@",doc.nameDocument, doc.repository.nameRepository, doc.numberOrdering, haveData);
 
                 }
+                */
 
             }
         }
         [NSFetchedResultsController deleteCacheWithName:@"cacheRepFetchcontroller"];
-        */
+        
 
     }
     
@@ -205,6 +207,7 @@
 #pragma mark TABLE VIEW DATA SOURSE
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"cellForRowAtIndexPath");
     UITableViewCell *cell = [self.tableViewRepositories dequeueReusableCellWithIdentifier:@"RepositoyCell"];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCellGesturRecogniser:)];
     [cell addGestureRecognizer:tapGesture];
@@ -216,7 +219,7 @@
             //remove old subviews - was several mistakes
             NSArray *arraySubvews = cell.contentView.subviews;
             if(arraySubvews && (arraySubvews.count >0)){
-                for (NSInteger i = 0; i <= arraySubvews.count; i++){
+                for (NSInteger i = 0; i < arraySubvews.count; i++){
                     UIView* subView = arraySubvews[i];
                     [subView removeFromSuperview];
                 }
@@ -249,13 +252,14 @@
             NSIndexPath *fetchPatch = [NSIndexPath indexPathForRow:indexPath.row inSection:indexPath.section];
             Repository *repository = [self.coordinatorCoreDate.repFetchController objectAtIndexPath:fetchPatch];
             
-            cell.textLabel.text = repository.nameRepository;
+            cell.textLabel.text = repository.name;
         }
     return cell;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    NSLog(@"numberOfSectionsInTableView");
     NSInteger sections;
     if(self.coordinatorCoreDate.repFetchController && [[self.coordinatorCoreDate.repFetchController sections] count] > 0){
         sections = [[self.coordinatorCoreDate.repFetchController sections] count];
@@ -267,6 +271,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSLog(@"numberOfRowsInSection");
     //return one more rows than in fatched result controller
     NSInteger rows = 1;
     
@@ -279,6 +284,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"heightForRowAtIndexPath");
     CGFloat height = self.view.frame.size.height/13;
     //for cell NEW repository set height to whole screen
     if (self.coordinatorCoreDate.repFetchController && [[self.coordinatorCoreDate.repFetchController sections] count] > 0){

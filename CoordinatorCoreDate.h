@@ -49,7 +49,7 @@
 -(NSString*)getPossibleRepositoryNameWithInitial:(NSString*)initStr;
 -(NSString*)getPossibleDocumentNameWithInitial:(NSString*)initStr;
 
--(void) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository;
+-(Document*) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository;
 
 //-(Repository*) removeRepositoryAtIndex:(NSInteger)index;
 //-(void) inserRepository:(Repository*)rep atIndex:(NSInteger)index;

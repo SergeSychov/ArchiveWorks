@@ -17,7 +17,7 @@
     
     //check repositoies with this name
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Repository"];
-    request.predicate = [NSPredicate predicateWithFormat:@"nameRepository = %@", name];
+    request.predicate = [NSPredicate predicateWithFormat:@"name = %@", name];
     
     NSError *error;
     NSArray *matches = [context executeFetchRequest:request error:&error];
