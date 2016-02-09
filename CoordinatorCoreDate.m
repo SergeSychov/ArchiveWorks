@@ -82,6 +82,7 @@
     }
     return retStr;
 }
+// test
 
 -(BOOL) isEntity:(NSString*)entityName HasName:(NSString*)str
 {
