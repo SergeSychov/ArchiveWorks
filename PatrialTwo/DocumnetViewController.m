@@ -154,7 +154,7 @@
             self.textFildDocumetnName.text = offeredByCoordinatorStr;
             NSString *offerUser = @"Предлагаю: ";
             offerUser = [offerUser stringByAppendingString:offeredByCoordinatorStr];
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Такое имя уже присвоено одному из Ваших разделов"
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Такое имя уже присвоено одному из Ваших документов"
                                                                            message:offerUser
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault

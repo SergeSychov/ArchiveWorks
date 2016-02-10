@@ -1,5 +1,5 @@
 //
-//  Document+CoreDataProperties.m
+//  ImageData+CoreDataProperties.m
 //  PatrialTwo
 //
 //  Created by Serge Sychov on 10.02.16.
@@ -9,14 +9,11 @@
 //  to delete and recreate this implementation file for your updated model.
 //
 
-#import "Document+CoreDataProperties.h"
+#import "ImageData+CoreDataProperties.h"
 
-@implementation Document (CoreDataProperties)
+@implementation ImageData (CoreDataProperties)
 
-@dynamic dataDocumnet;
-@dynamic name;
-@dynamic numberOrdering;
-@dynamic repository;
-@dynamic bigImageData;
+@dynamic data;
+@dynamic document;
 
 @end

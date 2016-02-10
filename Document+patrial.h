@@ -9,5 +9,6 @@
 #import "Document.h"
 
 @interface Document (patrial)
-+(Document*)createNewDocumentWithData:(NSData*)docData name:(NSString*)name Repository:(NSString*)repositoryName inContext:(NSManagedObjectContext *)context;
+//+(Document*)createNewDocumentWithData:(NSData*)docData name:(NSString*)name Repository:(NSString*)repositoryName inContext:(NSManagedObjectContext *)context;
++(Document*)createNewDocumentWithData:(NSData*)docData BigImageData:(NSData*) bigData name:(NSString*)name Repository:(NSString*)repositoryName inContext:(NSManagedObjectContext *)context;
 @end

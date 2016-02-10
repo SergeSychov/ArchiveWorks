@@ -45,11 +45,12 @@
 //-(Document*) removeDocumentAtIndex:(NSInteger)index;
 //-(void) insertDocument:(Document*)doc atIndex:(NSInteger)index;
 
--(void) addNewRepository:(NSString*)nameRepository;
+
 -(void) changeNameRepositoryFrom:(NSString*)fromStr To:(NSString*)toStr;
 -(NSString*)getPossibleRepositoryNameWithInitial:(NSString*)initStr;
 -(NSString*)getPossibleDocumentNameWithInitial:(NSString*)initStr;
 
+-(Repository*) addNewRepository:(NSString*)nameRepository;
 -(Document*) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository;
 
 //-(Repository*) removeRepositoryAtIndex:(NSInteger)index;

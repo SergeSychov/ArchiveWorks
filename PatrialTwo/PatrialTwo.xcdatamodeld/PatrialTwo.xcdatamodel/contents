@@ -4,7 +4,12 @@
         <attribute name="dataDocumnet" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="numberOrdering" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <relationship name="bigImageData" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ImageData" inverseName="document" inverseEntity="ImageData" syncable="YES"/>
         <relationship name="repository" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Repository" inverseName="documents" inverseEntity="Repository" syncable="YES"/>
+    </entity>
+    <entity name="ImageData" representedClassName="ImageData" parentEntity="Document" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="document" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Document" inverseName="bigImageData" inverseEntity="Document" syncable="YES"/>
     </entity>
     <entity name="Repository" representedClassName="Repository" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -12,7 +17,8 @@
         <relationship name="documents" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Document" inverseName="repository" inverseEntity="Document" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Document" positionX="52" positionY="-87" width="128" height="103"/>
+        <element name="Document" positionX="52" positionY="-87" width="128" height="118"/>
         <element name="Repository" positionX="-279" positionY="-72" width="128" height="88"/>
+        <element name="ImageData" positionX="7" positionY="-198" width="128" height="73"/>
     </elements>
 </model>

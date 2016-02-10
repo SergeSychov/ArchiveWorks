@@ -2,11 +2,12 @@
 //  Document.m
 //  PatrialTwo
 //
-//  Created by Serge Sychov on 09.02.16.
+//  Created by Serge Sychov on 10.02.16.
 //  Copyright © 2016 Sergey Sychov. All rights reserved.
 //
 
 #import "Document.h"
+#import "ImageData.h"
 #import "Repository.h"
 
 @implementation Document

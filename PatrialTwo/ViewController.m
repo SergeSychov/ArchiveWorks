@@ -259,7 +259,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSLog(@"numberOfSectionsInTableView");
     NSInteger sections;
     if(self.coordinatorCoreDate.repFetchController && [[self.coordinatorCoreDate.repFetchController sections] count] > 0){
         sections = [[self.coordinatorCoreDate.repFetchController sections] count];
@@ -271,12 +270,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"numberOfRowsInSection");
-    //return one more rows than in fatched result controller
+
     NSInteger rows = 1;
     
     if (self.coordinatorCoreDate.repFetchController && [[self.coordinatorCoreDate.repFetchController sections] count] > 0) {
         id <NSFetchedResultsSectionInfo> sectionInfo = [[self.coordinatorCoreDate.repFetchController sections] objectAtIndex:section];
+
         rows = [sectionInfo numberOfObjects]+1;
     }
     return rows;
@@ -331,10 +330,7 @@
 }
 
 -(void) appDidGoToForeground {
-    
-    
-
-
+    /*
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     PassViewController *passViewController = [storyBoard instantiateViewControllerWithIdentifier:@"PassViewController"];
 
@@ -342,6 +338,7 @@
     [self presentViewController:passViewController animated:NO completion:^{
         nil;
     }];
+    */
 
 }
 -(void) appDidGoToBackground

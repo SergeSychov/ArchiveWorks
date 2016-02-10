@@ -30,19 +30,20 @@
 
 -(void)setCoordinatorCoreDate:(CoordinatorCoreDate *)coordinatorCoreDate{
     _coordinatorCoreDate = coordinatorCoreDate;
-    _coordinatorCoreDate.delegatedByDocuments = self;
-    /*
-    for(Document *doc in _coordinatorCoreDate.docFetchController.fetchedObjects){
-        NSLog(@"Document: %@", doc);
+    if(self.nameRepository){
+        _coordinatorCoreDate.delegatedByDocuments = self;
+    } else {
+        _coordinatorCoreDate.docFetchController = nil;
     }
-     */
-    //[self.horizontalScrollerView reload];
 }
 -(void) RepositoriesAreChanged {
     NSLog(@"RepositoriesAreChanged");
 }
 -(void)setNameRepository:(NSString *)nameRepository{
     _nameRepository = nameRepository;
+    if(nameRepository){
+         _coordinatorCoreDate.delegatedByDocuments = self;
+    }
     [self userDidEndEditOrNotStart];
 }
 
@@ -100,6 +101,7 @@
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSLog(@"cellForRowAtIndexPath");
+    NSLog(@"Fetched doc's %@",self.coordinatorCoreDate.docFetchController.fetchedObjects);
     UITableViewCell *cell = [self.tableViewDocuments dequeueReusableCellWithIdentifier:@"DocumentCell"];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCellGesturRecogniser:)];
     [cell addGestureRecognizer:tapGesture];
@@ -199,6 +201,7 @@
     if (self.coordinatorCoreDate.docFetchController && [[self.coordinatorCoreDate.docFetchController sections] count] > 0) {
         id <NSFetchedResultsSectionInfo> sectionInfo = [[self.coordinatorCoreDate.docFetchController sections] objectAtIndex:section];
         rows = [sectionInfo numberOfObjects]+1;
+                NSLog(@"Fetched doc's %@",self.coordinatorCoreDate.docFetchController.fetchedObjects);
     }
     return rows;
 }
@@ -322,7 +325,8 @@
             UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                                   handler:^(UIAlertAction * action) {[self newNameEnteredByUser];}];
             UIAlertAction* enterOtherNameAction = [UIAlertAction actionWithTitle:@"Ввести другое имя раздела" style:UIAlertActionStyleDefault
-                                                                         handler:^(UIAlertAction * action) {[self enterAnotherName];}];
+                                                                         handler:^(UIAlertAction * action) {self.nameRepository = nil;
+                                                                                                            [self checkNameRepository];}];
             
             [alert addAction:defaultAction];
             [alert addAction:enterOtherNameAction];
@@ -332,10 +336,7 @@
         [self userDidEndEditOrNotStart];
     }
 }
--(void) enterAnotherName {
-    self.nameRepository = nil;
-    [self checkNameRepository];
-}
+
 -(void)checkNameRepository {
     
     if(self.nameRepository == nil){ //there is new repository screen

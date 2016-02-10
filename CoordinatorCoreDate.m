@@ -17,24 +17,26 @@
 
 @implementation CoordinatorCoreDate
 #pragma mark PUBLI FUNCs
--(void)addNewRepository:(NSString *)nameRepository {
-    if([Repository createNewRepositoryWithName:nameRepository inContext:self.managedContext]){
+-(Repository*)addNewRepository:(NSString *)nameRepository {
+    Repository* returRepository = [Repository createNewRepositoryWithName:nameRepository inContext:self.managedContext];
+    if(returRepository){
         NSLog(@"New Repository was created succesefully");
     } else {
         NSLog(@"Can't create new repository");
     }
     //renew documetnFetch according doccument in exactly repository
     //[self resetDocumetFetchResultController];
+    return returRepository;
 }
 
 -(Document*) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository{
     
-    image = [image scaledImage:image ToRatio:0.1];
-    
-    NSData *imageData = UIImagePNGRepresentation(image);
+    NSData *originalImageData = UIImagePNGRepresentation([image scaledImage:image ToRatio:1]);
+    NSData *imageData = UIImagePNGRepresentation([image scaledImage:image ToRatio:0.1]);
     Document *doc = nil;
-    doc = [Document createNewDocumentWithData:imageData name:name Repository:nameRepository inContext:self.managedContext];
+    //doc = [Document createNewDocumentWithData:imageData name:name Repository:nameRepository inContext:self.managedContext];
     
+    doc = [Document createNewDocumentWithData:imageData BigImageData:originalImageData name:name Repository:nameRepository inContext:self.managedContext];
     if(doc){
         NSLog(@"New Document was created succesefully with repository name: %@", doc.repository.name);
     } else {
@@ -69,14 +71,19 @@
 
 -(void) resetDocumetFetchResultController {
 
+    NSLog(@"Rep name: %@", [self.delegatedByDocuments documentsRepositoryName]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Document"];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"numberOrdering" ascending:YES]];
     request.predicate = [NSPredicate predicateWithFormat:@"repository.name = %@", [self.delegatedByDocuments documentsRepositoryName]];
     
-    self.docFetchController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+    NSFetchedResultsController  *docFetchController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
                                                                   managedObjectContext:self.managedContext
                                                                     sectionNameKeyPath:nil
                                                                              cacheName:@"cacheDocFetchController"];
+    for(Document *doc in docFetchController.fetchedObjects){
+        NSLog(@"Name doc: %@, in repositroy %@", doc.name, doc.repository.name);
+    }
+    self.docFetchController = docFetchController;
 
     self.docFetchController.delegate = _delegatedByDocuments;
 }
@@ -231,7 +238,7 @@
         if(self.delegatedByRepository){
             //if there is delegated controller - renew it
             NSLog(@"delegated was create previosly");
-            _docFetchController.delegate = self.delegatedByDocuments;
+            //_docFetchController.delegate = self.delegatedByDocuments;
             [self.delegatedByDocuments DocumentsAreChanged];
         }
     }

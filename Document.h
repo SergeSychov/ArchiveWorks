@@ -2,14 +2,14 @@
 //  Document.h
 //  PatrialTwo
 //
-//  Created by Serge Sychov on 09.02.16.
+//  Created by Serge Sychov on 10.02.16.
 //  Copyright © 2016 Sergey Sychov. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class Repository;
+@class ImageData, Repository;
 
 NS_ASSUME_NONNULL_BEGIN
 
