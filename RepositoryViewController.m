@@ -12,12 +12,12 @@
 #import "HorizontalScrollerView.h"
 #import "DocumnetViewController.h"
 
-@interface RepositoryViewController () <UITextFieldDelegate, CoorinatorProtocol,HorizontalScrollerDelegate,NSFetchedResultsControllerDelegate>
+@interface RepositoryViewController () <UITextFieldDelegate, CoorinatorProtocol,NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *labelAskUserEnterNameRepository;
 @property (weak, nonatomic) IBOutlet UITextField *textFildRepositoryName;
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonEditDone;
-@property (weak, nonatomic) IBOutlet HorizontalScrollerView *horizontalScrollerView;
+@property (weak, nonatomic) IBOutlet UITableView *tableViewDocuments;
 
 @property (nonatomic,weak) DocumnetViewController *docViewController;
 
@@ -36,7 +36,7 @@
         NSLog(@"Document: %@", doc);
     }
      */
-    [self.horizontalScrollerView reload];
+    //[self.horizontalScrollerView reload];
 }
 -(void) RepositoriesAreChanged {
     NSLog(@"RepositoriesAreChanged");
@@ -83,75 +83,124 @@
         nil;
     }];
 }
-#pragma mark HORIZONTAL SCROLLER DELEGATE
--(void) horizontalScroller:(HorizontalScrollerView *)scroller clickedViewAtIndex:(NSInteger)index{
-    if(index < self.coordinatorCoreDate.docFetchController.fetchedObjects.count){
-        [self goToImageViewControllerWithDocument:self.coordinatorCoreDate.docFetchController.fetchedObjects[index]];
-    } else {
-        [self goToImageViewControllerWithDocument:nil];
+#pragma mark TABLE VIEW DATA SOURSE
+-(void) tapCellGesturRecogniser:(id)sender{
+    CGPoint tapLocation = [sender locationInView:self.tableViewDocuments];
+    NSIndexPath *indexPath = [self.tableViewDocuments indexPathForRowAtPoint:tapLocation];
+    if(indexPath){
+        if(indexPath.row < self.coordinatorCoreDate.docFetchController.fetchedObjects.count){
+            Document *document = [self.coordinatorCoreDate.docFetchController objectAtIndexPath:indexPath];
+            [self goToImageViewControllerWithDocument:document];
+        } else {
+            [self goToImageViewControllerWithDocument:nil];
+        }
     }
 }
 
--(NSInteger)numberOfViewForHorizontalScroller:(HorizontalScrollerView *)scroller{
-    NSInteger number = 1;
-    if(self.coordinatorCoreDate.docFetchController){
-        number = self.coordinatorCoreDate.docFetchController.fetchedObjects.count +1;
-    }
-    return number;
-}
--(UIView*)horizontalScroller:(HorizontalScrollerView *)scroller viewAtIndex:(NSInteger)index{
-    if(index < self.coordinatorCoreDate.docFetchController.fetchedObjects.count){
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectInset(self.horizontalScrollerView.bounds, 50, 50)];
-        Document *docObj = [self.coordinatorCoreDate.docFetchController.fetchedObjects objectAtIndex:index];
-        imageView.image = [UIImage imageWithData:docObj.dataDocumnet];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        UILabel *labelCreateNewDoc = [[UILabel alloc] initWithFrame:CGRectMake(imageView.bounds.size.width/10,
-                                                                               imageView.bounds.size.height*0.9,
-                                                                               imageView.bounds.size.width*8/10,
-                                                                               imageView.bounds.size.height/3)];
-        labelCreateNewDoc.text = docObj.name;
-        labelCreateNewDoc.textColor = [UIColor lightGrayColor];
-        labelCreateNewDoc.adjustsFontSizeToFitWidth = YES;
-        labelCreateNewDoc.numberOfLines = 0;
-        labelCreateNewDoc.textAlignment = NSTextAlignmentCenter;
+-(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"cellForRowAtIndexPath");
+    UITableViewCell *cell = [self.tableViewDocuments dequeueReusableCellWithIdentifier:@"DocumentCell"];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCellGesturRecogniser:)];
+    [cell addGestureRecognizer:tapGesture];
+    cell.contentView.transform = CGAffineTransformMakeRotation(M_PI_2);
+    if(indexPath.row == [tableView numberOfRowsInSection: 0] - 1){
+        //remove old subviews - was several mistakes
+        NSArray *arraySubvews = cell.contentView.subviews;
+        if(arraySubvews && (arraySubvews.count >0)){
+            for (NSInteger i = 0; i < arraySubvews.count; i++){
+                UIView* subView = arraySubvews[i];
+                [subView removeFromSuperview];
+            }
+        }
         
-        [imageView addSubview:labelCreateNewDoc];
-        return imageView;
+        CGFloat defaultHeight = self.view.frame.size.height/13;
+        PlusButton *addNewDocumentButton = [[PlusButton alloc] init];
+        [addNewDocumentButton addTarget:self action:@selector(createnewDocument:) forControlEvents:UIControlEventTouchUpInside];
+        
 
+        addNewDocumentButton.frame = CGRectMake((cell.bounds.size.height - defaultHeight)/2,
+                                                (cell.bounds.size.width - defaultHeight)/2,
+                                                defaultHeight, defaultHeight);
+        [cell.contentView addSubview:addNewDocumentButton];
+        
+        UILabel *addNewDocumentLabel = [[UILabel alloc] initWithFrame:CGRectMake(cell.bounds.size.height/10,
+                                                                                 cell.bounds.size.width*0.7,
+                                                                                 cell.bounds.size.height*8/10,
+                                                                                 cell.bounds.size.width/3)];
+        addNewDocumentLabel.textColor = [UIColor lightGrayColor];
+        addNewDocumentLabel.backgroundColor = [UIColor clearColor];
+        addNewDocumentLabel.adjustsFontSizeToFitWidth = YES;
+        addNewDocumentLabel.numberOfLines = 0;
+        addNewDocumentLabel.text = @"Создайте новый документ";
+        
+        [cell.contentView addSubview:addNewDocumentLabel];
+        
     } else {
-        UIView *viewNewDoc = [[UIView alloc] initWithFrame:CGRectInset(self.horizontalScrollerView.bounds, 50., 50.)];
-        viewNewDoc.autoresizesSubviews = YES;
-        viewNewDoc.clipsToBounds = NO;
-        viewNewDoc.backgroundColor = [UIColor colorWithWhite:.9 alpha:0.5];
-        viewNewDoc.layer.shadowColor =[UIColor blackColor].CGColor;
-        viewNewDoc.layer.shadowOffset = CGSizeMake(5., 5.);
-        viewNewDoc.layer.shadowRadius = 5.;
-        viewNewDoc.layer.shadowOpacity = 0.5;
-        
-        
-        
-        //add pluss button
-        
-        PlusButton *plusButton = [[PlusButton alloc] initWithFrame:CGRectMake(0, 0, 80., 80.)];
-        [plusButton addTarget:self action:@selector(createnewDocument:) forControlEvents:UIControlEventTouchUpInside];
-        [viewNewDoc addSubview:plusButton];
-        plusButton.center = CGPointMake(viewNewDoc.bounds.size.width/2, viewNewDoc.bounds.size.height/2);
-        
+
+        //remove old subviews - was several mistakes
+        NSArray *arraySubvews = cell.contentView.subviews;
+        if(arraySubvews && (arraySubvews.count >0)){
+            for (NSInteger i = 0; i < arraySubvews.count; i++){
+                UIView* subView = arraySubvews[i];
+                [subView removeFromSuperview];
+            }
+        }
        
-        UILabel *labelCreateNewDoc = [[UILabel alloc] initWithFrame:CGRectMake(viewNewDoc.bounds.size.width/10,
-                                                                               viewNewDoc.bounds.size.height*0.9,
-                                                                               viewNewDoc.bounds.size.width*8/10,
-                                                                               viewNewDoc.bounds.size.height/3)];
-        labelCreateNewDoc.text = @"Добавить новый документ";
-        labelCreateNewDoc.textColor = [UIColor lightGrayColor];
+        UIImageView *imageView = [[UIImageView alloc] init];//WithFrame:CGRectInset(cell.bounds, 10., 10.)];
+        Document *docObj = [self.coordinatorCoreDate.docFetchController.fetchedObjects objectAtIndex:indexPath.row];
+        UIImage *docImage = [UIImage imageWithData:docObj.dataDocumnet];
+        imageView.image = docImage;// [UIImage imageWithData:docObj.dataDocumnet];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        //imageView.transform = CGAffineTransformMakeRotation(M_PI_2);
+        CGRect rctNotTransformed = CGRectInset(cell.bounds, 10., 10.);
+        imageView.frame = CGRectMake(10.,
+                                     10.,
+                                     rctNotTransformed.size.height,
+                                     rctNotTransformed.size.width);
+        imageView.center = CGPointMake(cell.bounds.size.height/2, cell.bounds.size.height/2);
+        [cell.contentView addSubview:imageView];
+        UILabel *labelCreateNewDoc = [[UILabel alloc] initWithFrame:CGRectMake(cell.bounds.size.height/10,
+                                                                               cell.bounds.size.width*0.7,
+                                                                               cell.bounds.size.height*8/10,
+                                                                               cell.bounds.size.width/3)];
+        
+        labelCreateNewDoc.text = docObj.name;
+        labelCreateNewDoc.textColor = [UIColor darkTextColor];
         labelCreateNewDoc.adjustsFontSizeToFitWidth = YES;
         labelCreateNewDoc.numberOfLines = 0;
         labelCreateNewDoc.textAlignment = NSTextAlignmentCenter;
         
-        [viewNewDoc addSubview:labelCreateNewDoc];
+        [cell.contentView addSubview:labelCreateNewDoc];
 
-        return viewNewDoc;
+        return cell;
+
     }
+    //cell.contentView.transform = CGAffineTransformMakeRotation(M_PI_2);
+    return cell;
+}
+
+#pragma mark TABLE VIEW DELEGATE
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    NSInteger sections;
+    if(self.coordinatorCoreDate.docFetchController && [[self.coordinatorCoreDate.docFetchController sections] count] > 0){
+        sections = [[self.coordinatorCoreDate.docFetchController sections] count];
+    } else {
+        sections = 1 ;
+    }
+    return sections;
+}
+
+-(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
+
+    NSInteger rows = 1;
+    
+    if (self.coordinatorCoreDate.docFetchController && [[self.coordinatorCoreDate.docFetchController sections] count] > 0) {
+        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.coordinatorCoreDate.docFetchController sections] objectAtIndex:section];
+        rows = [sectionInfo numberOfObjects]+1;
+    }
+    return rows;
 }
 
 #pragma mark COORDINATOR DELEGATE
@@ -161,11 +210,17 @@
 
 -(void) DocumentsAreChanged
 {
-    NSLog(@"DocumentsAreChanged");
+    [self.tableViewDocuments reloadData];
 }
+
 #pragma mark FETCHED RESULT CONTROLLER DELEGATE
-#pragma mark FETCHED CONTROLLER DELEGATE
-/*
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+    [self.tableViewDocuments beginUpdates];
+    //make dictionary heights according number of row
+}
+
 - (void)controller:(NSFetchedResultsController *)controller
   didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
            atIndex:(NSUInteger)sectionIndex
@@ -175,11 +230,11 @@
     switch(type)
     {
         case NSFetchedResultsChangeInsert:
-            [self.tableViewRepositories insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationBottom];
+            [self.tableViewDocuments insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationBottom];
             break;
             
         case NSFetchedResultsChangeDelete:
-            [self.tableViewRepositories deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationBottom];
+            [self.tableViewDocuments deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationBottom];
             break;
             
         case NSFetchedResultsChangeMove:
@@ -206,32 +261,32 @@
     switch(type)
     {
         case NSFetchedResultsChangeInsert:{
-            [self.tableViewRepositories insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableViewDocuments insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
             break;
             
         case NSFetchedResultsChangeDelete: {
-            [self.tableViewRepositories deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableViewDocuments deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
         }
             break;
             
         case NSFetchedResultsChangeUpdate:{
-            [self.tableViewRepositories reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableViewDocuments reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
             
         }
             break;
             
         case NSFetchedResultsChangeMove:
-            [self.tableViewRepositories deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [self.tableViewRepositories insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableViewDocuments deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableViewDocuments insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
             break;
     }
     
 }
-*/
+
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
-     [self.horizontalScrollerView reload];
+    [self.tableViewDocuments endUpdates];
 }
 
 
@@ -354,12 +409,19 @@
 
 
 #pragma mark VIEW DID LOAD
+-(void) viewDidLayoutSubviews{
+    self.tableViewDocuments.transform = CGAffineTransformMakeRotation(-M_PI_2);
+    self.tableViewDocuments.frame = CGRectMake(0, 129, 320, 395);
+    [self.tableViewDocuments reloadData];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self checkNameRepository];
-    self.horizontalScrollerView.delegate = self;
-    [self.horizontalScrollerView reload];
-    // Do any additional setup after loading the view.
+    /*
+    self.tableViewDocuments.transform = CGAffineTransformMakeRotation(-M_PI_2);
+    self.tableViewDocuments.frame = CGRectMake(0, 129, 320, 395);
+    [self.tableViewDocuments reloadData];
+    */
 
     //to dissmis view controller - need for password enter after background
     [[NSNotificationCenter defaultCenter]   addObserver:self

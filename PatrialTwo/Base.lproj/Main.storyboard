@@ -251,11 +251,9 @@
                                     <barButtonItem systemItem="flexibleSpace" id="Ad4-Rz-dkF"/>
                                     <barButtonItem systemItem="add" id="4qP-Qa-z2v"/>
                                     <barButtonItem systemItem="flexibleSpace" id="G28-y8-ouU"/>
-                                    <barButtonItem systemItem="camera" id="obN-Xv-MeJ"/>
-                                    <barButtonItem systemItem="flexibleSpace" id="NfJ-ay-f9M"/>
-                                    <barButtonItem systemItem="trash" id="w09-7D-nL5"/>
-                                    <barButtonItem systemItem="flexibleSpace" id="13V-Cj-rjN"/>
                                     <barButtonItem title="Share" id="pQ8-vk-Fxd"/>
+                                    <barButtonItem systemItem="flexibleSpace" id="13V-Cj-rjN"/>
+                                    <barButtonItem systemItem="trash" id="w09-7D-nL5"/>
                                     <barButtonItem systemItem="flexibleSpace" id="hHZ-iO-b42"/>
                                 </items>
                             </toolbar>
@@ -284,18 +282,32 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" id="RvW-I4-6me" customClass="HorizontalScrollerView">
-                                <rect key="frame" x="0.0" y="120" width="320" height="404"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="200" sectionHeaderHeight="1" sectionFooterHeight="1" id="mLh-wk-RgL">
+                                <rect key="frame" x="0.0" y="129" width="320" height="395"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </view>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="DocumentCell" id="yXy-GX-wmY">
+                                        <rect key="frame" x="0.0" y="1" width="320" height="200"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="yXy-GX-wmY" id="jid-Gg-H6S">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="aeO-iS-suh" id="Eze-YH-gMb"/>
+                                    <outlet property="delegate" destination="aeO-iS-suh" id="TBz-yW-OE6"/>
+                                </connections>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="buttonEditDone" destination="2xm-vD-Qcv" id="FSa-dx-luW"/>
-                        <outlet property="horizontalScrollerView" destination="RvW-I4-6me" id="zj9-ZG-Q7R"/>
                         <outlet property="labelAskUserEnterNameRepository" destination="A1K-q3-Eaj" id="95u-7k-q8e"/>
+                        <outlet property="tableViewDocuments" destination="mLh-wk-RgL" id="2Hc-li-vPr"/>
                         <outlet property="textFildRepositoryName" destination="4m0-6G-VIm" id="FhB-bL-238"/>
                     </connections>
                 </viewController>

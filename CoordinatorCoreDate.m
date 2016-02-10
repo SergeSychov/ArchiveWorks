@@ -26,6 +26,23 @@
     //renew documetnFetch according doccument in exactly repository
     //[self resetDocumetFetchResultController];
 }
+
+-(Document*) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository{
+    
+    image = [image scaledImage:image ToRatio:0.1];
+    
+    NSData *imageData = UIImagePNGRepresentation(image);
+    Document *doc = nil;
+    doc = [Document createNewDocumentWithData:imageData name:name Repository:nameRepository inContext:self.managedContext];
+    
+    if(doc){
+        NSLog(@"New Document was created succesefully with repository name: %@", doc.repository.name);
+    } else {
+        NSLog(@"Can't create new Document");
+    }
+    return doc;
+}
+
 -(void) changeNameRepositoryFrom:(NSString*)fromStr To:(NSString*)toStr{
     Repository *repositoryWithNameFromStr = nil;
     for(Repository *rep in self.repFetchController.fetchedObjects){
@@ -60,7 +77,6 @@
                                                                   managedObjectContext:self.managedContext
                                                                     sectionNameKeyPath:nil
                                                                              cacheName:@"cacheDocFetchController"];
-    //NSLog(@"Fetched Objects %@", self.docFetchController.fetchedObjects);
 
     self.docFetchController.delegate = _delegatedByDocuments;
 }
@@ -99,18 +115,7 @@
         return NO;
     }
 }
--(Document*) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository{
-    NSData *imageData = UIImagePNGRepresentation(image);
-    Document *doc = nil;
-    doc = [Document createNewDocumentWithData:imageData name:name Repository:nameRepository inContext:self.managedContext];
 
-    if(doc){
-        NSLog(@"New Document was created succesefully with repository name: %@", doc.repository.name);
-    } else {
-        NSLog(@"Can't create new Document");
-    }
-    return doc;
-}
 
 #pragma mark OVERRIDED INITIALISATION
 -(void) awakeFromNib
@@ -227,7 +232,7 @@
             //if there is delegated controller - renew it
             NSLog(@"delegated was create previosly");
             _docFetchController.delegate = self.delegatedByDocuments;
-            [self.delegatedByDocuments RepositoriesAreChanged];
+            [self.delegatedByDocuments DocumentsAreChanged];
         }
     }
 }

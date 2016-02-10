@@ -28,6 +28,7 @@
 		5052AE9C1C6A22DA00A64A51 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE961C6A22DA00A64A51 /* Document.m */; };
 		5052AE9D1C6A22DA00A64A51 /* Repository+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE981C6A22DA00A64A51 /* Repository+CoreDataProperties.m */; };
 		5052AE9E1C6A22DA00A64A51 /* Repository.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE9A1C6A22DA00A64A51 /* Repository.m */; };
+		5054280C1C6B435C004017D1 /* UIImage+UIimage_resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 5054280B1C6B435C004017D1 /* UIImage+UIimage_resize.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,8 @@
 		5052AE981C6A22DA00A64A51 /* Repository+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Repository+CoreDataProperties.m"; sourceTree = "<group>"; };
 		5052AE991C6A22DA00A64A51 /* Repository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Repository.h; sourceTree = "<group>"; };
 		5052AE9A1C6A22DA00A64A51 /* Repository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Repository.m; sourceTree = "<group>"; };
+		5054280A1C6B435C004017D1 /* UIImage+UIimage_resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+UIimage_resize.h"; sourceTree = "<group>"; };
+		5054280B1C6B435C004017D1 /* UIImage+UIimage_resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+UIimage_resize.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +174,8 @@
 			isa = PBXGroup;
 			children = (
 				5052ADDA1C65DEE000A64A51 /* Main.storyboard */,
+				5054280A1C6B435C004017D1 /* UIImage+UIimage_resize.h */,
+				5054280B1C6B435C004017D1 /* UIImage+UIimage_resize.m */,
 				5052AE231C66BCF900A64A51 /* PatrialTwo.entitlements */,
 				5052AE201C668D4A00A64A51 /* PassController */,
 				5052AE1F1C668D3700A64A51 /* MainController */,
@@ -402,6 +407,7 @@
 				5052AE9D1C6A22DA00A64A51 /* Repository+CoreDataProperties.m in Sources */,
 				5052AE9B1C6A22DA00A64A51 /* Document+CoreDataProperties.m in Sources */,
 				35F55FBD1C65EAD500C89909 /* Document+patrial.m in Sources */,
+				5054280C1C6B435C004017D1 /* UIImage+UIimage_resize.m in Sources */,
 				5052ADD91C65DEE000A64A51 /* ViewController.m in Sources */,
 				5052ADD61C65DEE000A64A51 /* AppDelegate.m in Sources */,
 				5052AE9E1C6A22DA00A64A51 /* Repository.m in Sources */,
