@@ -66,7 +66,9 @@
 */
 -(void) createnewDocument:(id)sender
 {
-    [self goToImageViewControllerWithDocument:nil];
+    if(self.nameRepository){ //don't allow user make photo without repository name
+        [self goToImageViewControllerWithDocument:nil];
+    }
 }
 -(void) goToImageViewControllerWithDocument: (Document*)document
 {
@@ -102,6 +104,7 @@
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectInset(self.horizontalScrollerView.bounds, 50, 50)];
         Document *docObj = [self.coordinatorCoreDate.docFetchController.fetchedObjects objectAtIndex:index];
         imageView.image = [UIImage imageWithData:docObj.dataDocumnet];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
         UILabel *labelCreateNewDoc = [[UILabel alloc] initWithFrame:CGRectMake(imageView.bounds.size.width/10,
                                                                                imageView.bounds.size.height*0.9,
                                                                                imageView.bounds.size.width*8/10,
@@ -130,7 +133,7 @@
         //add pluss button
         
         PlusButton *plusButton = [[PlusButton alloc] initWithFrame:CGRectMake(0, 0, 80., 80.)];
-       // [plusButton addTarget:self action:@selector(createnewDocument:) forControlEvents:UIControlEventTouchUpInside];
+        [plusButton addTarget:self action:@selector(createnewDocument:) forControlEvents:UIControlEventTouchUpInside];
         [viewNewDoc addSubview:plusButton];
         plusButton.center = CGPointMake(viewNewDoc.bounds.size.width/2, viewNewDoc.bounds.size.height/2);
         

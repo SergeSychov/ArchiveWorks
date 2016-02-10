@@ -110,8 +110,8 @@ NSString *const Pass = @"Pass";
     //self.passwordString = [cloudStore objectForKey:@"myString"]? [cloudStore objectForKey:@"myString"]: nil;
     
     //or
-    self.passwordString = [[NSUserDefaults standardUserDefaults] valueForKey:@"PASS"]?
-    [[NSUserDefaults standardUserDefaults] valueForKey:@"PASS"]:nil;
+    self.passwordString = [[NSUserDefaults standardUserDefaults] valueForKey:Pass]?
+    [[NSUserDefaults standardUserDefaults] valueForKey:Pass]:nil;
     
     if(!self.passwordString){
         self.askingLabel.text = @"Для работы с архивом создайте пароль";
