@@ -32,6 +32,8 @@
 		5052AE761C68400500A64A51 /* HorizontalScrollerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE751C68400500A64A51 /* HorizontalScrollerView.m */; };
 		5052AE791C687E8400A64A51 /* DocumnetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE781C687E8400A64A51 /* DocumnetViewController.m */; };
 		5054280C1C6B435C004017D1 /* UIImage+UIimage_resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 5054280B1C6B435C004017D1 /* UIImage+UIimage_resize.m */; };
+		505428271C6BBDC2004017D1 /* Camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 505428251C6BBDC2004017D1 /* Camera.png */; };
+		505428281C6BBDC2004017D1 /* Photo.png in Resources */ = {isa = PBXBuildFile; fileRef = 505428261C6BBDC2004017D1 /* Photo.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +104,8 @@
 		5052AE781C687E8400A64A51 /* DocumnetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumnetViewController.m; sourceTree = "<group>"; };
 		5054280A1C6B435C004017D1 /* UIImage+UIimage_resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+UIimage_resize.h"; sourceTree = "<group>"; };
 		5054280B1C6B435C004017D1 /* UIImage+UIimage_resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+UIimage_resize.m"; sourceTree = "<group>"; };
+		505428251C6BBDC2004017D1 /* Camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Camera.png; sourceTree = "<group>"; };
+		505428261C6BBDC2004017D1 /* Photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Photo.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -255,6 +259,8 @@
 		5052AE271C67355600A64A51 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				505428251C6BBDC2004017D1 /* Camera.png */,
+				505428261C6BBDC2004017D1 /* Photo.png */,
 				5052AE281C67358700A64A51 /* PlusButton.h */,
 				5052AE291C67358700A64A51 /* PlusButton.m */,
 			);
@@ -392,7 +398,9 @@
 			files = (
 				5052ADE41C65DEE000A64A51 /* LaunchScreen.storyboard in Resources */,
 				5052ADE11C65DEE000A64A51 /* Assets.xcassets in Resources */,
+				505428271C6BBDC2004017D1 /* Camera.png in Resources */,
 				5052ADDC1C65DEE000A64A51 /* Main.storyboard in Resources */,
+				505428281C6BBDC2004017D1 /* Photo.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

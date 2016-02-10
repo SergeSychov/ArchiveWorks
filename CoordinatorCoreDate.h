@@ -53,7 +53,8 @@
 
 -(Repository*) addNewRepository:(NSString*)nameRepository;
 -(Document*) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository;
-
+-(void) deleteDocumetn:(Document*)document;
+-(void) deleteRepository:(Repository*)repository;
 //-(Repository*) removeRepositoryAtIndex:(NSInteger)index;
 //-(void) inserRepository:(Repository*)rep atIndex:(NSInteger)index;
 

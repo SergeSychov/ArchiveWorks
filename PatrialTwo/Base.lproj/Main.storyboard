@@ -282,7 +282,7 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="200" sectionHeaderHeight="1" sectionFooterHeight="1" id="mLh-wk-RgL">
+                            <tableView contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="200" sectionHeaderHeight="1" sectionFooterHeight="1" id="mLh-wk-RgL">
                                 <rect key="frame" x="0.0" y="129" width="320" height="395"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -323,10 +323,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="e7Z-aE-Kou">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" maximumZoomScale="2" id="3OH-6G-D3u">
+                                <rect key="frame" x="7" y="110" width="307" height="414"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="e7Z-aE-Kou">
+                                        <rect key="frame" x="-7" y="-94" width="320" height="568"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </imageView>
+                                </subviews>
+                                <connections>
+                                    <outlet property="delegate" destination="E80-04-a0j" id="fnM-YG-yLh"/>
+                                </connections>
+                            </scrollView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="введите имя для Вашего нового раздела" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nmm-qB-HgZ">
                                 <rect key="frame" x="20" y="75" width="280" height="51"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
@@ -348,7 +357,17 @@
                                 <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem title="Item" id="cBn-ZT-ymJ"/>
+                                    <barButtonItem systemItem="flexibleSpace" id="Qg6-ve-f6B"/>
+                                    <barButtonItem title="Item" systemItem="trash" id="sj7-bv-bAS">
+                                        <connections>
+                                            <action selector="trashButtonTapped:" destination="E80-04-a0j" id="RhC-YC-kV0"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Item" systemItem="flexibleSpace" id="o13-2H-2gs"/>
+                                    <barButtonItem title="Rotate" id="EgW-1y-iKR"/>
+                                    <barButtonItem systemItem="flexibleSpace" id="0RZ-KV-r2i"/>
+                                    <barButtonItem systemItem="action" id="SHb-6S-3Ft"/>
+                                    <barButtonItem systemItem="flexibleSpace" id="znS-EN-MGa"/>
                                 </items>
                             </toolbar>
                             <view contentMode="scaleToFill" id="ylY-w8-fWI">
@@ -362,20 +381,20 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="DSr-q0-fKo">
-                                        <rect key="frame" x="98" y="262" width="125" height="44"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="wUZ-Rq-9ci">
+                                        <rect key="frame" x="93" y="169" width="135" height="130"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Сделать фото"/>
-                                        <connections>
-                                            <action selector="makePhotoButtonTouched:" destination="E80-04-a0j" eventType="touchUpInside" id="2K4-AM-32T"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="wUZ-Rq-9ci">
-                                        <rect key="frame" x="85" y="358" width="152" height="44"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <state key="normal" title="Выбрать из галлереи"/>
+                                        <state key="normal" title="Выбрать из галлереи" image="Photo.png"/>
                                         <connections>
                                             <action selector="chooseGalleryButtonTapped:" destination="E80-04-a0j" eventType="touchUpInside" id="sFn-mA-Ypd"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="DSr-q0-fKo">
+                                        <rect key="frame" x="96" y="353" width="128" height="123"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Сделать фото" image="Camera.png"/>
+                                        <connections>
+                                            <action selector="makePhotoButtonTouched:" destination="E80-04-a0j" eventType="touchUpInside" id="2K4-AM-32T"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -394,12 +413,15 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="buttonEditDone" destination="Bfe-hq-Zle" id="JAe-m5-wSe"/>
                         <outlet property="buttonMakePhoto" destination="DSr-q0-fKo" id="wd1-7z-kfe"/>
                         <outlet property="imageView" destination="e7Z-aE-Kou" id="61Z-ve-wER"/>
                         <outlet property="labelAskUserEnterName" destination="nmm-qB-HgZ" id="9Oc-UK-0tf"/>
                         <outlet property="pickerContainerView" destination="ylY-w8-fWI" id="BWe-ld-OjS"/>
+                        <outlet property="scrollViewImage" destination="3OH-6G-D3u" id="gjM-70-hr8"/>
                         <outlet property="textFildDocumetnName" destination="jV5-oa-HoV" id="mW8-TV-Kx8"/>
                     </connections>
                 </viewController>
@@ -408,4 +430,8 @@
             <point key="canvasLocation" x="1020" y="384"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Camera.png" width="124" height="124"/>
+        <image name="Photo.png" width="136" height="130"/>
+    </resources>
 </document>

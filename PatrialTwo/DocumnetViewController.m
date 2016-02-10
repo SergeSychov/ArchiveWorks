@@ -8,9 +8,10 @@
 
 #import "DocumnetViewController.h"
 
-@interface DocumnetViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, CoorinatorProtocol, UITextFieldDelegate>
+@interface DocumnetViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, CoorinatorProtocol, UITextFieldDelegate, UIScrollViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *buttonMakePhoto;
+@property (weak, nonatomic) IBOutlet UIScrollView *scrollViewImage;
 @property (nonatomic) IBOutlet UIImageView *imageView;
 @property (nonatomic) UIImagePickerController *pickerController;
 
@@ -81,6 +82,11 @@
 - (IBAction)backToRepositoryButtonTapped:(UIButton *)sender {
     [self dismissViewControllerAnimated:YES completion:^{
         nil;
+    }];
+}
+- (IBAction)trashButtonTapped:(id)sender {
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.coordinatorCoreDate deleteDocumetn:self.document];
     }];
 }
 
@@ -191,7 +197,6 @@
         self.textFildDocumetnName.enabled = NO;
         [self.textFildDocumetnName resignFirstResponder];
         
-        [self.buttonEditDone setTitle:@"Правка" forState:UIControlStateNormal];
         self.labelAskUserEnterName.hidden = YES;
     }
 }
@@ -200,9 +205,8 @@
     self.textFildDocumetnName.textColor = [UIColor lightGrayColor];
     self.textFildDocumetnName.enabled = YES;
     [self.textFildDocumetnName becomeFirstResponder];
-    [self.buttonEditDone setTitle:@"Готово" forState:UIControlStateNormal];
-    
-    self.labelAskUserEnterName.text = @"Введите документа";
+ 
+    self.labelAskUserEnterName.text = @"Введите имя документа";
 }
 #pragma mark TEXT FILD DELEGATE
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
@@ -265,6 +269,10 @@
 
     // Do any additional setup after loading the view.
 }
+#pragma mark SCROLL VIEW DELEGATE
+-(UIView*)viewForZoomingInScrollView:(UIScrollView *)scrollView{
+    return self.imageView;
+}
 -(void) dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:[UIApplication sharedApplication]];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:[UIApplication sharedApplication]];
@@ -279,7 +287,6 @@
     // Do something here
     [self userDidEndEditOrNotBegunEdit];
 }
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

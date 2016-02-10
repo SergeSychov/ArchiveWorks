@@ -136,7 +136,12 @@
         return NO;
     }
 }
-
+-(void) deleteDocumetn:(Document*)document{
+    [self.managedContext deleteObject:document];
+}
+-(void) deleteRepository:(Repository*)repository{
+    [self.managedContext deleteObject:repository];
+}
 
 #pragma mark OVERRIDED INITIALISATION
 -(void) awakeFromNib
