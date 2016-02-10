@@ -19,6 +19,7 @@
 #import "Document+patrial.h"
 #import "Repository+patrial.h"
 #import "UIImage+UIimage_resize.h"
+#import "DataImageOfDocument+patrial.h"
 
 
 @protocol CoorinatorProtocol <NSObject>

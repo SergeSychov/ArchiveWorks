@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSString *name;
 @property (nullable, nonatomic, retain) NSNumber *numberOrdering;
 @property (nullable, nonatomic, retain) Repository *repository;
-@property (nullable, nonatomic, retain) ImageData *bigImageData;
+@property (nullable, nonatomic, retain) DataImageOfDocument *bigImageData;
 
 @end
 

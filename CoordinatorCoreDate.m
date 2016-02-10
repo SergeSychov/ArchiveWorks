@@ -22,7 +22,7 @@
     if(returRepository){
         NSLog(@"New Repository was created succesefully");
     } else {
-        NSLog(@"Can't create new repository");
+       // NSLog(@"Can't create new repository");
     }
     //renew documetnFetch according doccument in exactly repository
     //[self resetDocumetFetchResultController];
@@ -30,19 +30,51 @@
 }
 
 -(Document*) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository{
+    NSDate *methodStartMain = [NSDate date];
     
-    NSData *originalImageData = UIImagePNGRepresentation([image scaledImage:image ToRatio:1]);
+    
+    NSDate *methodFinishMain = [NSDate date];
+    
+    NSTimeInterval executionTimeMine = [methodFinishMain timeIntervalSinceDate:methodStartMain];
+    NSLog(@"executionTime = %f", executionTimeMine);
+    
+    
+     NSDate *methodStart = [NSDate date];
+    
     NSData *imageData = UIImagePNGRepresentation([image scaledImage:image ToRatio:0.1]);
+    
+    NSDate *methodFinish = [NSDate date];
+    NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
+    NSLog(@"executionTime = %f", executionTime);
+
+    
     Document *doc = nil;
     //doc = [Document createNewDocumentWithData:imageData name:name Repository:nameRepository inContext:self.managedContext];
-    
-    doc = [Document createNewDocumentWithData:imageData BigImageData:originalImageData name:name Repository:nameRepository inContext:self.managedContext];
+    NSDate *methodStartThree = [NSDate date];
+    doc = [Document createNewDocumentWithData:imageData name:name Repository:nameRepository inContext:self.managedContext];
+    NSDate *methodFinishThree = [NSDate date];
+    NSTimeInterval executionTimeThree = [methodFinishThree timeIntervalSinceDate:methodStartThree];
+    NSLog(@"executionTime = %f", executionTimeThree);
+
     if(doc){
         NSLog(@"New Document was created succesefully with repository name: %@", doc.repository.name);
     } else {
-        NSLog(@"Can't create new Document");
+        //NSLog(@"Can't create new Document");
     }
+
+
     return doc;
+}
+
+-(void) bigImageData:(UIImage*)image ofDocument:(Document*)doc{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData *originalImageData = UIImagePNGRepresentation([image scaledImage:image ToRatio:1]);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [DataImageOfDocument createNewDataImageOfDocumentwith:originalImageData Document:doc inContext:self.managedContext];
+        });
+
+    });
 }
 
 -(void) changeNameRepositoryFrom:(NSString*)fromStr To:(NSString*)toStr{
@@ -58,35 +90,17 @@
     if(repositoryWithNameFromStr){
         repositoryWithNameFromStr.name = toStr;
         if([self.repFetchController performFetch:&error]){
-            NSLog(@"Ok changes is done");
+           // NSLog(@"Ok changes is done");
         } else {
-            NSLog(@"Repository finded but changes not implement");
+          //  NSLog(@"Repository finded but changes not implement");
         }
     } else {
-        NSLog(@"Repository not finded");
+       // NSLog(@"Repository not finded");
     }
     //renew documetnFetch according doccument in exactly repository
     //[self resetDocumetFetchResultController];
 }
 
--(void) resetDocumetFetchResultController {
-
-    NSLog(@"Rep name: %@", [self.delegatedByDocuments documentsRepositoryName]);
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Document"];
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"numberOrdering" ascending:YES]];
-    request.predicate = [NSPredicate predicateWithFormat:@"repository.name = %@", [self.delegatedByDocuments documentsRepositoryName]];
-    
-    NSFetchedResultsController  *docFetchController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                                                  managedObjectContext:self.managedContext
-                                                                    sectionNameKeyPath:nil
-                                                                             cacheName:@"cacheDocFetchController"];
-    for(Document *doc in docFetchController.fetchedObjects){
-        NSLog(@"Name doc: %@, in repositroy %@", doc.name, doc.repository.name);
-    }
-    self.docFetchController = docFetchController;
-
-    self.docFetchController.delegate = _delegatedByDocuments;
-}
 -(NSString*)getPossibleDocumentNameWithInitial:(NSString*)initStr{
      return [self getPossibleNameWithInitial:initStr onEntity:@"Document"];
 }
@@ -185,7 +199,7 @@
 -(void) documentIsReady:(UIManagedDocument*) document
 {
     if(document.documentState == UIDocumentStateNormal){
-        NSLog(@"Document state NORMAL");
+        //NSLog(@"Document state NORMAL");
         //need for iCloud migration function in bottom of file
         //self.managedContext = [self removeDuplicateRecordsFromHistoryContext:document.managedObjectContext];
         
@@ -221,6 +235,26 @@
     [self resetDocumetFetchResultController];
 }
 
+
+-(void) resetDocumetFetchResultController {
+    
+    //NSLog(@"Rep name: %@", [self.delegatedByDocuments documentsRepositoryName]);
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Document"];
+    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"numberOrdering" ascending:YES]];
+    request.predicate = [NSPredicate predicateWithFormat:@"repository.name = %@", [self.delegatedByDocuments documentsRepositoryName]];
+    
+    NSFetchedResultsController  *docFetchController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
+                                                                                          managedObjectContext:self.managedContext
+                                                                                            sectionNameKeyPath:nil
+                                                                                                     cacheName:@"cacheDocFetchController"];
+    for(Document *doc in docFetchController.fetchedObjects){
+        NSLog(@"Name doc: %@, in repositroy %@", doc.name, doc.repository.name);
+    }
+    self.docFetchController = docFetchController;
+    
+    self.docFetchController.delegate = _delegatedByDocuments;
+}
+
 //right setup delegate and delegator
 //there is two case:
 //1. can be fetchcontroller without delegatedcontroller, not create yet
@@ -231,13 +265,13 @@
         _docFetchController = docFetchController;
         
         if(_docFetchController){
-            NSLog(@"There is repFetchController");
+            //NSLog(@"There is repFetchController");
             NSError *error;
             [_docFetchController performFetch:&error];
         }
         if(self.delegatedByRepository){
             //if there is delegated controller - renew it
-            NSLog(@"delegated was create previosly");
+            //NSLog(@"delegated was create previosly");
             //_docFetchController.delegate = self.delegatedByDocuments;
             [self.delegatedByDocuments DocumentsAreChanged];
         }
@@ -250,13 +284,13 @@
         _repFetchController = repFetchController;
         
         if(_repFetchController){
-            NSLog(@"There is repFetchController");
+            //NSLog(@"There is repFetchController");
             NSError *error;
             [_repFetchController performFetch:&error];
         }
         if(self.delegatedByRepository){
             //if there is delegated controller - renew it
-            NSLog(@"delegated was create previosly");
+            //NSLog(@"delegated was create previosly");
             _repFetchController.delegate = self.delegatedByRepository;
             [self.delegatedByRepository RepositoriesAreChanged];
         }
@@ -269,7 +303,7 @@
     //othervise if fetchController was create previosly
     if(self.repFetchController){
         self.repFetchController.delegate = delegatedByRepository;
-         NSLog(@"fetchController was create previosly");
+         //NSLog(@"fetchController was create previosly");
     }
 }
 

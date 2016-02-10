@@ -10,7 +10,7 @@
 #import "Repository+patrial.h"
 
 @implementation Document (patrial)
-/*
+
 +(Document*)createNewDocumentWithData:(NSData*)docData name:(NSString*)name Repository:(NSString*)repositoryName inContext:(NSManagedObjectContext *)context;
 {
     Document *newDoc = nil;
@@ -33,33 +33,8 @@
         newDoc.dataDocumnet = docData;
         newDoc.numberOrdering = [NSNumber numberWithInteger:matches.count];
         newDoc.repository = [Repository createNewRepositoryWithName:repositoryName inContext:context];
-    }
-    
-    return newDoc;
-}
-*/
-
-+(Document*)createNewDocumentWithData:(NSData*)docData BigImageData:(NSData*) bigData name:(NSString*)name Repository:(NSString*)repositoryName inContext:(NSManagedObjectContext *)context {
-    Document *newDoc = nil;
-    
-    //count all documents
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Document"];
-    
-    NSError *error;
-    NSArray *matches = [context executeFetchRequest:request error:&error];
-    
-    
-    
-    
-    if(!matches || error){
-        NSLog(@"Can't get matches");
-    } else {
-        
-        newDoc = [NSEntityDescription insertNewObjectForEntityForName:@"Document" inManagedObjectContext:context];
-        newDoc.name = name;
-        newDoc.dataDocumnet = docData;
-        newDoc.numberOrdering = [NSNumber numberWithInteger:matches.count];
-        newDoc.repository = [Repository createNewRepositoryWithName:repositoryName inContext:context];
+ 
+        newDoc.bigImageData = nil;
     }
     
     return newDoc;

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15E33e" minimumToolsVersion="Automatic">
+    <entity name="DataImageOfDocument" representedClassName="DataImageOfDocument" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
+        <relationship name="document" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Document" inverseName="bigImageData" inverseEntity="Document" syncable="YES"/>
+    </entity>
     <entity name="Document" representedClassName="Document" syncable="YES">
         <attribute name="dataDocumnet" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="numberOrdering" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="bigImageData" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ImageData" inverseName="document" inverseEntity="ImageData" syncable="YES"/>
+        <relationship name="bigImageData" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataImageOfDocument" inverseName="document" inverseEntity="DataImageOfDocument" syncable="YES"/>
         <relationship name="repository" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Repository" inverseName="documents" inverseEntity="Repository" syncable="YES"/>
-    </entity>
-    <entity name="ImageData" representedClassName="ImageData" parentEntity="Document" syncable="YES">
-        <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
-        <relationship name="document" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Document" inverseName="bigImageData" inverseEntity="Document" syncable="YES"/>
     </entity>
     <entity name="Repository" representedClassName="Repository" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -18,7 +18,7 @@
     </entity>
     <elements>
         <element name="Document" positionX="52" positionY="-87" width="128" height="118"/>
-        <element name="Repository" positionX="-279" positionY="-72" width="128" height="88"/>
-        <element name="ImageData" positionX="7" positionY="-198" width="128" height="73"/>
+        <element name="Repository" positionX="-135" positionY="-243" width="128" height="88"/>
+        <element name="DataImageOfDocument" positionX="261" positionY="125" width="128" height="73"/>
     </elements>
 </model>

@@ -131,6 +131,7 @@
 //  Если совпадает с уже существующим - ничего не делаем? завершаем режим правки
 // Если имя не уникальное предлагет выбрать из предложенного или ввести заново
 -(void)newNameEnteredByUser{
+
     self.textFildDocumetnName.textColor = [UIColor darkTextColor];
     //check symbol spase at the end. if is - remove it
     NSString *userOfferedName = [self checkAndRemoveSpasesAtTheEndOfString:self.textFildDocumetnName.text];
@@ -144,11 +145,14 @@
         if([offeredByCoordinatorStr isEqualToString:userOfferedName]){
             self.documentName = userOfferedName;
             if(oldDocumetName){ //if not nel - was existing repostory
-                //[self.coordinatorCoreDate changeNameRepositoryFrom:oldRepositoryName To:self.nameRepository];
-               // NSLog(@"Name repository was chnged");
+
             } else { //create ne repository
+               
                 self.document =[self.coordinatorCoreDate addNewDocumentWith:self.imageView.image name:self.documentName andRepositoryName:self.nameRepository];
-                //[self.coordinatorCoreDate addNewRepository:self.nameRepository];
+                /* ... Do whatever you need to do ... */
+                
+                                
+
             }
         } else { //if Yes - show allert controller to change it name
             self.textFildDocumetnName.text = offeredByCoordinatorStr;
@@ -238,7 +242,12 @@
         [self setupPickerView];
     } else {
         [self setupEditViews];
-        self.imageView.image = [UIImage imageWithData:self.document.dataDocumnet];
+        if(self.document.bigImageData){ //if there is big data, strored - ok run it
+            self.imageView.image = [UIImage imageWithData:self.document.bigImageData.data];
+        } else { //if no use scaled version
+            self.imageView.image = [UIImage imageWithData:self.document.dataDocumnet];
+        }
+        
     }
     self.textFildDocumetnName.delegate = self;
     

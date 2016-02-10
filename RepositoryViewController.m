@@ -100,8 +100,12 @@
 
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"cellForRowAtIndexPath");
-    NSLog(@"Fetched doc's %@",self.coordinatorCoreDate.docFetchController.fetchedObjects);
+
+    //NSLog(@"Fetched doc's %@",self.coordinatorCoreDate.docFetchController.fetchedObjects);
+    Document* doc = [self.coordinatorCoreDate.docFetchController.fetchedObjects firstObject];
+    NSLog(@"Fetched doc's %@",doc.repository.name);
+    
+    
     UITableViewCell *cell = [self.tableViewDocuments dequeueReusableCellWithIdentifier:@"DocumentCell"];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCellGesturRecogniser:)];
     [cell addGestureRecognizer:tapGesture];
@@ -201,7 +205,8 @@
     if (self.coordinatorCoreDate.docFetchController && [[self.coordinatorCoreDate.docFetchController sections] count] > 0) {
         id <NSFetchedResultsSectionInfo> sectionInfo = [[self.coordinatorCoreDate.docFetchController sections] objectAtIndex:section];
         rows = [sectionInfo numberOfObjects]+1;
-                NSLog(@"Fetched doc's %@",self.coordinatorCoreDate.docFetchController.fetchedObjects);
+        Document* doc = [self.coordinatorCoreDate.docFetchController.fetchedObjects firstObject];
+                NSLog(@"Fetched doc's %@",doc.repository.name);
     }
     return rows;
 }

@@ -1,5 +1,5 @@
 //
-//  ImageData+CoreDataProperties.h
+//  DataImageOfDocument+CoreDataProperties.m
 //  PatrialTwo
 //
 //  Created by Serge Sychov on 10.02.16.
@@ -9,15 +9,11 @@
 //  to delete and recreate this implementation file for your updated model.
 //
 
-#import "ImageData.h"
+#import "DataImageOfDocument+CoreDataProperties.h"
 
-NS_ASSUME_NONNULL_BEGIN
+@implementation DataImageOfDocument (CoreDataProperties)
 
-@interface ImageData (CoreDataProperties)
-
-@property (nullable, nonatomic, retain) NSData *data;
-@property (nullable, nonatomic, retain) Document *document;
+@dynamic data;
+@dynamic document;
 
 @end
-
-NS_ASSUME_NONNULL_END

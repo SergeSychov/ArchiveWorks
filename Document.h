@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class ImageData, Repository;
+@class DataImageOfDocument, Repository;
 
 NS_ASSUME_NONNULL_BEGIN
 

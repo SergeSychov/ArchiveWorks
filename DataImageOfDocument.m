@@ -1,16 +1,15 @@
 //
-//  Document.m
+//  DataImageOfDocument.m
 //  PatrialTwo
 //
 //  Created by Serge Sychov on 10.02.16.
 //  Copyright © 2016 Sergey Sychov. All rights reserved.
 //
 
-#import "Document.h"
 #import "DataImageOfDocument.h"
-#import "Repository.h"
+#import "Document.h"
 
-@implementation Document
+@implementation DataImageOfDocument
 
 // Insert code here to add functionality to your managed object subclass
 

@@ -1,5 +1,5 @@
 //
-//  ImageData.h
+//  DataImageOfDocument.h
 //  PatrialTwo
 //
 //  Created by Serge Sychov on 10.02.16.
@@ -7,16 +7,18 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Document.h"
+#import <CoreData/CoreData.h>
+
+@class Document;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ImageData : Document
-+(ImageData*)createNewDatawith:(NSData*)data inContext:(NSManagedObjectContext*)context;
+@interface DataImageOfDocument : NSManagedObject
+
 // Insert code here to declare functionality of your managed object subclass
 
 @end
 
 NS_ASSUME_NONNULL_END
 
-#import "ImageData+CoreDataProperties.h"
+#import "DataImageOfDocument+CoreDataProperties.h"
