@@ -25,6 +25,58 @@
 @end
 
 @implementation DocumnetViewController
+#pragma mark VIEW DID LOAD
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self checkNameDocument];
+    if(!self.document){
+        [self setupPickerView];
+    } else {
+        [self setupEditViews];
+        if(self.document.bigImageData){ //if there is big data, strored - ok run it
+            self.imageView.image = [UIImage imageWithData:self.document.bigImageData.data];
+        } else { //if no use scaled version
+            self.imageView.image = [UIImage imageWithData:self.document.dataDocumnet];
+        }
+        
+    }
+    self.textFildDocumetnName.delegate = self;
+    
+    
+    [[NSNotificationCenter defaultCenter]   addObserver:self
+                                               selector:@selector(appDidGoToBackground)
+                                                   name:UIApplicationDidEnterBackgroundNotification
+                                                 object:[UIApplication sharedApplication]];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidHide:)
+                                                 name:UIKeyboardDidHideNotification
+                                               object:nil];
+    
+    
+    
+    // Do any additional setup after loading the view.
+}
+-(void) appDidGoToBackground
+{
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
+
+- (void)keyboardDidHide: (NSNotification *) notif{
+    // Do something here
+    [self userDidEndEditOrNotBegunEdit];
+}
+
+
+-(void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:[UIApplication sharedApplication]];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:[UIApplication sharedApplication]];
+}
+
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
 #pragma mark INITIAL SETUP
 -(void) setDocument:(Document *)document{
     _document = document;
@@ -89,15 +141,25 @@
         [self.coordinatorCoreDate deleteDocumetn:self.document];
     }];
 }
+- (IBAction)rotationButtonTaped:(id)sender {
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.imageView.transform = CGAffineTransformMakeRotation(M_PI_2);
+    } completion:^(BOOL finished) {
+        [self.coordinatorCoreDate rotateImageofDocument:self.document];
+    }];
+}
 
-#pragma mark SET EDIT OR PICKERS VIEWS
 
-#pragma mark SETTERS
-
-
+/*
 -(void) setCoordinatorCoreDate:(CoordinatorCoreDate *)coordinatorCoreDate{
     _coordinatorCoreDate = coordinatorCoreDate;
     //_coordinatorCoreDate.delegatedByDocuments = self;
+}
+*/
+#pragma mark SCROLL VIEW DELEGATE
+-(UIView*)viewForZoomingInScrollView:(UIScrollView *)scrollView{
+    return self.imageView;
 }
 #pragma mark COORDINATOR DELEGATE
 -(NSString*)documentsRepositoryName{
@@ -105,6 +167,7 @@
 }
 
 #pragma IMAGE PICKER DELEGATE
+//получаем картинки и идем присваивать имя - документ пока не создаем
 -(void) imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     UIImage *image = info[UIImagePickerControllerOriginalImage];
     [self.imageView setImage:image];
@@ -169,10 +232,7 @@
                                                                     preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                                   handler:^(UIAlertAction * action) {[self newNameEnteredByUser];}];
-            /*
-            UIAlertAction* enterOtherNameAction = [UIAlertAction actionWithTitle:@"Ввести другое имя раздела" style:UIAlertActionStyleDefault
-                                                                         handler:^(UIAlertAction * action) {[self enterAnotherName];}];
-            */
+
             UIAlertAction* enterOtherNameAction = [UIAlertAction actionWithTitle:@"Ввести другое имя раздела" style:UIAlertActionStyleDefault
                                                                          handler:^(UIAlertAction * action) {[self enterAnotherName];}];
             
@@ -239,68 +299,8 @@
 }
 
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self checkNameDocument];
-    if(!self.document){
-        [self setupPickerView];
-    } else {
-        [self setupEditViews];
-        if(self.document.bigImageData){ //if there is big data, strored - ok run it
-            self.imageView.image = [UIImage imageWithData:self.document.bigImageData.data];
-        } else { //if no use scaled version
-            self.imageView.image = [UIImage imageWithData:self.document.dataDocumnet];
-        }
-        
-    }
-    self.textFildDocumetnName.delegate = self;
-    
-
-    [[NSNotificationCenter defaultCenter]   addObserver:self
-                                               selector:@selector(appDidGoToBackground)
-                                                   name:UIApplicationDidEnterBackgroundNotification
-                                                 object:[UIApplication sharedApplication]];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidHide:)
-                                                 name:UIKeyboardDidHideNotification
-                                               object:nil];
-    
 
 
-    // Do any additional setup after loading the view.
-}
-#pragma mark SCROLL VIEW DELEGATE
--(UIView*)viewForZoomingInScrollView:(UIScrollView *)scrollView{
-    return self.imageView;
-}
--(void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:[UIApplication sharedApplication]];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:[UIApplication sharedApplication]];
-}
-
--(void) appDidGoToBackground
-{
-   [self dismissViewControllerAnimated:NO completion:nil];
-}
-
-- (void)keyboardDidHide: (NSNotification *) notif{
-    // Do something here
-    [self userDidEndEditOrNotBegunEdit];
-}
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 -(NSString*)checkAndRemoveSpasesAtTheEndOfString:(NSString*)inputStr{
     NSString *outStr = @"";
     if([[inputStr substringFromIndex:(inputStr.length-1)] isEqualToString:@" "]){

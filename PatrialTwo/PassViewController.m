@@ -7,7 +7,7 @@
 //
 
 #import "PassViewController.h"
-static NSString* notPasswordYet;
+static NSString* notPasswordYet; //строка для промежуточного пароля/ Юзер ввел первый раз = ждем повторого введения пароля
 
 
 NSString *const Pass = @"Pass";
@@ -16,40 +16,42 @@ NSString *const Pass = @"Pass";
 @property (weak, nonatomic) IBOutlet UILabel *askingLabel;
 @property (weak, nonatomic) IBOutlet UILabel *labelPassTipingView;
 
-@property (nonatomic) NSString* passwordString;
-//@property (nonatomic) NSString *notPasswordYet;
-@property (nonatomic) NSString* workString;
+@property (nonatomic) NSString* passwordString; //сам пароль? при первом входе nil.от него и пляшем
+
+@property (nonatomic) NSString* workString; //рабочая строка для проверки пароля
 
 @end
 
 @implementation PassViewController
+#pragma mark VIEW DID LOAD
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    //NSUbiquitousKeyValueStore *cloudStore = [NSUbiquitousKeyValueStore defaultStore];
+    //self.passwordString = [cloudStore objectForKey:@"myString"]? [cloudStore objectForKey:@"myString"]: nil;
+    
+    //or
+    //паорль из дефолта
+    self.passwordString = [[NSUserDefaults standardUserDefaults] valueForKey:Pass]?
+    [[NSUserDefaults standardUserDefaults] valueForKey:Pass]:nil; //если не в дефолте, не было пароля - nil
+    
 
-
--(void)setWorkString:(NSString *)workString
-{
-    _workString = workString;
-    if(_workString.length == 4){
-        if(self.passwordString){ //если пароль уже задан
-            if([_workString isEqualToString:self.passwordString]){
-                [self insertedCorrectPass];
-            } else {
-                [self insetredNotCorrectPass];
-            }
-        } else if(notPasswordYet.length == 4){
-            if([_workString isEqualToString:notPasswordYet]){
-                [[NSUserDefaults standardUserDefaults] setValue: notPasswordYet forKey:Pass];
-                [self insertedCorrectPass];
-            } else {
-                [self notConfirmedInput];
-            }
-        } else {
-            notPasswordYet = _workString;
-            self.askingLabel.text = @"Подтвердите введенный пароль";
-            self.labelPassTipingView.text = @"";
-            _workString = @"";
-        }
+    if(!self.passwordString){
+        self.askingLabel.text = @"Для работы с архивом создайте пароль";
+    } else {
+        self.askingLabel.text = @"Введите пароль";
     }
+    self.labelPassTipingView.text = @"";
+    
+    self.workString = @"";
+    // Do any additional setup after loading the view.
 }
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark BUTTON TAPED ACTION AN REACTION
 
 - (IBAction)buttonTapped:(UIButton *)sender {
     NSString* symbolString = sender.titleLabel.text;
@@ -62,11 +64,39 @@ NSString *const Pass = @"Pass";
             self.labelPassTipingView.text = [self.labelPassTipingView.text substringToIndex:self.labelPassTipingView.text.length-1];
         }
     } else {
-         self.labelPassTipingView.text = [self.labelPassTipingView.text stringByAppendingString:@"*"];
+        self.labelPassTipingView.text = [self.labelPassTipingView.text stringByAppendingString:@"*"];
         self.workString = [self.workString stringByAppendingString:symbolString];
-       
+        
     }
 }
+
+//!проверочная функция
+-(void)setWorkString:(NSString *)workString
+{
+    _workString = workString;
+    if(_workString.length == 4){//только после введения 4 символов
+        if(self.passwordString){ //если пароль уже задан
+            if([_workString isEqualToString:self.passwordString]){ //проверка существующего пароля
+                [self insertedCorrectPass];
+            } else {
+                [self insetredNotCorrectPass];
+            }
+        } else if(notPasswordYet.length == 4){
+            if([_workString isEqualToString:notPasswordYet]){ //установка пароля
+                [[NSUserDefaults standardUserDefaults] setValue: notPasswordYet forKey:Pass];
+                [self insertedCorrectPass];
+            } else {
+                [self notConfirmedInput]; //не
+            }
+        } else {
+            notPasswordYet = _workString;
+            self.askingLabel.text = @"Подтвердите введенный пароль";
+            self.labelPassTipingView.text = @"";
+            _workString = @"";
+        }
+    }
+}
+
 
 -(void) insertedCorrectPass{
     [self dismissViewControllerAnimated:YES completion:nil];
@@ -104,30 +134,6 @@ NSString *const Pass = @"Pass";
     [self presentViewController:alert animated:YES completion:nil];
 }
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    //NSUbiquitousKeyValueStore *cloudStore = [NSUbiquitousKeyValueStore defaultStore];
-    //self.passwordString = [cloudStore objectForKey:@"myString"]? [cloudStore objectForKey:@"myString"]: nil;
-    
-    //or
-    self.passwordString = [[NSUserDefaults standardUserDefaults] valueForKey:Pass]?
-    [[NSUserDefaults standardUserDefaults] valueForKey:Pass]:nil;
-    
-    if(!self.passwordString){
-        self.askingLabel.text = @"Для работы с архивом создайте пароль";
-    } else {
-        self.askingLabel.text = @"Введите пароль";
-    }
-    self.labelPassTipingView.text = @"";
-    
-    self.workString = @"";
-    // Do any additional setup after loading the view.
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 /*
 #pragma mark - Navigation

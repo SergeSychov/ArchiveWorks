@@ -11,7 +11,11 @@
 @implementation UIImage (UIimage_resize)
 
 -(UIImage*) scaledImage:(UIImage*)img ToRatio:(CGFloat)ratio{
+    
+    //изменяем картинки до необходимого размера
+    //надо будет поменять в зависимости от пришдших - пока просто уменьшение
     CGSize inputSize = img.size;
+    NSLog(@"ImageSize inputSize.width: %f, inputSize.height:%f",inputSize.width,inputSize.height );
     CGSize newSize;
     newSize.width = inputSize.width*ratio;
     newSize.height = inputSize.height*ratio;

@@ -29,7 +29,6 @@
 		5052AE261C66C04800A64A51 /* CoordinatorCoreDate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE251C66C04800A64A51 /* CoordinatorCoreDate.m */; };
 		5052AE2A1C67358700A64A51 /* PlusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE291C67358700A64A51 /* PlusButton.m */; };
 		5052AE2D1C6768AF00A64A51 /* RepositoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE2C1C6768AF00A64A51 /* RepositoryViewController.m */; };
-		5052AE761C68400500A64A51 /* HorizontalScrollerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE751C68400500A64A51 /* HorizontalScrollerView.m */; };
 		5052AE791C687E8400A64A51 /* DocumnetViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052AE781C687E8400A64A51 /* DocumnetViewController.m */; };
 		5054280C1C6B435C004017D1 /* UIImage+UIimage_resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 5054280B1C6B435C004017D1 /* UIImage+UIimage_resize.m */; };
 		505428271C6BBDC2004017D1 /* Camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 505428251C6BBDC2004017D1 /* Camera.png */; };
@@ -91,19 +90,17 @@
 		5052ADFB1C65DEE000A64A51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5052AE1C1C668D2000A64A51 /* PassViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PassViewController.h; sourceTree = "<group>"; };
 		5052AE1D1C668D2000A64A51 /* PassViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PassViewController.m; sourceTree = "<group>"; };
-		5052AE231C66BCF900A64A51 /* PatrialTwo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PatrialTwo.entitlements; sourceTree = "<group>"; };
+		5052AE231C66BCF900A64A51 /* PatrialTwo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = PatrialTwo.entitlements; path = PatrialTwo/PatrialTwo.entitlements; sourceTree = "<group>"; };
 		5052AE241C66C04800A64A51 /* CoordinatorCoreDate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoordinatorCoreDate.h; sourceTree = "<group>"; };
 		5052AE251C66C04800A64A51 /* CoordinatorCoreDate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoordinatorCoreDate.m; sourceTree = "<group>"; };
 		5052AE281C67358700A64A51 /* PlusButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlusButton.h; sourceTree = "<group>"; };
 		5052AE291C67358700A64A51 /* PlusButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlusButton.m; sourceTree = "<group>"; };
 		5052AE2B1C6768AF00A64A51 /* RepositoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RepositoryViewController.h; path = ../RepositoryViewController.h; sourceTree = "<group>"; };
 		5052AE2C1C6768AF00A64A51 /* RepositoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RepositoryViewController.m; path = ../RepositoryViewController.m; sourceTree = "<group>"; };
-		5052AE741C68400500A64A51 /* HorizontalScrollerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HorizontalScrollerView.h; sourceTree = "<group>"; };
-		5052AE751C68400500A64A51 /* HorizontalScrollerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HorizontalScrollerView.m; sourceTree = "<group>"; };
 		5052AE771C687E8300A64A51 /* DocumnetViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumnetViewController.h; sourceTree = "<group>"; };
 		5052AE781C687E8400A64A51 /* DocumnetViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumnetViewController.m; sourceTree = "<group>"; };
-		5054280A1C6B435C004017D1 /* UIImage+UIimage_resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+UIimage_resize.h"; sourceTree = "<group>"; };
-		5054280B1C6B435C004017D1 /* UIImage+UIimage_resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+UIimage_resize.m"; sourceTree = "<group>"; };
+		5054280A1C6B435C004017D1 /* UIImage+UIimage_resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+UIimage_resize.h"; path = "PatrialTwo/UIImage+UIimage_resize.h"; sourceTree = "<group>"; };
+		5054280B1C6B435C004017D1 /* UIImage+UIimage_resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+UIimage_resize.m"; path = "PatrialTwo/UIImage+UIimage_resize.m"; sourceTree = "<group>"; };
 		505428251C6BBDC2004017D1 /* Camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Camera.png; sourceTree = "<group>"; };
 		505428261C6BBDC2004017D1 /* Photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Photo.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -143,8 +140,6 @@
 				35F5601B1C6BAD7600C89909 /* DataImageOfDocument+patrial.h */,
 				35F5601C1C6BAD7600C89909 /* DataImageOfDocument+patrial.m */,
 				35F55FBF1C65EB0800C89909 /* automaticCreated */,
-				5052AE241C66C04800A64A51 /* CoordinatorCoreDate.h */,
-				5052AE251C66C04800A64A51 /* CoordinatorCoreDate.m */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -171,6 +166,17 @@
 		5052ADC51C65DEE000A64A51 = {
 			isa = PBXGroup;
 			children = (
+				5052AE241C66C04800A64A51 /* CoordinatorCoreDate.h */,
+				5052AE251C66C04800A64A51 /* CoordinatorCoreDate.m */,
+				5054280A1C6B435C004017D1 /* UIImage+UIimage_resize.h */,
+				5054280B1C6B435C004017D1 /* UIImage+UIimage_resize.m */,
+				5052ADDA1C65DEE000A64A51 /* Main.storyboard */,
+				5052AE231C66BCF900A64A51 /* PatrialTwo.entitlements */,
+				5052AE201C668D4A00A64A51 /* PassController */,
+				5052AE1F1C668D3700A64A51 /* MainController */,
+				5052AE2E1C676FF800A64A51 /* RepositoryController */,
+				5052AE7A1C687E9500A64A51 /* DocumentViewController */,
+				5052AE271C67355600A64A51 /* Views */,
 				35F55FBE1C65EADC00C89909 /* CoreData */,
 				5052ADD01C65DEE000A64A51 /* PatrialTwo */,
 				5052ADED1C65DEE000A64A51 /* PatrialTwoTests */,
@@ -192,15 +198,6 @@
 		5052ADD01C65DEE000A64A51 /* PatrialTwo */ = {
 			isa = PBXGroup;
 			children = (
-				5052ADDA1C65DEE000A64A51 /* Main.storyboard */,
-				5054280A1C6B435C004017D1 /* UIImage+UIimage_resize.h */,
-				5054280B1C6B435C004017D1 /* UIImage+UIimage_resize.m */,
-				5052AE231C66BCF900A64A51 /* PatrialTwo.entitlements */,
-				5052AE201C668D4A00A64A51 /* PassController */,
-				5052AE1F1C668D3700A64A51 /* MainController */,
-				5052AE2E1C676FF800A64A51 /* RepositoryController */,
-				5052AE7A1C687E9500A64A51 /* DocumentViewController */,
-				5052AE271C67355600A64A51 /* Views */,
 				5052ADE01C65DEE000A64A51 /* Assets.xcassets */,
 				5052ADE21C65DEE000A64A51 /* LaunchScreen.storyboard */,
 				5052ADE51C65DEE000A64A51 /* Info.plist */,
@@ -245,6 +242,7 @@
 				5052ADD81C65DEE000A64A51 /* ViewController.m */,
 			);
 			name = MainController;
+			path = PatrialTwo;
 			sourceTree = "<group>";
 		};
 		5052AE201C668D4A00A64A51 /* PassController */ = {
@@ -254,6 +252,7 @@
 				5052AE1D1C668D2000A64A51 /* PassViewController.m */,
 			);
 			name = PassController;
+			path = PatrialTwo;
 			sourceTree = "<group>";
 		};
 		5052AE271C67355600A64A51 /* Views */ = {
@@ -265,6 +264,7 @@
 				5052AE291C67358700A64A51 /* PlusButton.m */,
 			);
 			name = Views;
+			path = PatrialTwo;
 			sourceTree = "<group>";
 		};
 		5052AE2E1C676FF800A64A51 /* RepositoryController */ = {
@@ -272,10 +272,9 @@
 			children = (
 				5052AE2B1C6768AF00A64A51 /* RepositoryViewController.h */,
 				5052AE2C1C6768AF00A64A51 /* RepositoryViewController.m */,
-				5052AE741C68400500A64A51 /* HorizontalScrollerView.h */,
-				5052AE751C68400500A64A51 /* HorizontalScrollerView.m */,
 			);
 			name = RepositoryController;
+			path = PatrialTwo;
 			sourceTree = "<group>";
 		};
 		5052AE7A1C687E9500A64A51 /* DocumentViewController */ = {
@@ -285,6 +284,7 @@
 				5052AE781C687E8400A64A51 /* DocumnetViewController.m */,
 			);
 			name = DocumentViewController;
+			path = PatrialTwo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -437,7 +437,6 @@
 				5052ADD61C65DEE000A64A51 /* AppDelegate.m in Sources */,
 				5052AE2A1C67358700A64A51 /* PlusButton.m in Sources */,
 				5052ADDF1C65DEE000A64A51 /* PatrialTwo.xcdatamodeld in Sources */,
-				5052AE761C68400500A64A51 /* HorizontalScrollerView.m in Sources */,
 				35F560161C6BAD2E00C89909 /* DataImageOfDocument.m in Sources */,
 				35F560151C6BAD2E00C89909 /* DataImageOfDocument+CoreDataProperties.m in Sources */,
 				5052ADD31C65DEE000A64A51 /* main.m in Sources */,
@@ -486,6 +485,7 @@
 				5052ADDB1C65DEE000A64A51 /* Base */,
 			);
 			name = Main.storyboard;
+			path = PatrialTwo;
 			sourceTree = "<group>";
 		};
 		5052ADE21C65DEE000A64A51 /* LaunchScreen.storyboard */ = {

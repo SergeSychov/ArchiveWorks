@@ -16,133 +16,6 @@
 @end
 
 @implementation CoordinatorCoreDate
-#pragma mark PUBLI FUNCs
--(Repository*)addNewRepository:(NSString *)nameRepository {
-    Repository* returRepository = [Repository createNewRepositoryWithName:nameRepository inContext:self.managedContext];
-    if(returRepository){
-        NSLog(@"New Repository was created succesefully");
-    } else {
-       // NSLog(@"Can't create new repository");
-    }
-    //renew documetnFetch according doccument in exactly repository
-    //[self resetDocumetFetchResultController];
-    return returRepository;
-}
-
--(Document*) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository{
-    NSDate *methodStartMain = [NSDate date];
-    
-    
-    NSDate *methodFinishMain = [NSDate date];
-    
-    NSTimeInterval executionTimeMine = [methodFinishMain timeIntervalSinceDate:methodStartMain];
-    NSLog(@"executionTime = %f", executionTimeMine);
-    
-    
-     NSDate *methodStart = [NSDate date];
-    
-    NSData *imageData = UIImagePNGRepresentation([image scaledImage:image ToRatio:0.1]);
-    
-    NSDate *methodFinish = [NSDate date];
-    NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
-    NSLog(@"executionTime = %f", executionTime);
-
-    
-    Document *doc = nil;
-    //doc = [Document createNewDocumentWithData:imageData name:name Repository:nameRepository inContext:self.managedContext];
-    NSDate *methodStartThree = [NSDate date];
-    doc = [Document createNewDocumentWithData:imageData name:name Repository:nameRepository inContext:self.managedContext];
-    NSDate *methodFinishThree = [NSDate date];
-    NSTimeInterval executionTimeThree = [methodFinishThree timeIntervalSinceDate:methodStartThree];
-    NSLog(@"executionTime = %f", executionTimeThree);
-
-    if(doc){
-        NSLog(@"New Document was created succesefully with repository name: %@", doc.repository.name);
-    } else {
-        //NSLog(@"Can't create new Document");
-    }
-
-
-    return doc;
-}
-
--(void) bigImageData:(UIImage*)image ofDocument:(Document*)doc{
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSData *originalImageData = UIImagePNGRepresentation([image scaledImage:image ToRatio:1]);
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [DataImageOfDocument createNewDataImageOfDocumentwith:originalImageData Document:doc inContext:self.managedContext];
-        });
-
-    });
-}
-
--(void) changeNameRepositoryFrom:(NSString*)fromStr To:(NSString*)toStr{
-    Repository *repositoryWithNameFromStr = nil;
-    for(Repository *rep in self.repFetchController.fetchedObjects){
-        if([rep.name isEqualToString:fromStr]){
-            repositoryWithNameFromStr = rep;
-            break;
-        }
-    }
-    
-    NSError *error;
-    if(repositoryWithNameFromStr){
-        repositoryWithNameFromStr.name = toStr;
-        if([self.repFetchController performFetch:&error]){
-           // NSLog(@"Ok changes is done");
-        } else {
-          //  NSLog(@"Repository finded but changes not implement");
-        }
-    } else {
-       // NSLog(@"Repository not finded");
-    }
-    //renew documetnFetch according doccument in exactly repository
-    //[self resetDocumetFetchResultController];
-}
-
--(NSString*)getPossibleDocumentNameWithInitial:(NSString*)initStr{
-     return [self getPossibleNameWithInitial:initStr onEntity:@"Document"];
-}
-
--(NSString*)getPossibleRepositoryNameWithInitial:(NSString*)initStr {
-    
-    return [self getPossibleNameWithInitial:initStr onEntity:@"Repository"];
-}
--(NSString*)getPossibleNameWithInitial:(NSString*)initStr onEntity:(NSString*)entityName {
-    NSString *retStr = initStr;
-    while ([self isEntity:entityName HasName:retStr]) {
-        NSString* numberedString = [retStr substringFromIndex:(initStr.length)];
-        NSInteger intFromStr = [numberedString integerValue];
-        intFromStr++;
-        retStr = [initStr stringByAppendingString:[@" " stringByAppendingString:[@(intFromStr) stringValue]]];
-    }
-    return retStr;
-}
-// test
-
--(BOOL) isEntity:(NSString*)entityName HasName:(NSString*)str
-{
-    NSFetchRequest *request;
-
-    request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [NSPredicate predicateWithFormat:@"name = %@", str];
-
-    NSError *error;
-    NSArray *matches = [self.managedContext executeFetchRequest:request error:&error];
-    if([matches count]>0) {
-        return YES;
-    } else {
-        return NO;
-    }
-}
--(void) deleteDocumetn:(Document*)document{
-    [self.managedContext deleteObject:document];
-}
--(void) deleteRepository:(Repository*)repository{
-    [self.managedContext deleteObject:repository];
-}
-
 #pragma mark OVERRIDED INITIALISATION
 -(void) awakeFromNib
 {
@@ -158,12 +31,12 @@
     return self;
 }
 
+//открываем/создаем Манаджет документ
+//open or create NSManagedDocumets, FetchedControllers, as results: setup public arrays and ask to renew catchers
 -(void) setup {
-    //open or create NSManagedDocumets, FetchedControllers, as results: setup public arrays and ask to renew catchers
     
-
     NSURL *documentsDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory
-                                                     inDomains:NSUserDomainMask] lastObject];
+                                                                        inDomains:NSUserDomainMask] lastObject];
     NSString* documentName = @"ArchiveDocumetn";
     
     NSURL *localStoreUrl =  [documentsDirectory URLByAppendingPathComponent:documentName];
@@ -182,7 +55,7 @@
             if (success){
                 [self documentIsReady: document];
             } else {
-                  NSLog(@"Not succes with open");
+                NSLog(@"Not succes with open");
             }
         }];
     } else {
@@ -191,7 +64,7 @@
               if (success) {
                   [self documentIsReady: document];
               } else {
-                     NSLog(@"Not succes with create and save");
+                  NSLog(@"Not succes with create and save");
               }
           }];
     }
@@ -216,19 +89,192 @@
         request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"naumberOrdein" ascending:YES]];
         //setup repositoryes controller at start
         self.repFetchController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                                                            managedObjectContext:document.managedObjectContext
-                                                                              sectionNameKeyPath:nil
+                                                                      managedObjectContext:document.managedObjectContext
+                                                                        sectionNameKeyPath:nil
                                                                                  cacheName:@"cacheRepFetchcontroller"];
         
         
-        //documents fetch controller will setup at hase Delegate
-
-       
+        //documents fetch controller will setup at have Delegate
         
+
     } else {
         NSLog(@"Document state %lu", (unsigned long)document.documentState);
     }
 }
+
+#pragma mark PUBLI FUNCs
+
+//создание новой картотеки
+-(Repository*)addNewRepository:(NSString *)nameRepository {
+    Repository* returRepository = [Repository createNewRepositoryWithName:nameRepository inContext:self.managedContext];
+    if(returRepository){
+        NSLog(@"New Repository was created succesefully");
+    } else {
+
+    }
+    return returRepository;
+}
+//создание нового документа
+-(Document*) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository{
+    NSDate *methodStartMain = [NSDate date];
+    
+    
+    NSDate *methodFinishMain = [NSDate date];
+    
+    NSTimeInterval executionTimeMine = [methodFinishMain timeIntervalSinceDate:methodStartMain];
+    NSLog(@"executionTime = %f", executionTimeMine);
+    
+    
+     NSDate *methodStart = [NSDate date];
+    
+    NSData *imageData = UIImagePNGRepresentation([image scaledImage:image ToRatio:0.1]);
+    
+    NSDate *methodFinish = [NSDate date];
+    NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
+    NSLog(@"executionTime = %f", executionTime);
+
+    
+    Document *doc = nil;
+
+    NSDate *methodStartThree = [NSDate date];
+    doc = [Document createNewDocumentWithData:imageData name:name Repository:nameRepository inContext:self.managedContext];
+    NSDate *methodFinishThree = [NSDate date];
+    NSTimeInterval executionTimeThree = [methodFinishThree timeIntervalSinceDate:methodStartThree];
+    NSLog(@"executionTime = %f", executionTimeThree);
+
+    if(doc){
+        NSLog(@"New Document was created succesefully with repository name: %@", doc.repository.name);
+    } else {
+        //NSLog(@"Can't create new Document");
+    }
+
+
+    return doc;
+}
+
+//ассинхронно сохраняем оригинальное изображение в базеЮ доступ через ссылку
+-(void) bigImageData:(UIImage*)image ofDocument:(Document*)doc{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData *originalImageData = UIImagePNGRepresentation([image scaledImage:image ToRatio:1]);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [DataImageOfDocument createNewDataImageOfDocumentwith:originalImageData Document:doc inContext:self.managedContext];
+        });
+
+    });
+}
+
+//меняем название картотеки
+-(void) changeNameRepositoryFrom:(NSString*)fromStr To:(NSString*)toStr{
+    Repository *repositoryWithNameFromStr = nil;
+    for(Repository *rep in self.repFetchController.fetchedObjects){
+        if([rep.name isEqualToString:fromStr]){
+            repositoryWithNameFromStr = rep;
+            break;
+        }
+    }
+    
+    NSError *error;
+    if(repositoryWithNameFromStr){
+        repositoryWithNameFromStr.name = toStr;
+        if([self.repFetchController performFetch:&error]){
+           // NSLog(@"Ok changes is done");
+        } else {
+          //  NSLog(@"Repository finded but changes not implement");
+        }
+    } else {
+       // NSLog(@"Repository not finded");
+    }
+    //renew documetnFetch according doccument in exactly repository
+    [self resetDocumetFetchResultController];
+}
+
+//берем уникальную строчку
+//для картотеки документов
+//------------------------------------------
+-(NSString*)getPossibleDocumentNameWithInitial:(NSString*)initStr{
+     return [self getPossibleNameWithInitial:initStr onEntity:@"Document"];
+}
+//для архива
+-(NSString*)getPossibleRepositoryNameWithInitial:(NSString*)initStr {
+    
+    return [self getPossibleNameWithInitial:initStr onEntity:@"Repository"];
+}
+-(NSString*)getPossibleNameWithInitial:(NSString*)initStr onEntity:(NSString*)entityName {
+    NSString *retStr = initStr;
+    while ([self isEntity:entityName HasName:retStr]) {
+        NSString* numberedString = [retStr substringFromIndex:(initStr.length)];
+        NSInteger intFromStr = [numberedString integerValue];
+        intFromStr++;
+        retStr = [initStr stringByAppendingString:[@" " stringByAppendingString:[@(intFromStr) stringValue]]];
+    }
+    return retStr;
+}
+
+
+-(BOOL) isEntity:(NSString*)entityName HasName:(NSString*)str
+{
+    NSFetchRequest *request;
+
+    request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    request.predicate = [NSPredicate predicateWithFormat:@"name = %@", str];
+
+    NSError *error;
+    NSArray *matches = [self.managedContext executeFetchRequest:request error:&error];
+    if([matches count]>0) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+//-----------------------------------------------------------------------
+
+
+-(void) deleteDocumetn:(Document*)document{
+    [self.managedContext deleteObject:document];
+}
+-(void) deleteRepository:(NSString*)repositoryName{
+
+            NSFetchRequest *request;
+            
+            request = [NSFetchRequest fetchRequestWithEntityName:@"Repository"];
+            request.predicate = [NSPredicate predicateWithFormat:@"name = %@", repositoryName];
+            
+            NSError *error;
+            NSArray *matches = [self.managedContext executeFetchRequest:request error:&error];
+            
+            Repository *rep = (Repository*) [matches firstObject];
+            [self.managedContext deleteObject:rep];
+        [self.managedDocument updateChangeCount:UIDocumentChangeDone];
+
+}
+
+-(void) rotateImageofDocument:(Document*)document {
+    UIImage* scaledImage = [UIImage imageWithData:document.dataDocumnet];
+    UIImage* rotadedScaledImage = [[UIImage alloc] initWithCGImage: scaledImage.CGImage
+                                                       scale: 1.0
+                                                 orientation: UIImageOrientationRight];
+    
+    document.dataDocumnet = UIImagePNGRepresentation(rotadedScaledImage);
+    
+    UIImage* originalImage = [UIImage imageWithData:document.bigImageData.data];
+    document.bigImageData.data = nil;
+
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        UIImage * rotadedOriginalImage = [[UIImage alloc] initWithCGImage: originalImage.CGImage
+                                                             scale: 1.0
+                                                       orientation: UIImageOrientationRight];
+        NSData *rotadedOriginalImageData = UIImagePNGRepresentation(rotadedOriginalImage);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [DataImageOfDocument createNewDataImageOfDocumentwith:rotadedOriginalImageData Document:document inContext:self.managedContext];
+        });
+        
+    });
+    
+}
+
 
 #pragma mark SETTERS 
 

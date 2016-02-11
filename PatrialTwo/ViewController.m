@@ -22,31 +22,69 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *barButtonItem;
 @property (nonatomic,weak) RepositoryViewController *repViewController;
 
-//for checking fetchcontroller
-@property (nonatomic) NSMutableArray* testMutArray;
-
-
 @end
 
 @implementation ViewController
-
--(NSMutableArray*)testMutArray {
-    if(!_testMutArray){
-       _testMutArray = [[NSMutableArray alloc] initWithObjects:@"Паспорт",
-                                                                @"Снилс",
-                                                                @"Инн",
-                                                                @"Свидетельство",
-                                                                @"Документ",
-                                                                @"Права",
-                                                                @"Страховка",
-                                                                @"Диплом",
-                                                                @"Курсы",
-                                                                @"Дети",nil];
-    }
-    return _testMutArray;
+#pragma mark VIEW DID LOAD
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    //init coordinator
+    //все взаимодействие с коре дата (открытие документа, установка феч контроллеров, работа с объектами, обработка массивов
+    //все в нем
+    CoordinatorCoreDate *coordinatorCoreDate = [[CoordinatorCoreDate alloc] init];
+    coordinatorCoreDate.delegatedByRepository = self;
+    self.coordinatorCoreDate = coordinatorCoreDate;
+    
+    //to ask user pass each time as App appears
+    //пароль при каждом появлении
+    [[NSNotificationCenter defaultCenter]   addObserver:self
+                                               selector:@selector(appDidGoToForeground)
+                                                   name:UIApplicationDidBecomeActiveNotification
+                                                 object:[UIApplication sharedApplication]];
+    //при уходе в подвал - убираем все следующие контроллеры
+    // стартовать надо с этого - для верификации
+    [[NSNotificationCenter defaultCenter]   addObserver:self
+                                               selector:@selector(appDidGoToBackground)
+                                                   name:UIApplicationDidEnterBackgroundNotification
+                                                 object:[UIApplication sharedApplication]];
     
 }
+
+//вызываем контроллер пароля
+-(void) appDidGoToForeground {
+    
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    PassViewController *passViewController = [storyBoard instantiateViewControllerWithIdentifier:@"PassViewController"];
+    
+    
+    [self presentViewController:passViewController animated:NO completion:^{
+        nil;
+    }];
+    
+    
+}
+
+//удаляем рожденные контроллеры
+-(void) appDidGoToBackground
+{
+    if(self.repViewController){
+        [self.repViewController dismissViewControllerAnimated:NO completion:nil];
+    }
+}
+
+
+-(void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:[UIApplication sharedApplication]];
+    
+}
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
 #pragma mark ACTIONS
+//определяем строку - действие
 - (void)tapCellGesturRecogniser:(id)sender {
     CGPoint tapLocation = [sender locationInView:self.tableViewRepositories];
     NSIndexPath *indexPath = [self.tableViewRepositories indexPathForRowAtPoint:tapLocation];
@@ -59,34 +97,21 @@
         }
     }
 }
-- (IBAction)buttonEditDoneTapped:(UIButton *)sender {
-    
-    [self.tableViewRepositories setEditing:YES animated:YES];
-}
-#pragma mark CREATE NEW REPOSITORY
+
 - (IBAction)addBarrButtonTapped:(id)sender {
-    //------------- test ---------------------
-    if(self.testMutArray.count >0){
-        [self.coordinatorCoreDate addNewRepository:[self.testMutArray firstObject]];
-        [self.testMutArray removeObjectAtIndex:0];
-    } else {
-        NSLog(@"Mut array is empty");
-    }
-    //------------------------------------------
-    
-    //[self addNewPerpositoryButtonTapped:sender];
+    [self addNewPerpositoryButtonTapped:sender];
 }
 
 -(void)addNewPerpositoryButtonTapped:(id)sender{
-    NSLog(@"add new repositay button tapped");
     [self createNewRepository];
     
 }
 
 -(void) createNewRepository{
-    [self openRepositoryContrllerWithName:nil];
+    [self openRepositoryContrllerWithName:nil]; //создание новго хранилища, функция с nil
 }
 
+//открываем существующее хранилище с именем....
 -(void) openRepositoryContrllerWithName:(NSString* )name{
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     RepositoryViewController *repViewController = [storyBoard instantiateViewControllerWithIdentifier:@"RepositoryViewController"];
@@ -100,39 +125,14 @@
 }
 
 #pragma mark COORDINATOR DELEGATE
+//вызов перезагрузки таблвида при установке NSFetchRescontroller
 -(void) RepositoriesAreChanged {
-    NSInteger quant = self.coordinatorCoreDate.repFetchController.fetchedObjects.count;
-    @autoreleasepool {
-        
-       // NSLog(@"Repositories changed with quantity %ld",(long)quant);
-        if(quant > 0){
-            NSArray *repositories = self.coordinatorCoreDate.repFetchController.fetchedObjects;
-            for(Repository *rep in repositories){
-               NSLog(@"Obj: %@, order %@",rep.name, rep.naumberOrdein);
-                /*
-                NSSet *documents = rep.documents;
-                for ( Document *doc in documents){
-                    NSNumber *haveData = [NSNumber numberWithBool: doc.dataDocumnet? YES: NO];
-                    
-                    NSLog(@"   Doc: %@, repository %@, orderNumb: %@,has data %@",doc.nameDocument, doc.repository.nameRepository, doc.numberOrdering, haveData);
-
-                }
-                */
-
-            }
-        }
-        [NSFetchedResultsController deleteCacheWithName:@"cacheRepFetchcontroller"];
-        
-
-    }
-    
     [self.tableViewRepositories reloadData];
 }
 #pragma mark FETCHED CONTROLLER DELEGATE
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tableViewRepositories beginUpdates];
-    //make dictionary heights according number of row
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -169,9 +169,7 @@
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
-    
-    // NSLog(@"IndexPatch - %ld", (long)indexPath.row);
-    // NSLog(@"NewIndexPatch - %ld", (long)newIndexPath.row);
+
     switch(type)
     {
         case NSFetchedResultsChangeInsert:{
@@ -207,10 +205,11 @@
 #pragma mark TABLE VIEW DATA SOURSE
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"cellForRowAtIndexPath");
+
     UITableViewCell *cell = [self.tableViewRepositories dequeueReusableCellWithIdentifier:@"RepositoyCell"];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCellGesturRecogniser:)];
     [cell addGestureRecognizer:tapGesture];
+    //для последней строчки создаем отдельный вид, пустая с бутоном создания нового раздела
         if(indexPath.row == [tableView numberOfRowsInSection: 0] - 1){
             CGFloat defaultHeight = self.view.frame.size.height/13;
             PlusButton *addNewRepositoryButton = [[PlusButton alloc] init];
@@ -283,7 +282,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"heightForRowAtIndexPath");
+
     CGFloat height = self.view.frame.size.height/13;
     //for cell NEW repository set height to whole screen
     if (self.coordinatorCoreDate.repFetchController && [[self.coordinatorCoreDate.repFetchController sections] count] > 0){
@@ -296,67 +295,8 @@
     }
     return height;
 }
-#pragma mark TABLE VIEW DELEGATE
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return YES if you want the specified item to be editable.
-    if(indexPath.row < self.coordinatorCoreDate.repFetchController.fetchedObjects.count - 1){
-        return YES;
-    } else {
-        return NO;
-    }
-}
-//- tableView:editActionsForRowAtIndexPath:
-
-#pragma mark VIEW DID LOAD
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    //init coordinator
-    CoordinatorCoreDate *coordinatorCoreDate = [[CoordinatorCoreDate alloc] init];
-    coordinatorCoreDate.delegatedByRepository = self;
-    self.coordinatorCoreDate = coordinatorCoreDate;
-
-    //to ask user pass each time as App appears
-    [[NSNotificationCenter defaultCenter]   addObserver:self
-                                               selector:@selector(appDidGoToForeground)
-                                                   name:UIApplicationDidBecomeActiveNotification
-                                                 object:[UIApplication sharedApplication]];
-    [[NSNotificationCenter defaultCenter]   addObserver:self
-                                               selector:@selector(appDidGoToBackground)
-                                                   name:UIApplicationDidEnterBackgroundNotification
-                                                 object:[UIApplication sharedApplication]];
-    
-    // Do any additional setup after loading the view, typically from a nib.
-}
-
--(void) appDidGoToForeground {
-    /*
-    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-    PassViewController *passViewController = [storyBoard instantiateViewControllerWithIdentifier:@"PassViewController"];
-
-    
-    [self presentViewController:passViewController animated:NO completion:^{
-        nil;
-    }];
-    */
-
-}
--(void) appDidGoToBackground
-{
-    if(self.repViewController){
-        [self.repViewController dismissViewControllerAnimated:NO completion:nil];
-    }
-}
 
 
--(void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:[UIApplication sharedApplication]];
-     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:[UIApplication sharedApplication]];
 
-}
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end

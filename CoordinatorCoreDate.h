@@ -39,14 +39,6 @@
 @property (nonatomic) NSFetchedResultsController* repFetchController;
 @property (nonatomic) NSFetchedResultsController* docFetchController;
 
-//@property (nonatomic,strong,readonly) NSArray* repositories;
-//@property (nonatomic,strong,readonly) NSArray* documents;
-
-//-(void) addNewDocumentWith:(NSString*)name andData:(NSData*)data inRepository:(NSString*)nameRepository;
-//-(Document*) removeDocumentAtIndex:(NSInteger)index;
-//-(void) insertDocument:(Document*)doc atIndex:(NSInteger)index;
-
-
 -(void) changeNameRepositoryFrom:(NSString*)fromStr To:(NSString*)toStr;
 -(NSString*)getPossibleRepositoryNameWithInitial:(NSString*)initStr;
 -(NSString*)getPossibleDocumentNameWithInitial:(NSString*)initStr;
@@ -54,10 +46,8 @@
 -(Repository*) addNewRepository:(NSString*)nameRepository;
 -(Document*) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository;
 -(void) deleteDocumetn:(Document*)document;
--(void) deleteRepository:(Repository*)repository;
-//-(Repository*) removeRepositoryAtIndex:(NSInteger)index;
-//-(void) inserRepository:(Repository*)rep atIndex:(NSInteger)index;
-
+-(void) deleteRepository:(NSString*)repositoryName;
+-(void) rotateImageofDocument:(Document*)document;
 
 
 @property (nonatomic,weak) id <CoorinatorProtocol, NSFetchedResultsControllerDelegate> delegatedByRepository;

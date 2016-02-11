@@ -10,7 +10,7 @@
 #import "CoordinatorCoreDate.h"
 @interface RepositoryViewController : UIViewController //<UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate>
 
-@property (nonatomic,weak) CoordinatorCoreDate *coordinatorCoreDate;
-@property (nonatomic,strong) NSString* nameRepository;
+@property (nonatomic,weak) CoordinatorCoreDate *coordinatorCoreDate; //получаем от родителя в наследство - не создаем
+@property (nonatomic,strong) NSString* nameRepository;//вместе с родителем и имя хранилища в котором работать
 
 @end

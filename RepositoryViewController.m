@@ -9,7 +9,6 @@
 #import "RepositoryViewController.h"
 #import "Document+patrial.h"
 #import "PlusButton.h"
-#import "HorizontalScrollerView.h"
 #import "DocumnetViewController.h"
 
 @interface RepositoryViewController () <UITextFieldDelegate, CoorinatorProtocol,NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate>
@@ -25,9 +24,55 @@
 @end
 
 @implementation RepositoryViewController
+
+#pragma mark VIEW DID LOAD
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    [self checkNameRepository];
+    //to dissmis view controller - need for password enter after background
+    [[NSNotificationCenter defaultCenter]   addObserver:self
+                                               selector:@selector(appDidGoToBackground)
+                                                   name:UIApplicationDidEnterBackgroundNotification
+                                                 object:[UIApplication sharedApplication]];
+    //catch keyboard
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardDidHide:)
+                                                 name:UIKeyboardDidHideNotification
+                                               object:nil];
+    
+}
+
+-(void) appDidGoToBackground //переход на родителя для корректного появления контроллера верификации
+{
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
+
+- (void)keyboardDidHide: (NSNotification *) notif{
+    // Do something here
+    [self userDidEndEditOrNotStart]; //юзер закончил печатать или не начиал - клавиатура ушла с поля/ Подтверждаем значение оставленное в поле ввода как имя хранилища? делаем изменения видов
+}
+
+//для показа документов используем табле вью - надо повернуть
+-(void) viewDidLayoutSubviews{
+    self.tableViewDocuments.transform = CGAffineTransformMakeRotation(-M_PI_2);
+    self.tableViewDocuments.frame = CGRectMake(0, 129, 320, 395);
+    [self.tableViewDocuments reloadData];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+-(void) dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:[UIApplication sharedApplication]];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:[UIApplication sharedApplication]];
+    
+}
+
 #pragma mark PROPERTIES SETUP
 
-
+//если есть имя Хранилища запускам Fetcherа документов и становимся его делегатом
 -(void)setCoordinatorCoreDate:(CoordinatorCoreDate *)coordinatorCoreDate{
     _coordinatorCoreDate = coordinatorCoreDate;
     if(self.nameRepository){
@@ -36,41 +81,79 @@
         _coordinatorCoreDate.docFetchController = nil;
     }
 }
--(void) RepositoriesAreChanged {
-    NSLog(@"RepositoriesAreChanged");
-}
+
 -(void)setNameRepository:(NSString *)nameRepository{
     _nameRepository = nameRepository;
     if(nameRepository){
-         _coordinatorCoreDate.delegatedByDocuments = self;
+        _coordinatorCoreDate.delegatedByDocuments = self;
     }
     [self userDidEndEditOrNotStart];
 }
 
-#pragma mark ACTIONS
-- (IBAction)backtoArchiveButtonTapped:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-- (IBAction)buttonEditDoneTapped:(UIButton *)sender {
-    if([sender.titleLabel.text isEqualToString:@"Готово"]){
-        [self newNameEnteredByUser];
-    } else {
-        [self userWillEdid];
-    }
+#pragma mark COORDINATOR DELEGATE
+-(NSString*)documentsRepositoryName{
+    return self.nameRepository;
 }
 
-/*
--(void) documentTappedAtIndex:(NSInteger)index
+-(void) DocumentsAreChanged
 {
-    [self goToImageViewControllerWithImage:self.coordinatorCoreDate.docFetchController.fetchedObjects[index]]
+    [self.tableViewDocuments reloadData];
 }
-*/
+
+
+#pragma mark ACTIONS
+- (IBAction)backtoArchiveButtonTapped:(id)sender { //обратно
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+- (IBAction)buttonEditDoneTapped:(UIButton *)sender { //для изменения пока только имени архива
+    if([sender.titleLabel.text isEqualToString:@"Готово"]){
+        [self newNameEnteredByUser]; // юзер нажал Готово - значит ввел новое имя, кнопка изменилась на "Править"
+    } else {
+        [self userWillEdid];// юзер собирается вводить имя - "Готово" для завершения
+    }
+}
+- (IBAction)trashButtonTapped:(id)sender { //удаляем целиком раздел
+    if(self.nameRepository){
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"ВНИМАНИЕ! Все документы данной картотеки будут будут удалены"
+                                                                   message:@"Вы уверены, что хотите продолжить удаление картотеки?"
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Да" style:UIAlertActionStyleDefault
+                                                          handler:^(UIAlertAction * action) {
+                                                              [self deleteExistRepository];
+                                                              }];
+        UIAlertAction* noAction = [UIAlertAction actionWithTitle:@"Нет" style:UIAlertActionStyleDefault
+                                                                 handler:^(UIAlertAction * action) {
+                                                                     nil; }];
+    
+        [alert addAction:defaultAction];
+        [alert addAction:noAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+
+}
+
+-(void) deleteExistRepository
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self.coordinatorCoreDate deleteRepository:self.nameRepository];
+    }];
+}
+
+//создание нового документа
+//кнопкой табб бара
+- (IBAction)plusTapBarButtonTapped:(id)sender {
+    [self createnewDocument:sender];
+}
+
+//кнопкой в табл виде
 -(void) createnewDocument:(id)sender
 {
     if(self.nameRepository){ //don't allow user make photo without repository name
         [self goToImageViewControllerWithDocument:nil];
     }
 }
+
+//идем в вид документа с названием ... если название Ноль - идем в тот же Вид, но создавать документ
 -(void) goToImageViewControllerWithDocument: (Document*)document
 {
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
@@ -98,19 +181,18 @@
     }
 }
 
+#pragma mark TABLE VIEW DATA SOURSE
 -(UITableViewCell*) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
-    //NSLog(@"Fetched doc's %@",self.coordinatorCoreDate.docFetchController.fetchedObjects);
-    Document* doc = [self.coordinatorCoreDate.docFetchController.fetchedObjects firstObject];
-    NSLog(@"Fetched doc's %@",doc.repository.name);
-    
-    
     UITableViewCell *cell = [self.tableViewDocuments dequeueReusableCellWithIdentifier:@"DocumentCell"];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapCellGesturRecogniser:)];
-    [cell addGestureRecognizer:tapGesture];
-    cell.contentView.transform = CGAffineTransformMakeRotation(M_PI_2);
-    if(indexPath.row == [tableView numberOfRowsInSection: 0] - 1){
+    [cell addGestureRecognizer:tapGesture]; //к каждой строчке добавляю тап гестура (или заходим а документ или создаем новый
+    
+    cell.contentView.transform = CGAffineTransformMakeRotation(M_PI_2); //важно - равернул табле вью? надо вращать обратно
+    
+    
+    if(indexPath.row == [tableView numberOfRowsInSection: 0] - 1){ //последняя строчка, создание новго документа кнопка и лейба
         //remove old subviews - was several mistakes
         NSArray *arraySubvews = cell.contentView.subviews;
         if(arraySubvews && (arraySubvews.count >0)){
@@ -128,6 +210,7 @@
         addNewDocumentButton.frame = CGRectMake((cell.bounds.size.height - defaultHeight)/2,
                                                 (cell.bounds.size.width - defaultHeight)/2,
                                                 defaultHeight, defaultHeight);
+        addNewDocumentButton.center = CGPointMake(cell.frame.size.height/2, cell.frame.size.width/2 -50);
         [cell.contentView addSubview:addNewDocumentButton];
         
         UILabel *addNewDocumentLabel = [[UILabel alloc] initWithFrame:CGRectMake(cell.bounds.size.height/10,
@@ -137,12 +220,13 @@
         addNewDocumentLabel.textColor = [UIColor lightGrayColor];
         addNewDocumentLabel.backgroundColor = [UIColor clearColor];
         addNewDocumentLabel.adjustsFontSizeToFitWidth = YES;
+        addNewDocumentLabel.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
         addNewDocumentLabel.numberOfLines = 0;
         addNewDocumentLabel.text = @"Создайте новый документ";
         
         [cell.contentView addSubview:addNewDocumentLabel];
         
-    } else {
+    } else { //остальное берем из CoreData через Фетч контроллера
 
         //remove old subviews - was several mistakes
         NSArray *arraySubvews = cell.contentView.subviews;
@@ -152,7 +236,7 @@
                 [subView removeFromSuperview];
             }
         }
-       
+       //Вид из Имаджа
         UIImageView *imageView = [[UIImageView alloc] init];//WithFrame:CGRectInset(cell.bounds, 10., 10.)];
         Document *docObj = [self.coordinatorCoreDate.docFetchController.fetchedObjects objectAtIndex:indexPath.row];
         UIImage *docImage = [UIImage imageWithData:docObj.dataDocumnet];
@@ -164,16 +248,17 @@
                                      10.,
                                      rctNotTransformed.size.height,
                                      rctNotTransformed.size.width);
-        imageView.center = CGPointMake(cell.bounds.size.height/2, cell.bounds.size.height/2);
+        imageView.center = CGPointMake(cell.frame.size.height/2, cell.frame.size.width/2 -50);
         [cell.contentView addSubview:imageView];
         UILabel *labelCreateNewDoc = [[UILabel alloc] initWithFrame:CGRectMake(cell.bounds.size.height/10,
                                                                                cell.bounds.size.width*0.7,
                                                                                cell.bounds.size.height*8/10,
                                                                                cell.bounds.size.width/3)];
-        
+        //Лейба и названия документа
         labelCreateNewDoc.text = docObj.name;
         labelCreateNewDoc.textColor = [UIColor darkTextColor];
         labelCreateNewDoc.adjustsFontSizeToFitWidth = YES;
+        labelCreateNewDoc.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
         labelCreateNewDoc.numberOfLines = 0;
         labelCreateNewDoc.textAlignment = NSTextAlignmentCenter;
         
@@ -182,11 +267,10 @@
         return cell;
 
     }
-    //cell.contentView.transform = CGAffineTransformMakeRotation(M_PI_2);
     return cell;
 }
 
-#pragma mark TABLE VIEW DELEGATE
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger sections;
@@ -204,24 +288,20 @@
     
     if (self.coordinatorCoreDate.docFetchController && [[self.coordinatorCoreDate.docFetchController sections] count] > 0) {
         id <NSFetchedResultsSectionInfo> sectionInfo = [[self.coordinatorCoreDate.docFetchController sections] objectAtIndex:section];
-        rows = [sectionInfo numberOfObjects]+1;
-        Document* doc = [self.coordinatorCoreDate.docFetchController.fetchedObjects firstObject];
-                NSLog(@"Fetched doc's %@",doc.repository.name);
+        if([self.coordinatorCoreDate.docFetchController.fetchedObjects lastObject]){//not catched mistace of section info
+             rows = [sectionInfo numberOfObjects]+1;
+        }
+       
+        ///Document* doc = [self.coordinatorCoreDate.docFetchController.fetchedObjects lastObject];
+         //       NSLog(@"Fetched doc's %@",self.coordinatorCoreDate.docFetchController.fetchedObjects);
     }
     return rows;
 }
 
-#pragma mark COORDINATOR DELEGATE
--(NSString*)documentsRepositoryName{
-    return self.nameRepository;
-}
 
--(void) DocumentsAreChanged
-{
-    [self.tableViewDocuments reloadData];
-}
 
 #pragma mark FETCHED RESULT CONTROLLER DELEGATE
+//Делегат Фетчера для работы с Табл Видом
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
@@ -263,9 +343,7 @@
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
-    
-    // NSLog(@"IndexPatch - %ld", (long)indexPath.row);
-    // NSLog(@"NewIndexPatch - %ld", (long)newIndexPath.row);
+
     switch(type)
     {
         case NSFetchedResultsChangeInsert:{
@@ -295,6 +373,7 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tableViewDocuments endUpdates];
+    [self resetLabelAskUserEnterNameRepositoryTextAccordingFetchedObjects];
 }
 
 
@@ -365,14 +444,18 @@
         
         [self.buttonEditDone setTitle:@"Правка" forState:UIControlStateNormal];
         
-        NSString *countStr = [@(self.coordinatorCoreDate.docFetchController.fetchedObjects.count) stringValue];
-        
-        //right grammar
-        countStr = [self letterAddition:countStr];
-        NSString *labelStr = @"В разделе ";
-        labelStr = [labelStr stringByAppendingString:countStr];
-        self.labelAskUserEnterNameRepository.text = labelStr;
+        [self resetLabelAskUserEnterNameRepositoryTextAccordingFetchedObjects];
     }
+}
+
+-(void) resetLabelAskUserEnterNameRepositoryTextAccordingFetchedObjects {
+    NSString *countStr = [@(self.coordinatorCoreDate.docFetchController.fetchedObjects.count) stringValue];
+    
+    //right grammar
+    countStr = [self letterAddition:countStr];
+    NSString *labelStr = @"В разделе ";
+    labelStr = [labelStr stringByAppendingString:countStr];
+    self.labelAskUserEnterNameRepository.text = labelStr;
 }
 
 -(void) userWillEdid {
@@ -383,7 +466,11 @@
 
     self.labelAskUserEnterNameRepository.text = @"Введите имя раздела";
 }
+
+
 #pragma mark TEXT FILD DELEGATE
+//обработка ввода текста пользователем
+//после завершения появляется имя хранилища (создаем новый или переименовываем)
 -(BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     if([string isEqualToString:@"\n"]){
@@ -413,63 +500,6 @@
     NSLog(@"Did end edditing");
 }
 
-
-#pragma mark VIEW DID LOAD
--(void) viewDidLayoutSubviews{
-    self.tableViewDocuments.transform = CGAffineTransformMakeRotation(-M_PI_2);
-    self.tableViewDocuments.frame = CGRectMake(0, 129, 320, 395);
-    [self.tableViewDocuments reloadData];
-}
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [self checkNameRepository];
-    /*
-    self.tableViewDocuments.transform = CGAffineTransformMakeRotation(-M_PI_2);
-    self.tableViewDocuments.frame = CGRectMake(0, 129, 320, 395);
-    [self.tableViewDocuments reloadData];
-    */
-
-    //to dissmis view controller - need for password enter after background
-    [[NSNotificationCenter defaultCenter]   addObserver:self
-                                               selector:@selector(appDidGoToBackground)
-                                                   name:UIApplicationDidEnterBackgroundNotification
-                                                 object:[UIApplication sharedApplication]];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardDidHide:)
-                                                 name:UIKeyboardDidHideNotification
-                                               object:nil];
-
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
--(void) dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidEnterBackgroundNotification object:[UIApplication sharedApplication]];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidHideNotification object:[UIApplication sharedApplication]];
-    
-}
-
--(void) appDidGoToBackground
-{
-   [self dismissViewControllerAnimated:NO completion:nil];
-}
-
-- (void)keyboardDidHide: (NSNotification *) notif{
-    // Do something here
-    [self userDidEndEditOrNotStart];
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 -(NSString*)checkAndRemoveSpasesAtTheEndOfString:(NSString*)inputStr{
     NSString *outStr = @"";
     if([[inputStr substringFromIndex:(inputStr.length-1)] isEqualToString:@" "]){
