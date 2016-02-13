@@ -34,6 +34,7 @@
             request = [NSFetchRequest fetchRequestWithEntityName:@"Repository"];
             matches = [context executeFetchRequest:request error:&error];
         newRepository.naumberOrdein = [NSNumber numberWithInteger:matches.count];
+        newRepository.documents = [[NSSet alloc] init];
        // newRepository.naumberOrdein = [NSNumber numberWithInteger:order];
     }
 

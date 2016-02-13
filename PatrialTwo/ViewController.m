@@ -52,7 +52,7 @@
 
 //вызываем контроллер пароля
 -(void) appDidGoToForeground {
-    
+    /*
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     PassViewController *passViewController = [storyBoard instantiateViewControllerWithIdentifier:@"PassViewController"];
     
@@ -60,7 +60,7 @@
     [self presentViewController:passViewController animated:NO completion:^{
         nil;
     }];
-    
+    */
     
 }
 
