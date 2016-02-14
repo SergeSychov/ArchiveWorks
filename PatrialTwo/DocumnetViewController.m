@@ -288,14 +288,14 @@
 
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
-    NSLog(@"Did begin editing");
+   // NSLog(@"Did begin editing");
     UITextPosition *positionBeginning = [textField beginningOfDocument];
     UITextRange *textRange =[textField textRangeFromPosition:positionBeginning
                                                   toPosition:positionBeginning];
     [textField setSelectedTextRange:textRange];
 }
 -(void)textFieldDidEndEditing:(UITextField *)textField{
-    NSLog(@"Did end edditing");
+    //NSLog(@"Did end edditing");
 }
 
 

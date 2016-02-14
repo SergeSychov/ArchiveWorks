@@ -87,7 +87,7 @@
 
 //call from main controller (fetcher did change)
 -(void) repositoryDidChange {
-    NSLog(@"Repository did change");
+    //NSLog(@"Repository did change");
     id Comparator =^(Document* doc1, Document* doc2){
         return [doc1.numberOrdering compare:doc2.numberOrdering];
     };
@@ -406,14 +406,14 @@
 
 
 -(void)textFieldDidBeginEditing:(UITextField *)textField{
-    NSLog(@"Did begin editing");
+    //NSLog(@"Did begin editing");
     UITextPosition *positionBeginning = [textField beginningOfDocument];
     UITextRange *textRange =[textField textRangeFromPosition:positionBeginning
                                                   toPosition:positionBeginning];
     [textField setSelectedTextRange:textRange];
 }
 -(void)textFieldDidEndEditing:(UITextField *)textField{
-    NSLog(@"Did end edditing");
+    //NSLog(@"Did end edditing");
 }
 
 -(NSString*)checkAndRemoveSpasesAtTheEndOfString:(NSString*)inputStr{

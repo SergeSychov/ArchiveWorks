@@ -132,7 +132,7 @@
 #pragma mark FETCHED CONTROLLER DELEGATE
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
-    NSLog(@"Controller fetched obj's quant %u", controller.fetchedObjects.count);
+    //NSLog(@"Controller fetched obj's quant %u", controller.fetchedObjects.count);
     [self.tableViewRepositories beginUpdates];
 }
 

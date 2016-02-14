@@ -24,7 +24,7 @@
     
     
     if(!matches || error){
-        NSLog(@"Can't get matches");
+       // NSLog(@"Can't get matches");
     }  else if ([matches count] > 0){
         newRepository = matches.firstObject;
     } else {

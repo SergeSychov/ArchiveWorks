@@ -112,34 +112,16 @@
 }
 //создание нового документа
 -(Document*) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository{
-    NSDate *methodStartMain = [NSDate date];
     
-    
-    NSDate *methodFinishMain = [NSDate date];
-    
-    NSTimeInterval executionTimeMine = [methodFinishMain timeIntervalSinceDate:methodStartMain];
-    NSLog(@"executionTime = %f", executionTimeMine);
-    
-    
-     NSDate *methodStart = [NSDate date];
-    
-    NSData *imageData = UIImagePNGRepresentation([image scaledImage:image ToRatio:0.1]);
-    
-    NSDate *methodFinish = [NSDate date];
-    NSTimeInterval executionTime = [methodFinish timeIntervalSinceDate:methodStart];
-    NSLog(@"executionTime = %f", executionTime);
-
+    NSData *imageData = UIImagePNGRepresentation([image scaleImage:image toNeedSize:CGSizeMake(540, 960)]); //extention of uiImage according half of iPhone 6 plus size
     
     Document *doc = nil;
-
-    NSDate *methodStartThree = [NSDate date];
     doc = [Document createNewDocumentWithData:imageData name:name Repository:nameRepository inContext:self.managedContext];
-    NSDate *methodFinishThree = [NSDate date];
-    NSTimeInterval executionTimeThree = [methodFinishThree timeIntervalSinceDate:methodStartThree];
-    NSLog(@"executionTime = %f", executionTimeThree);
+    //setBigImage data for this document
+    [self bigImageData:image ofDocument:doc];
 
     if(doc){
-        NSLog(@"New Document was created succesefully with repository name: %@", doc.repository.name);
+       // NSLog(@"New Document was created succesefully with repository name: %@", doc.repository.name);
     } else {
         //NSLog(@"Can't create new Document");
     }

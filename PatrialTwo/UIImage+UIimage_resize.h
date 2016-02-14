@@ -10,4 +10,5 @@
 
 @interface UIImage (UIimage_resize)
 -(UIImage*) scaledImage:(UIImage*)img ToRatio:(CGFloat)ratio;
+-(UIImage*) scaleImage:(UIImage*)img toNeedSize:(CGSize)needSize;
 @end
