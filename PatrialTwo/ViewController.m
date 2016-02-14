@@ -91,7 +91,7 @@
     if(indexPath){
         if(indexPath.row < self.coordinatorCoreDate.repFetchController.fetchedObjects.count){
             Repository *repository = [self.coordinatorCoreDate.repFetchController objectAtIndexPath:indexPath];
-            [self openRepositoryContrllerWithName:repository.name];
+            [self openRepositoryContrller:repository];
         } else {
             [self createNewRepository];
         }
@@ -108,14 +108,14 @@
 }
 
 -(void) createNewRepository{
-    [self openRepositoryContrllerWithName:nil]; //создание новго хранилища, функция с nil
+    [self openRepositoryContrller:nil]; //создание новго хранилища, функция с nil
 }
 
 //открываем существующее хранилище с именем....
--(void) openRepositoryContrllerWithName:(NSString* )name{
+-(void) openRepositoryContrller:(Repository* )repository{
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     RepositoryViewController *repViewController = [storyBoard instantiateViewControllerWithIdentifier:@"RepositoryViewController"];
-    repViewController.nameRepository = name;
+    repViewController.repository = repository;
     repViewController.coordinatorCoreDate = self.coordinatorCoreDate;
     self.repViewController = repViewController;
     [self presentViewController:repViewController animated:YES completion:^{
@@ -132,6 +132,7 @@
 #pragma mark FETCHED CONTROLLER DELEGATE
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
 {
+    NSLog(@"Controller fetched obj's quant %u", controller.fetchedObjects.count);
     [self.tableViewRepositories beginUpdates];
 }
 
@@ -199,6 +200,7 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tableViewRepositories endUpdates];
+    [self.repViewController repositoryDidChange];
 }
 
 

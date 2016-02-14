@@ -37,7 +37,7 @@
 @interface CoordinatorCoreDate : NSObject
 
 @property (nonatomic) NSFetchedResultsController* repFetchController;
-@property (nonatomic) NSFetchedResultsController* docFetchController;
+//@property (nonatomic) NSFetchedResultsController* docFetchController;
 
 -(void) changeNameRepositoryFrom:(NSString*)fromStr To:(NSString*)toStr;
 -(NSString*)getPossibleRepositoryNameWithInitial:(NSString*)initStr;
@@ -46,7 +46,7 @@
 -(Repository*) addNewRepository:(NSString*)nameRepository;
 -(Document*) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository;
 -(void) deleteDocumetn:(Document*)document;
--(void) deleteRepository:(NSString*)repositoryName;
+-(void) deleteRepository:(Repository*)repository;
 -(void) rotateImageofDocument:(Document*)document;
 
 

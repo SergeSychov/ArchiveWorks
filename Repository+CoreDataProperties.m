@@ -2,7 +2,7 @@
 //  Repository+CoreDataProperties.m
 //  PatrialTwo
 //
-//  Created by Serge Sychov on 10.02.16.
+//  Created by Serge Sychov on 14.02.16.
 //  Copyright © 2016 Sergey Sychov. All rights reserved.
 //
 //  Choose "Create NSManagedObject Subclass…" from the Core Data editor menu

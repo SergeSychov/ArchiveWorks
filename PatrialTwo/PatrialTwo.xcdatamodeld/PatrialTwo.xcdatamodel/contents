@@ -7,14 +7,14 @@
     <entity name="Document" representedClassName="Document" syncable="YES">
         <attribute name="dataDocumnet" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="numberOrdering" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="numberOrdering" optional="YES" attributeType="Date" syncable="YES"/>
         <relationship name="bigImageData" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataImageOfDocument" inverseName="document" inverseEntity="DataImageOfDocument" syncable="YES"/>
-        <relationship name="repository" maxCount="1" deletionRule="Cascade" destinationEntity="Repository" inverseName="documents" inverseEntity="Repository" syncable="YES"/>
+        <relationship name="repository" maxCount="1" deletionRule="Nullify" destinationEntity="Repository" inverseName="documents" inverseEntity="Repository" syncable="YES"/>
     </entity>
     <entity name="Repository" representedClassName="Repository" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="naumberOrdein" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="documents" optional="YES" toMany="YES" deletionRule="No Action" destinationEntity="Document" inverseName="repository" inverseEntity="Document" syncable="YES"/>
+        <attribute name="naumberOrdein" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="documents" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Document" inverseName="repository" inverseEntity="Document" syncable="YES"/>
     </entity>
     <elements>
         <element name="DataImageOfDocument" positionX="261" positionY="125" width="128" height="73"/>

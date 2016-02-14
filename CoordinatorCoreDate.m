@@ -92,10 +92,6 @@
                                                                       managedObjectContext:document.managedObjectContext
                                                                         sectionNameKeyPath:nil
                                                                                  cacheName:@"cacheRepFetchcontroller"];
-        
-        
-        //documents fetch controller will setup at have Delegate
-        
 
     } else {
         NSLog(@"Document state %lu", (unsigned long)document.documentState);
@@ -185,8 +181,6 @@
     } else {
        // NSLog(@"Repository not finded");
     }
-    //renew documetnFetch according doccument in exactly repository
-    [self resetDocumetFetchResultController];
 }
 
 //берем уникальную строчку
@@ -233,19 +227,12 @@
 -(void) deleteDocumetn:(Document*)document{
     [self.managedContext deleteObject:document];
 }
--(void) deleteRepository:(NSString*)repositoryName{
+-(void) deleteRepository:(Repository*)repository{
 
-            NSFetchRequest *request;
-            
-            request = [NSFetchRequest fetchRequestWithEntityName:@"Repository"];
-            request.predicate = [NSPredicate predicateWithFormat:@"name = %@", repositoryName];
-            
-            NSError *error;
-            NSArray *matches = [self.managedContext executeFetchRequest:request error:&error];
-            
-            Repository *rep = (Repository*) [matches firstObject];
-            [self.managedContext deleteObject:rep];
-        [self.managedDocument updateChangeCount:UIDocumentChangeDone];
+    [self.managedContext deleteObject:repository];
+    
+    [self saveContext];
+
 
 }
 
@@ -278,57 +265,6 @@
 
 #pragma mark SETTERS 
 
-
-
--(void) setDelegatedByDocuments:(id)delegatedByDocuments {
-    _delegatedByDocuments = delegatedByDocuments;
-    //renew documetnFetch according doccument in exactly repository
-    [self resetDocumetFetchResultController];
-}
-
-
--(void) resetDocumetFetchResultController {
-    
-    //NSLog(@"Rep name: %@", [self.delegatedByDocuments documentsRepositoryName]);
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Document"];
-    request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"numberOrdering" ascending:YES]];
-    request.predicate = [NSPredicate predicateWithFormat:@"repository.name = %@", [self.delegatedByDocuments documentsRepositoryName]];
-    
-    NSFetchedResultsController  *docFetchController = [[NSFetchedResultsController alloc] initWithFetchRequest:request
-                                                                                          managedObjectContext:self.managedContext
-                                                                                            sectionNameKeyPath:nil
-                                                                                                     cacheName:@"cacheDocFetchController"];
-    for(Document *doc in docFetchController.fetchedObjects){
-        NSLog(@"Name doc: %@, in repositroy %@", doc.name, doc.repository.name);
-    }
-    self.docFetchController = docFetchController;
-    
-    self.docFetchController.delegate = _delegatedByDocuments;
-}
-
-//right setup delegate and delegator
-//there is two case:
-//1. can be fetchcontroller without delegatedcontroller, not create yet
-//2. can be delegatedController but fetchcontroller not created still
--(void) setDocFetchController:(NSFetchedResultsController *)docFetchController{
-    NSFetchedResultsController *oldfrc = _docFetchController;
-    if(oldfrc != docFetchController){
-        _docFetchController = docFetchController;
-        
-        if(_docFetchController){
-            //NSLog(@"There is repFetchController");
-            NSError *error;
-            [_docFetchController performFetch:&error];
-        }
-        if(self.delegatedByRepository){
-            //if there is delegated controller - renew it
-            //NSLog(@"delegated was create previosly");
-            //_docFetchController.delegate = self.delegatedByDocuments;
-            [self.delegatedByDocuments DocumentsAreChanged];
-        }
-    }
-}
-
 -(void) setRepFetchController:(NSFetchedResultsController *)repFetchController{
     NSFetchedResultsController *oldfrc = _repFetchController;
     if(oldfrc != repFetchController){
@@ -358,6 +294,20 @@
     }
 }
 
+#pragma mark - Core Data Saving support
+
+- (void)saveContext {
+    NSManagedObjectContext *managedObjectContext = self.managedContext;
+    if (managedObjectContext != nil) {
+        NSError *error = nil;
+        if ([managedObjectContext hasChanges] && ![managedObjectContext save:&error]) {
+            // Replace this implementation with code to handle the error appropriately.
+            // abort() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
+            NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+            abort();
+        }
+    }
+}
 
 
 @end

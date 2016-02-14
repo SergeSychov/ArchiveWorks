@@ -33,7 +33,7 @@
         //set numberOrdering accordin whhole quantity of repository< as last number
             request = [NSFetchRequest fetchRequestWithEntityName:@"Repository"];
             matches = [context executeFetchRequest:request error:&error];
-        newRepository.naumberOrdein = [NSNumber numberWithInteger:matches.count];
+        newRepository.naumberOrdein = [NSDate date];
         newRepository.documents = [[NSSet alloc] init];
        // newRepository.naumberOrdein = [NSNumber numberWithInteger:order];
     }

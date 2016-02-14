@@ -31,7 +31,7 @@
         newDoc = [NSEntityDescription insertNewObjectForEntityForName:@"Document" inManagedObjectContext:context];
         newDoc.name = name;
         newDoc.dataDocumnet = docData;
-        newDoc.numberOrdering = [NSNumber numberWithInteger:matches.count];
+        newDoc.numberOrdering = [NSDate date];
         newDoc.repository = [Repository createNewRepositoryWithName:repositoryName inContext:context];
  
         newDoc.bigImageData = nil;

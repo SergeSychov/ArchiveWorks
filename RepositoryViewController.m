@@ -12,6 +12,8 @@
 #import "DocumnetViewController.h"
 
 @interface RepositoryViewController () <UITextFieldDelegate, CoorinatorProtocol,NSFetchedResultsControllerDelegate, UITableViewDataSource, UITableViewDelegate>
+@property (nonatomic) NSArray* documents;
+
 @property (weak, nonatomic) IBOutlet UILabel *labelAskUserEnterNameRepository;
 @property (weak, nonatomic) IBOutlet UITextField *textFildRepositoryName;
 
@@ -73,35 +75,35 @@
 #pragma mark PROPERTIES SETUP
 
 //если есть имя Хранилища запускам Fetcherа документов и становимся его делегатом
--(void)setCoordinatorCoreDate:(CoordinatorCoreDate *)coordinatorCoreDate{
-    _coordinatorCoreDate = coordinatorCoreDate;
-    if(self.nameRepository){
-        _coordinatorCoreDate.delegatedByDocuments = self;
-    } else {
-        _coordinatorCoreDate.docFetchController = nil;
+-(void)setRepository:(Repository *)repository{
+    _repository = repository;
+    id Comparator =^(Document* doc1, Document* doc2){
+        return [doc1.numberOrdering compare:doc2.numberOrdering];
+    };
+    
+
+    self.documents = [[repository.documents allObjects] sortedArrayUsingComparator:Comparator];
+}
+
+//call from main controller (fetcher did change)
+-(void) repositoryDidChange {
+    NSLog(@"Repository did change");
+    id Comparator =^(Document* doc1, Document* doc2){
+        return [doc1.numberOrdering compare:doc2.numberOrdering];
+    };
+    self.documents = [[self.repository.documents allObjects] sortedArrayUsingComparator:Comparator];
+}
+
+-(void) setDocuments:(NSArray *)documents{
+    
+    _documents = documents;
+    if(self.tableViewDocuments){
+        [self.tableViewDocuments reloadData];
     }
 }
-
--(void)setNameRepository:(NSString *)nameRepository{
-    _nameRepository = nameRepository;
-    if(nameRepository){
-        _coordinatorCoreDate.delegatedByDocuments = self;
-    }
-    [self userDidEndEditOrNotStart];
-}
-
-#pragma mark COORDINATOR DELEGATE
--(NSString*)documentsRepositoryName{
-    return self.nameRepository;
-}
-
--(void) DocumentsAreChanged
-{
-    [self.tableViewDocuments reloadData];
-}
-
 
 #pragma mark ACTIONS
+
 - (IBAction)backtoArchiveButtonTapped:(id)sender { //обратно
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -113,7 +115,7 @@
     }
 }
 - (IBAction)trashButtonTapped:(id)sender { //удаляем целиком раздел
-    if(self.nameRepository){
+    if(self.repository){
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"ВНИМАНИЕ! Все документы данной картотеки будут будут удалены"
                                                                    message:@"Вы уверены, что хотите продолжить удаление картотеки?"
                                                             preferredStyle:UIAlertControllerStyleAlert];
@@ -135,7 +137,7 @@
 -(void) deleteExistRepository
 {
     [self dismissViewControllerAnimated:YES completion:^{
-        [self.coordinatorCoreDate deleteRepository:self.nameRepository];
+        [self.coordinatorCoreDate deleteRepository:self.repository];
     }];
 }
 
@@ -148,7 +150,7 @@
 //кнопкой в табл виде
 -(void) createnewDocument:(id)sender
 {
-    if(self.nameRepository){ //don't allow user make photo without repository name
+    if(self.repository){ //don't allow user make photo without repository name
         [self goToImageViewControllerWithDocument:nil];
     }
 }
@@ -159,7 +161,7 @@
     UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
     DocumnetViewController *docViewController = [storyBoard instantiateViewControllerWithIdentifier:@"DocumnetViewController"];
     docViewController.document = document;
-    docViewController.nameRepository = self.nameRepository;
+    docViewController.nameRepository = self.repository.name;
     docViewController.coordinatorCoreDate = self.coordinatorCoreDate;
     self.docViewController = docViewController;
     
@@ -172,8 +174,8 @@
     CGPoint tapLocation = [sender locationInView:self.tableViewDocuments];
     NSIndexPath *indexPath = [self.tableViewDocuments indexPathForRowAtPoint:tapLocation];
     if(indexPath){
-        if(indexPath.row < self.coordinatorCoreDate.docFetchController.fetchedObjects.count){
-            Document *document = [self.coordinatorCoreDate.docFetchController objectAtIndexPath:indexPath];
+        if(indexPath.row < self.documents.count){
+            Document *document = [self.documents objectAtIndex:indexPath.row];
             [self goToImageViewControllerWithDocument:document];
         } else {
             [self goToImageViewControllerWithDocument:nil];
@@ -238,9 +240,10 @@
         }
        //Вид из Имаджа
         UIImageView *imageView = [[UIImageView alloc] init];//WithFrame:CGRectInset(cell.bounds, 10., 10.)];
-        Document *docObj = [self.coordinatorCoreDate.docFetchController.fetchedObjects objectAtIndex:indexPath.row];
-        UIImage *docImage = [UIImage imageWithData:docObj.dataDocumnet];
-        imageView.image = docImage;// [UIImage imageWithData:docObj.dataDocumnet];
+        Document *document = [self.documents objectAtIndex:indexPath.row];
+
+        UIImage *documentImage = [UIImage imageWithData:document.dataDocumnet];
+        imageView.image = documentImage;// [UIImage imageWithData:docObj.dataDocumnet];
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         //imageView.transform = CGAffineTransformMakeRotation(M_PI_2);
         CGRect rctNotTransformed = CGRectInset(cell.bounds, 10., 10.);
@@ -255,7 +258,7 @@
                                                                                cell.bounds.size.height*8/10,
                                                                                cell.bounds.size.width/3)];
         //Лейба и названия документа
-        labelCreateNewDoc.text = docObj.name;
+        labelCreateNewDoc.text = document.name;
         labelCreateNewDoc.textColor = [UIColor darkTextColor];
         labelCreateNewDoc.adjustsFontSizeToFitWidth = YES;
         labelCreateNewDoc.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
@@ -273,118 +276,30 @@
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger sections;
-    if(self.coordinatorCoreDate.docFetchController && [[self.coordinatorCoreDate.docFetchController sections] count] > 0){
-        sections = [[self.coordinatorCoreDate.docFetchController sections] count];
-    } else {
-        sections = 1 ;
-    }
-    return sections;
+    return 1;
 }
 
 -(NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
 
     NSInteger rows = 1;
     
-    if (self.coordinatorCoreDate.docFetchController && [[self.coordinatorCoreDate.docFetchController sections] count] > 0) {
-        id <NSFetchedResultsSectionInfo> sectionInfo = [[self.coordinatorCoreDate.docFetchController sections] objectAtIndex:section];
-        if([self.coordinatorCoreDate.docFetchController.fetchedObjects lastObject]){//not catched mistace of section info
-             rows = [sectionInfo numberOfObjects]+1;
-        }
-       
-        ///Document* doc = [self.coordinatorCoreDate.docFetchController.fetchedObjects lastObject];
-         //       NSLog(@"Fetched doc's %@",self.coordinatorCoreDate.docFetchController.fetchedObjects);
+    if(self.repository){
+        rows = [self.repository.documents count]+1;
     }
     return rows;
 }
-
-
-
-#pragma mark FETCHED RESULT CONTROLLER DELEGATE
-//Делегат Фетчера для работы с Табл Видом
-
-- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableViewDocuments beginUpdates];
-    //make dictionary heights according number of row
-}
-
-- (void)controller:(NSFetchedResultsController *)controller
-  didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
-           atIndex:(NSUInteger)sectionIndex
-     forChangeType:(NSFetchedResultsChangeType)type
-{
-    
-    switch(type)
-    {
-        case NSFetchedResultsChangeInsert:
-            [self.tableViewDocuments insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationBottom];
-            break;
-            
-        case NSFetchedResultsChangeDelete:
-            [self.tableViewDocuments deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationBottom];
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            
-            break;
-            
-        case NSFetchedResultsChangeUpdate:
-            
-            break;
-            
-    }
-}
-
-
-- (void)controller:(NSFetchedResultsController *)controller
-   didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath
-     forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath
-{
-
-    switch(type)
-    {
-        case NSFetchedResultsChangeInsert:{
-            [self.tableViewDocuments insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            break;
-            
-        case NSFetchedResultsChangeDelete: {
-            [self.tableViewDocuments deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        }
-            break;
-            
-        case NSFetchedResultsChangeUpdate:{
-            [self.tableViewDocuments reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-            
-        }
-            break;
-            
-        case NSFetchedResultsChangeMove:
-            [self.tableViewDocuments deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-            [self.tableViewDocuments insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationNone];
-            break;
-    }
-    
-}
-
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
-{
-    [self.tableViewDocuments endUpdates];
-    [self resetLabelAskUserEnterNameRepositoryTextAccordingFetchedObjects];
-}
-
-
-
 
 #pragma mark TEXT EDID FUNCTIONS
 -(void)newNameEnteredByUser{
     self.textFildRepositoryName.textColor = [UIColor darkTextColor];
     //check symbol spase at the end. if is - remove it
     NSString *userOfferedName = [self checkAndRemoveSpasesAtTheEndOfString:self.textFildRepositoryName.text];
-    NSString *oldRepositoryName = self.nameRepository;
+    NSString *oldRepositoryName;
+    if(self.repository){
+       oldRepositoryName = self.repository.name;
+    } else {
+        oldRepositoryName = nil;
+    }
     if(![userOfferedName isEqualToString:oldRepositoryName]){
         
         NSString* offeredByCoordinatorStr = [self.coordinatorCoreDate getPossibleRepositoryNameWithInitial:userOfferedName];
@@ -392,13 +307,14 @@
         //if coordinator offer the same string - so it not repository with this name
         //if no - ok create new repository or rename existing
         if([offeredByCoordinatorStr isEqualToString:userOfferedName]){
-            self.nameRepository = userOfferedName;
-            if(oldRepositoryName){ //if not nel - was existing repostory
-                [self.coordinatorCoreDate changeNameRepositoryFrom:oldRepositoryName To:self.nameRepository];
-                NSLog(@"Name repository was chnged");
+
+            if(oldRepositoryName){ //if not nil - was existing repostory
+
+                self.repository.name = userOfferedName;
             } else { //create ne repository
-                [self.coordinatorCoreDate addNewRepository:self.nameRepository];
+                self.repository = [self.coordinatorCoreDate addNewRepository:userOfferedName];
             }
+            [self userDidEndEditOrNotStart];
         } else { //if Yes - show allert controller to change it name
             self.textFildRepositoryName.text = offeredByCoordinatorStr;
             NSString *offerUser = @"Предлагаю: ";
@@ -409,7 +325,7 @@
             UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
                                                                   handler:^(UIAlertAction * action) {[self newNameEnteredByUser];}];
             UIAlertAction* enterOtherNameAction = [UIAlertAction actionWithTitle:@"Ввести другое имя раздела" style:UIAlertActionStyleDefault
-                                                                         handler:^(UIAlertAction * action) {self.nameRepository = nil;
+                                                                         handler:^(UIAlertAction * action) {//self.repository = nil;
                                                                                                             [self checkNameRepository];}];
             
             [alert addAction:defaultAction];
@@ -423,13 +339,13 @@
 
 -(void)checkNameRepository {
     
-    if(self.nameRepository == nil){ //there is new repository screen
+    if(self.repository == nil){ //there is new repository screen
         self.textFildRepositoryName.text =[self.coordinatorCoreDate getPossibleRepositoryNameWithInitial: @"Самое Важное"];
         [self userWillEdid];
         
         self.labelAskUserEnterNameRepository.text = @"Введите имя раздела";
     } else { //there is exsist repository screen
-        self.textFildRepositoryName.text = self.nameRepository;
+        self.textFildRepositoryName.text = self.repository.name;
         [self userDidEndEditOrNotStart];
 
     }
@@ -449,7 +365,7 @@
 }
 
 -(void) resetLabelAskUserEnterNameRepositoryTextAccordingFetchedObjects {
-    NSString *countStr = [@(self.coordinatorCoreDate.docFetchController.fetchedObjects.count) stringValue];
+    NSString *countStr = [@(self.repository.documents.count) stringValue];
     
     //right grammar
     countStr = [self letterAddition:countStr];

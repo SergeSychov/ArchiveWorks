@@ -11,9 +11,7 @@
 		35F55FBD1C65EAD500C89909 /* Document+patrial.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F55FBC1C65EAD500C89909 /* Document+patrial.m */; };
 		35F560151C6BAD2E00C89909 /* DataImageOfDocument+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F5600A1C6BAD2E00C89909 /* DataImageOfDocument+CoreDataProperties.m */; };
 		35F560161C6BAD2E00C89909 /* DataImageOfDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F5600C1C6BAD2E00C89909 /* DataImageOfDocument.m */; };
-		35F560171C6BAD2E00C89909 /* Repository+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F5600E1C6BAD2E00C89909 /* Repository+CoreDataProperties.m */; };
 		35F560181C6BAD2E00C89909 /* Repository.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F560101C6BAD2E00C89909 /* Repository.m */; };
-		35F560191C6BAD2E00C89909 /* Document+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F560121C6BAD2E00C89909 /* Document+CoreDataProperties.m */; };
 		35F5601A1C6BAD2E00C89909 /* Document.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F560141C6BAD2E00C89909 /* Document.m */; };
 		35F5601D1C6BAD7600C89909 /* DataImageOfDocument+patrial.m in Sources */ = {isa = PBXBuildFile; fileRef = 35F5601C1C6BAD7600C89909 /* DataImageOfDocument+patrial.m */; };
 		5052ADD31C65DEE000A64A51 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5052ADD21C65DEE000A64A51 /* main.m */; };
@@ -33,6 +31,8 @@
 		5054280C1C6B435C004017D1 /* UIImage+UIimage_resize.m in Sources */ = {isa = PBXBuildFile; fileRef = 5054280B1C6B435C004017D1 /* UIImage+UIimage_resize.m */; };
 		505428271C6BBDC2004017D1 /* Camera.png in Resources */ = {isa = PBXBuildFile; fileRef = 505428251C6BBDC2004017D1 /* Camera.png */; };
 		505428281C6BBDC2004017D1 /* Photo.png in Resources */ = {isa = PBXBuildFile; fileRef = 505428261C6BBDC2004017D1 /* Photo.png */; };
+		5068018C1C70ABEF0079B461 /* Repository+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068018B1C70ABEF0079B461 /* Repository+CoreDataProperties.m */; };
+		5068018F1C70ACF00079B461 /* Document+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 5068018E1C70ACF00079B461 /* Document+CoreDataProperties.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,12 +61,8 @@
 		35F5600A1C6BAD2E00C89909 /* DataImageOfDocument+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "DataImageOfDocument+CoreDataProperties.m"; sourceTree = "<group>"; };
 		35F5600B1C6BAD2E00C89909 /* DataImageOfDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataImageOfDocument.h; sourceTree = "<group>"; };
 		35F5600C1C6BAD2E00C89909 /* DataImageOfDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataImageOfDocument.m; sourceTree = "<group>"; };
-		35F5600D1C6BAD2E00C89909 /* Repository+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Repository+CoreDataProperties.h"; sourceTree = "<group>"; };
-		35F5600E1C6BAD2E00C89909 /* Repository+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Repository+CoreDataProperties.m"; sourceTree = "<group>"; };
 		35F5600F1C6BAD2E00C89909 /* Repository.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Repository.h; sourceTree = "<group>"; };
 		35F560101C6BAD2E00C89909 /* Repository.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Repository.m; sourceTree = "<group>"; };
-		35F560111C6BAD2E00C89909 /* Document+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Document+CoreDataProperties.h"; sourceTree = "<group>"; };
-		35F560121C6BAD2E00C89909 /* Document+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Document+CoreDataProperties.m"; sourceTree = "<group>"; };
 		35F560131C6BAD2E00C89909 /* Document.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Document.h; sourceTree = "<group>"; };
 		35F560141C6BAD2E00C89909 /* Document.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Document.m; sourceTree = "<group>"; };
 		35F5601B1C6BAD7600C89909 /* DataImageOfDocument+patrial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "DataImageOfDocument+patrial.h"; sourceTree = "<group>"; };
@@ -103,6 +99,10 @@
 		5054280B1C6B435C004017D1 /* UIImage+UIimage_resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+UIimage_resize.m"; path = "PatrialTwo/UIImage+UIimage_resize.m"; sourceTree = "<group>"; };
 		505428251C6BBDC2004017D1 /* Camera.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Camera.png; sourceTree = "<group>"; };
 		505428261C6BBDC2004017D1 /* Photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Photo.png; sourceTree = "<group>"; };
+		5068018A1C70ABEF0079B461 /* Repository+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Repository+CoreDataProperties.h"; sourceTree = "<group>"; };
+		5068018B1C70ABEF0079B461 /* Repository+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Repository+CoreDataProperties.m"; sourceTree = "<group>"; };
+		5068018D1C70ACF00079B461 /* Document+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Document+CoreDataProperties.h"; sourceTree = "<group>"; };
+		5068018E1C70ACF00079B461 /* Document+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Document+CoreDataProperties.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -151,14 +151,14 @@
 				35F5600A1C6BAD2E00C89909 /* DataImageOfDocument+CoreDataProperties.m */,
 				35F5600B1C6BAD2E00C89909 /* DataImageOfDocument.h */,
 				35F5600C1C6BAD2E00C89909 /* DataImageOfDocument.m */,
-				35F5600D1C6BAD2E00C89909 /* Repository+CoreDataProperties.h */,
-				35F5600E1C6BAD2E00C89909 /* Repository+CoreDataProperties.m */,
 				35F5600F1C6BAD2E00C89909 /* Repository.h */,
 				35F560101C6BAD2E00C89909 /* Repository.m */,
-				35F560111C6BAD2E00C89909 /* Document+CoreDataProperties.h */,
-				35F560121C6BAD2E00C89909 /* Document+CoreDataProperties.m */,
+				5068018A1C70ABEF0079B461 /* Repository+CoreDataProperties.h */,
+				5068018B1C70ABEF0079B461 /* Repository+CoreDataProperties.m */,
 				35F560131C6BAD2E00C89909 /* Document.h */,
 				35F560141C6BAD2E00C89909 /* Document.m */,
+				5068018D1C70ACF00079B461 /* Document+CoreDataProperties.h */,
+				5068018E1C70ACF00079B461 /* Document+CoreDataProperties.m */,
 			);
 			name = automaticCreated;
 			sourceTree = "<group>";
@@ -425,15 +425,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35F560191C6BAD2E00C89909 /* Document+CoreDataProperties.m in Sources */,
 				35F560181C6BAD2E00C89909 /* Repository.m in Sources */,
 				5052AE791C687E8400A64A51 /* DocumnetViewController.m in Sources */,
+				5068018F1C70ACF00079B461 /* Document+CoreDataProperties.m in Sources */,
 				5052AE1E1C668D2000A64A51 /* PassViewController.m in Sources */,
 				35F55FBD1C65EAD500C89909 /* Document+patrial.m in Sources */,
 				35F5601D1C6BAD7600C89909 /* DataImageOfDocument+patrial.m in Sources */,
 				5054280C1C6B435C004017D1 /* UIImage+UIimage_resize.m in Sources */,
 				5052ADD91C65DEE000A64A51 /* ViewController.m in Sources */,
-				35F560171C6BAD2E00C89909 /* Repository+CoreDataProperties.m in Sources */,
 				5052ADD61C65DEE000A64A51 /* AppDelegate.m in Sources */,
 				5052AE2A1C67358700A64A51 /* PlusButton.m in Sources */,
 				5052ADDF1C65DEE000A64A51 /* PatrialTwo.xcdatamodeld in Sources */,
@@ -442,6 +441,7 @@
 				5052ADD31C65DEE000A64A51 /* main.m in Sources */,
 				35F55FBA1C65EAA400C89909 /* Repository+patrial.m in Sources */,
 				5052AE2D1C6768AF00A64A51 /* RepositoryViewController.m in Sources */,
+				5068018C1C70ABEF0079B461 /* Repository+CoreDataProperties.m in Sources */,
 				5052AE261C66C04800A64A51 /* CoordinatorCoreDate.m in Sources */,
 				35F5601A1C6BAD2E00C89909 /* Document.m in Sources */,
 			);

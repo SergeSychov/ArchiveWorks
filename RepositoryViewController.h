@@ -11,6 +11,8 @@
 @interface RepositoryViewController : UIViewController //<UICollectionViewDelegate, UICollectionViewDataSource, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic,weak) CoordinatorCoreDate *coordinatorCoreDate; //получаем от родителя в наследство - не создаем
-@property (nonatomic,strong) NSString* nameRepository;//вместе с родителем и имя хранилища в котором работать
+@property (nonatomic,strong) Repository* repository;//вместе с родителем и имя хранилища в котором работать
+
+-(void)repositoryDidChange;
 
 @end
