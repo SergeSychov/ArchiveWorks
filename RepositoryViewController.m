@@ -57,6 +57,7 @@
 
 //для показа документов используем табле вью - надо повернуть
 -(void) viewDidLayoutSubviews{
+
     self.tableViewDocuments.transform = CGAffineTransformMakeRotation(-M_PI_2);
     self.tableViewDocuments.frame = CGRectMake(0, 129, 320, 395);
     [self.tableViewDocuments reloadData];
@@ -92,11 +93,13 @@
         return [doc1.numberOrdering compare:doc2.numberOrdering];
     };
     self.documents = [[self.repository.documents allObjects] sortedArrayUsingComparator:Comparator];
+    NSLog(@"NSset counts: %@",@(self.documents.count));
 }
 
 -(void) setDocuments:(NSArray *)documents{
     
     _documents = documents;
+    [self resetLabelAskUserEnterNameRepositoryTextAccordingFetchedObjects];
     if(self.tableViewDocuments){
         [self.tableViewDocuments reloadData];
     }
@@ -144,7 +147,9 @@
 //создание нового документа
 //кнопкой табб бара
 - (IBAction)plusTapBarButtonTapped:(id)sender {
+    if(self.repository){
     [self createnewDocument:sender];
+    }
 }
 
 //кнопкой в табл виде

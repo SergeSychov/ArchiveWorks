@@ -38,8 +38,33 @@
     
     CGFloat ratio = (needSize.width/inputSize.width)> (needSize.height/inputSize.height) ? needSize.height/inputSize.height : needSize.width/inputSize.width;
     
-    return [img scaledImage:img ToRatio:ratio];
+    return [self scaledImage:img ToRatio:ratio];
 }
 
+-(UIImage*)rotateUIImage:(UIImage*)inputImage withOrientation:(UIImageOrientation)orientation{    CGSize size = inputImage.size;
+    CGFloat width;
+    CGFloat height;
+    switch (orientation) {
+        case UIImageOrientationLeft:
+            width =size.height;
+            height = size.width;
+            break;
+        case UIImageOrientationRight:
+            width = size.height;
+            height = size.width;
+            break;
+            
+        default:
+            width = size.width;
+            height = size.height;
+            break;
+    }
+    UIGraphicsBeginImageContext(CGSizeMake(width, height));
+    [[UIImage imageWithCGImage:[inputImage CGImage] scale:1.0 orientation:orientation] drawInRect:CGRectMake(0,0,width ,height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
 
 @end

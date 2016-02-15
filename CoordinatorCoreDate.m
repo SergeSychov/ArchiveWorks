@@ -136,7 +136,8 @@
         NSData *originalImageData = UIImagePNGRepresentation([image scaledImage:image ToRatio:1]);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [DataImageOfDocument createNewDataImageOfDocumentwith:originalImageData Document:doc inContext:self.managedContext];
+            doc.bigImageData.data = originalImageData;
+            //[DataImageOfDocument createNewDataImageOfDocumentwith:originalImageData Document:doc inContext:self.managedContext];
         });
 
     });
@@ -218,26 +219,35 @@
 
 }
 
--(void) rotateImageofDocument:(Document*)document {
+-(void) rotateImageofDocument:(Document*)document otOrientatiom:(UIImageOrientation)orientation {
+    
     UIImage* scaledImage = [UIImage imageWithData:document.dataDocumnet];
-    UIImage* rotadedScaledImage = [[UIImage alloc] initWithCGImage: scaledImage.CGImage
-                                                       scale: 1.0
-                                                 orientation: UIImageOrientationRight];
+    UIImage* rotadedScaledImage = [scaledImage rotateUIImage:scaledImage withOrientation:orientation] ;
     
-    document.dataDocumnet = UIImagePNGRepresentation(rotadedScaledImage);
+    //create the same document and replace previous - need for fetch this changes
+    Document* newDoc = [Document createNewDocumentWithData:UIImagePNGRepresentation(rotadedScaledImage)
+                                                      name:document.name
+                                                Repository:document.repository.name
+                                                 inContext:self.managedContext];
+    newDoc.numberOrdering = document.numberOrdering;
     
+    //before take image
     UIImage* originalImage = [UIImage imageWithData:document.bigImageData.data];
-    document.bigImageData.data = nil;
-
+    
+    //document = newDoc;
+    [self.managedContext deleteObject:document];
+    
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        UIImage * rotadedOriginalImage = [[UIImage alloc] initWithCGImage: originalImage.CGImage
-                                                             scale: 1.0
-                                                       orientation: UIImageOrientationRight];
+        
+        document.bigImageData.data = nil;
+        UIImage * rotadedOriginalImage = [originalImage rotateUIImage:originalImage withOrientation:orientation];
         NSData *rotadedOriginalImageData = UIImagePNGRepresentation(rotadedOriginalImage);
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [DataImageOfDocument createNewDataImageOfDocumentwith:rotadedOriginalImageData Document:document inContext:self.managedContext];
+            newDoc.bigImageData.data = rotadedOriginalImageData;
+            //[DataImageOfDocument createNewDataImageOfDocumentwith:rotadedOriginalImageData Document:newDoc inContext:self.managedContext];
+            
         });
         
     });

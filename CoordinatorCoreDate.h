@@ -47,7 +47,8 @@
 -(Document*) addNewDocumentWith:(UIImage*)image name:(NSString*)name andRepositoryName:(NSString*)nameRepository;
 -(void) deleteDocumetn:(Document*)document;
 -(void) deleteRepository:(Repository*)repository;
--(void) rotateImageofDocument:(Document*)document;
+-(void) rotateImageofDocument:(Document*)document otOrientatiom:(UIImageOrientation)orientation;
+
 
 
 @property (nonatomic,weak) id <CoorinatorProtocol, NSFetchedResultsControllerDelegate> delegatedByRepository;

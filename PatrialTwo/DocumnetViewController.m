@@ -7,6 +7,7 @@
 //
 
 #import "DocumnetViewController.h"
+#import "RepositoryViewController.h"
 
 @interface DocumnetViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, CoorinatorProtocol, UITextFieldDelegate, UIScrollViewDelegate>
 
@@ -132,6 +133,24 @@
     [self presentViewController:self.pickerController animated:YES completion:nil];
 }
 - (IBAction)backToRepositoryButtonTapped:(UIButton *)sender {
+    
+   //set image to need orientation
+    UIImageOrientation orient;
+    double angle = atan2(self.imageView.transform.a, self.imageView.transform.b)-M_PI_2;
+
+    
+    if(angle == -M_PI_2){
+        orient = UIImageOrientationRight;
+    } else if(angle == -M_PI){
+        orient = UIImageOrientationDown;
+    } else if (angle == -(3*M_PI_2)){
+        orient = UIImageOrientationLeft;
+    } else {
+        orient = UIImageOrientationUp;
+    }
+    if(orient !=  UIImageOrientationUp)
+    [self.coordinatorCoreDate rotateImageofDocument:self.document otOrientatiom:orient];
+
     [self dismissViewControllerAnimated:YES completion:^{
         nil;
     }];
@@ -144,19 +163,13 @@
 - (IBAction)rotationButtonTaped:(id)sender {
     
     [UIView animateWithDuration:0.3 animations:^{
-        self.imageView.transform = CGAffineTransformMakeRotation(M_PI_2);
+        self.imageView.transform = CGAffineTransformRotate(self.imageView.transform, M_PI_2);
+
+        
     } completion:^(BOOL finished) {
-        [self.coordinatorCoreDate rotateImageofDocument:self.document];
     }];
 }
 
-
-/*
--(void) setCoordinatorCoreDate:(CoordinatorCoreDate *)coordinatorCoreDate{
-    _coordinatorCoreDate = coordinatorCoreDate;
-    //_coordinatorCoreDate.delegatedByDocuments = self;
-}
-*/
 #pragma mark SCROLL VIEW DELEGATE
 -(UIView*)viewForZoomingInScrollView:(UIScrollView *)scrollView{
     return self.imageView;

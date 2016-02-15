@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15E39d" minimumToolsVersion="Automatic">
     <entity name="DataImageOfDocument" representedClassName="DataImageOfDocument" syncable="YES">
         <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
-        <relationship name="document" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="Document" inverseName="bigImageData" inverseEntity="Document" syncable="YES"/>
+        <relationship name="document" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Document" inverseName="bigImageData" inverseEntity="Document" syncable="YES"/>
     </entity>
     <entity name="Document" representedClassName="Document" syncable="YES">
         <attribute name="dataDocumnet" optional="YES" attributeType="Binary" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="numberOrdering" optional="YES" attributeType="Date" syncable="YES"/>
-        <relationship name="bigImageData" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataImageOfDocument" inverseName="document" inverseEntity="DataImageOfDocument" syncable="YES"/>
+        <relationship name="bigImageData" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="DataImageOfDocument" inverseName="document" inverseEntity="DataImageOfDocument" syncable="YES"/>
         <relationship name="repository" maxCount="1" deletionRule="Nullify" destinationEntity="Repository" inverseName="documents" inverseEntity="Repository" syncable="YES"/>
     </entity>
     <entity name="Repository" representedClassName="Repository" syncable="YES">
